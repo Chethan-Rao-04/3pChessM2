@@ -1,4 +1,4 @@
-package main;
+package com.ccd.chess.main;
 
 import abstraction.IGameInterface;
 import com.google.common.collect.ImmutableSet;
