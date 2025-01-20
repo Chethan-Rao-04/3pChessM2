@@ -1,5 +1,4 @@
 package com.ccd.chess.entity.enums;
-
 public enum Direction{
     FORWARD,BACKWARD,LEFT,RIGHT;
 
