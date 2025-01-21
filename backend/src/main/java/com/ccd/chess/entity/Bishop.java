@@ -12,14 +12,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static utility.MovementUtil.step;
-import static utility.MovementUtil.stepOrNull;
+import static com.ccd.chess.utility.MovementUtil.step;
+import static com.ccd.chess.utility.MovementUtil.stepOrNull;
 
 /**
  * Bishop class extends ChessPiece. Move directions for the bishop, the polygons
  * to be highlighted, and its legal moves are checked here
  **/
-public class Bishop extends ChessPiece {
+public abstract class Bishop extends ChessPiece {
 
     private static final String TAG = "BISHOP";
 
@@ -41,6 +41,10 @@ public class Bishop extends ChessPiece {
                 {Direction.BACKWARD,Direction.RIGHT},{Direction.LEFT,Direction.BACKWARD},{Direction.RIGHT,Direction.BACKWARD}};
     }
 
+    public Set<Position> getPossibleMoves(Map<Position, ChessPiece> boardMap, Position start) {
+        return Set.of();
+    }
+
     /**
      * Fetch all the possible positions where a piece can move on board
      * @param boardMap: Board Map instance representing current game board
@@ -58,7 +62,7 @@ public class Bishop extends ChessPiece {
         for (Direction[] step : steps) {
             Position tmp = stepOrNull(mover, step, start);
             while(tmp != null && !positionSet.contains(tmp)
-                    && (boardMap.get(tmp)==null || (boardMap.get(tmp) instanceof Wall && boardMap.get(tmp).getColour() == mover.getColour()))) {
+                    && (boardMap.get(tmp)==null || (boardMap.get(tmp) != null && boardMap.get(tmp).getColour() == mover.getColour()))) {
                 Logger.d(TAG, "tmp: "+tmp);
                 positionSet.add(tmp); // to prevent same position to add in list again
                 tmp = stepOrNull(mover, step, tmp, tmp.getColour()!=start.getColour());
@@ -93,4 +97,4 @@ public class Bishop extends ChessPiece {
     public String toString() {
         return this.colour.toString()+"B";
     }
-}}
+}
