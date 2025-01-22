@@ -39,9 +39,9 @@ public abstract class ChessPiece {
         Map<ChessPiece, Position> res = new HashMap<>();
         for(Position pos: boardMap.keySet()) {
             ChessPiece piece = boardMap.get(pos);
-            if(piece instanceof Wall) {
-                res.put(piece, pos);
-            }
+//            if(piece instanceof Wall) {
+//                res.put(piece, pos);
+//            }
         }
 
         return res;

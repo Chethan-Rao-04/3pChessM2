@@ -47,7 +47,7 @@ import java.util.HashSet;
         private void placeChessPieces(Colour colour) throws InvalidPositionException {
             // place ROOK
             Position[] rookStartPositions = new Position[] {Position.get(colour,0,0), Position.get(colour,0,7)};
-            boardMap.put(rookStartPositions[0], PieceFactory.createPiece("Rook", colour));
+            boardMap.put(rookStartPositions[0], PieceFactory.createPiece("Rook", Colour));
             boardMap.put(rookStartPositions[1], PieceFactory.createPiece("Rook", colour));
 
             // place KNIGHT
