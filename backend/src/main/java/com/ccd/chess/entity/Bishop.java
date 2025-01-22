@@ -12,89 +12,63 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static com.ccd.chess.utility.MovementUtil.step;
-import static com.ccd.chess.utility.MovementUtil.stepOrNull;
+import static utility.MovementUtil.step;
+import static utility.MovementUtil.stepOrNull;
 
 /**
  * Bishop class extends ChessPiece. Move directions for the bishop, the polygons
  * to be highlighted, and its legal moves are checked here
  **/
-public abstract class Bishop extends ChessPiece {
+public class Bishop extends ChessPiece {
 
-    private static final String TAG = "BISHOP";
+    private static final String TAG = "BasePiece";
+
+    protected Colour colour; // colour of the chess piece [Red, Green, Blue]
+    protected Direction[][] directions; // List of possible directions a piece can move. [Left, Right, Forward, Backward]
 
     /**
-     * Bishop constructor
+     * BasePiece constructor
      * @param colour: Colour of the chess piece being initiated
      * */
-    public Bishop(Colour colour) {
-        super(colour);
+    public ChessPiece(Colour colour) {
+        this.colour = colour;
+        setupDirections();
     }
 
     /**
      * Method to initialize directions for a chess piece
      **/
-    @Override
-    protected void setupDirections() {
-        this.directions = new Direction[][] {{Direction.FORWARD,Direction.LEFT},{Direction.FORWARD,Direction.RIGHT},
-                {Direction.LEFT,Direction.FORWARD},{Direction.RIGHT,Direction.FORWARD},{Direction.BACKWARD,Direction.LEFT},
-                {Direction.BACKWARD,Direction.RIGHT},{Direction.LEFT,Direction.BACKWARD},{Direction.RIGHT,Direction.BACKWARD}};
-    }
+    protected abstract void setupDirections();
 
-    public Set<Position> getPossibleMoves(Map<Position, ChessPiece> boardMap, Position start) {
-        return Set.of();
+    /**
+     * Fetch all the positions of the wall
+     * @param boardMap: Board Map representing current game board
+     * @return map of piece and positions
+     * */
+    protected Map<ChessPiece, Position> getWallPieceMapping(Map<Position, ChessPiece> boardMap) {
+        Map<ChessPiece, Position> res = new HashMap<>();
+        for(Position pos: boardMap.keySet()) {
+            ChessPiece piece = boardMap.get(pos);
+            if(piece instanceof Wall) {
+                res.put(piece, pos);
+            }
+        }
+
+        return res;
     }
 
     /**
      * Fetch all the possible positions where a piece can move on board
-     * @param boardMap: Board Map instance representing current game board
+     * @param boardMap: Board Map representing current game board
      * @param start: position of piece on board
      * @return Set of possible positions a piece is allowed to move
      * */
-    @Override
-    public Set<Position> getHighlightPolygons(Map<Position, ChessPiece> boardMap, Position start) {
-        Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
-        Set<Position> positionSet = new HashSet<>();
-
-        ChessPiece mover = this;
-        Direction[][] steps = this.directions;
-
-        for (Direction[] step : steps) {
-            Position tmp = stepOrNull(mover, step, start);
-            while(tmp != null && !positionSet.contains(tmp)
-                    && (boardMap.get(tmp)==null || (boardMap.get(tmp) != null && boardMap.get(tmp).getColour() == mover.getColour()))) {
-                Logger.d(TAG, "tmp: "+tmp);
-                positionSet.add(tmp); // to prevent same position to add in list again
-                tmp = stepOrNull(mover, step, tmp, tmp.getColour()!=start.getColour());
-            }
-
-            // found a piece diagonally
-            if(tmp!=null && boardMap.get(tmp)!=null) {
-                if(boardMap.get(tmp).getColour()!=mover.getColour()) {
-                    Logger.d(TAG, "Opponent tmp: " + tmp);
-                    positionSet.add(tmp);
-                } else {
-                    Logger.d(TAG, "Mine tmp: " + tmp);
-                }
-            }
-        }
-
-        for(Position position: wallPiecePositions) {
-            if(positionSet.contains(position)) {
-                Logger.d(TAG, "Removed a wallPiecePos: "+position);
-                positionSet.remove(position);
-            }
-        }
-
-        return positionSet;
-    }
+    public abstract Set<Position> getHighlightPolygons(Map<Position, BasePiece> boardMap, Position start);
 
     /**
-     * Returns custom string representation of the class
-     * @return String
+     * @return Colour of the chess piece
      * */
-    @Override
-    public String toString() {
-        return this.colour.toString()+"B";
+    public Colour getColour() {
+        return this.colour;
     }
 }

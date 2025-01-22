@@ -1,6 +1,10 @@
 package com.ccd.chess.utility;
 
-public class Logger {
+/**
+ * method to print information to debug
+ **/
+public class Logger{
+
     /**
      * method to print information to debug
      **/
