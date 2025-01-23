@@ -2,9 +2,7 @@ package com.ccd.chess.entity;
 
 import com.ccd.chess.entity.enums.Colour;
 import com.ccd.chess.entity.enums.Direction;
-import com.ccd.chess.exceptions.InvalidPositionException;
 import com.ccd.chess.entity.enums.Position;
-
 import com.ccd.chess.utility.Logger;
 
 import java.util.Collection;
@@ -12,14 +10,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static com.ccd.chess.utility.MovementUtil.step;
 import static com.ccd.chess.utility.MovementUtil.stepOrNull;
 
 /**
  * Bishop class extends ChessPiece. Move directions for the bishop, the polygons
  * to be highlighted, and its legal moves are checked here
  **/
-public class Bishop extends ChessPiece {
+public class NewPiece1 extends ChessPiece {
 
     private static final String TAG = "BISHOP";
 
@@ -27,7 +24,7 @@ public class Bishop extends ChessPiece {
      * Bishop constructor
      * @param colour: Colour of the chess piece being initiated
      * */
-    public Bishop(Colour colour) {
+    public NewPiece1(Colour colour) {
         super(colour);
     }
 
@@ -58,7 +55,7 @@ public class Bishop extends ChessPiece {
         for (Direction[] step : steps) {
             Position tmp = stepOrNull(mover, step, start);
             while(tmp != null && !positionSet.contains(tmp)
-                    && (boardMap.get(tmp)==null || (boardMap.get(tmp) instanceof NewPiece2 && boardMap.get(tmp).getColour() == mover.getColour()))) {
+                    && (boardMap.get(tmp)==null || (boardMap.get(tmp) instanceof Wall && boardMap.get(tmp).getColour() == mover.getColour()))) {
                 Logger.d(TAG, "tmp: "+tmp);
                 positionSet.add(tmp); // to prevent same position to add in list again
                 tmp = stepOrNull(mover, step, tmp, tmp.getColour()!=start.getColour());

@@ -1,4 +1,4 @@
-package com.ccd.chess.service;
+package com.ccd.chess.common;
 
 import java.util.List;
 import java.util.Map;
