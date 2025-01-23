@@ -16,7 +16,7 @@ import java.util.HashSet;
             private static final String TAG = "Board";
 
             /** A map from board positions to the pieces at that position **/
-            protected Map<Position, BasePiece> boardMap;
+            protected Map<Position, ChessPiece> boardMap;
             private Colour turn;
             private boolean gameOver;
             private String winner;
@@ -26,7 +26,7 @@ import java.util.HashSet;
              * Board constructor. Places pieces on the board and initializes variables
              * */
             public Board(){
-                boardMap = new HashMap<Position,BasePiece>();
+                boardMap = new HashMap<Position,ChessPiece>();
                 turn = Colour.BLUE;
                 gameOver = false;
                 winner = null;
@@ -36,7 +36,7 @@ import java.util.HashSet;
                         placeChessPieces(colour);
                     }
                 } catch(InvalidPositionException e) {
-                    Log.e(TAG, "InvalidPositionException: "+e.getMessage());
+                    Logger.e(TAG, "InvalidPositionException: "+e.getMessage());
                 }
             }
 
@@ -80,7 +80,7 @@ import java.util.HashSet;
 
                 // place WALL
                 Position wallStartPosition = Position.get(colour, 1, 7);
-                BasePiece wall = PieceFactory.createPiece("Wall",colour);
+                ChessPiece wall = PieceFactory.createPiece("Wall",colour);
                 boardMap.put(wallStartPosition, wall);
             }
 
@@ -107,8 +107,8 @@ import java.util.HashSet;
              * */
             public void move(Position start, Position end) throws InvalidMoveException, InvalidPositionException {
                 if(isLegalMove(start, end)) {
-                    BasePiece mover = boardMap.get(start);
-                    BasePiece taken = boardMap.get(end);
+                    ChessPiece mover = boardMap.get(start);
+                    ChessPiece taken = boardMap.get(end);
                     boardMap.remove(start);  //empty start polygon
 
                     if(mover instanceof Pawn && end.getRow()==0 && end.getColour()!=mover.getColour()){
@@ -160,7 +160,7 @@ import java.util.HashSet;
              * @return boolean
              * */
             public boolean isLegalMove(Position start, Position end) {
-                BasePiece mover = getPiece(start);
+                ChessPiece mover = getPiece(start);
                 if(mover == null) {
                     return false; // No piece present at start position
                 }
@@ -170,10 +170,10 @@ import java.util.HashSet;
                 }
                 if(highlightPolygons.contains(end)) {
                     if(isCheck(turn, boardMap) && isCheckAfterLegalMove(turn, boardMap, start, end)) {
-                        Log.d(TAG, "Colour "+moverCol+" is in check, this move doesn't help. Do again!!");
+                        Logger.d(TAG, "Colour "+moverCol+" is in check, this move doesn't help. Do again!!");
                         return false;
                     } else if(isCheckAfterLegalMove(turn, boardMap, start, end)) {
-                        Log.d(TAG, "Colour "+moverCol+" will be in check after this move");
+                        Logger.d(TAG, "Colour "+moverCol+" will be in check after this move");
                         return false;
                     } else{
                         return true;
@@ -194,9 +194,9 @@ import java.util.HashSet;
             /**
              * Get the piece on the selected position
              * @param position The current selected position
-             * @return BasePiece
+             * @return ChessPiece
              * */
-            private BasePiece getPiece(Position position) {
+            private ChessPiece getPiece(Position position) {
                 return boardMap.get(position);
             }
 
@@ -214,7 +214,7 @@ import java.util.HashSet;
              * @return Set of possible movements
              * */
             public Set<Position> getPossibleMoves(Position position) {
-                BasePiece mover = boardMap.get(position);
+                ChessPiece mover = boardMap.get(position);
                 if(mover == null) {
                     return ImmutableSet.of();
                 }
@@ -243,16 +243,16 @@ import java.util.HashSet;
 
             /**     Check / Check-mate logic helper functions **/
 
-            private boolean isCheck(Colour colour, Map<Position, BasePiece> boardMap) {
+            private boolean isCheck(Colour colour, Map<Position, ChessPiece> boardMap) {
                 Position kingPosition = getKingPosition(colour, boardMap);
 
                 for(Position position: boardMap.keySet()) {
-                    BasePiece piece = boardMap.get(position);
+                    ChessPiece piece = boardMap.get(position);
                     // wall and jester piece have no power to take out any piece
                     if(piece.getColour() != colour && !(piece instanceof Jester) && !(piece instanceof Wall)) {
                         Set<Position> possibleTargetPositions = piece.getHighlightPolygons(boardMap, position);
                         if(possibleTargetPositions.contains(kingPosition)) {
-                            Log.d(TAG, "Piece "+piece+" is attacking King of colour "+colour);
+                            Logger.d(TAG, "Piece "+piece+" is attacking King of colour "+colour);
                             return true;
                         }
                     }
@@ -260,18 +260,18 @@ import java.util.HashSet;
                 return false;
             }
 
-            private boolean isCheckMate(Colour colour, Map<Position, BasePiece> boardMap) {
+            private boolean isCheckMate(Colour colour, Map<Position, ChessPiece> boardMap) {
                 if(!isCheck(colour, boardMap)) {
                     return false;
                 }
 
                 for(Position position: boardMap.keySet()) {
-                    BasePiece piece = boardMap.get(position);
+                    ChessPiece piece = boardMap.get(position);
                     if(piece.getColour()==colour) {
                         Set<Position> possibleMoves = piece.getHighlightPolygons(boardMap, position);
                         for(Position endPos: possibleMoves) {
                             if(!isCheckAfterLegalMove(colour, boardMap, position, endPos)) {
-                                Log.d(TAG, "Piece "+piece+" can help colour "+colour+" to come out of check: st: "+position+", end: "+endPos);
+                                Logger.d(TAG, "Piece "+piece+" can help colour "+colour+" to come out of check: st: "+position+", end: "+endPos);
                                 return false;
                             }
                         }
@@ -281,9 +281,9 @@ import java.util.HashSet;
                 return true;
             }
 
-            private boolean isCheckAfterLegalMove(Colour colour, Map<Position, BasePiece> boardMap, Position start, Position end) {
-                Map<Position, BasePiece> copyBoardMap = new HashMap<>(boardMap);
-                BasePiece piece = copyBoardMap.get(start);
+            private boolean isCheckAfterLegalMove(Colour colour, Map<Position, ChessPiece> boardMap, Position start, Position end) {
+                Map<Position, ChessPiece> copyBoardMap = new HashMap<>(boardMap);
+                ChessPiece piece = copyBoardMap.get(start);
                 copyBoardMap.remove(start);
                 copyBoardMap.put(end, piece);
 
@@ -294,9 +294,9 @@ import java.util.HashSet;
                 return true;
             }
 
-            private Position getKingPosition(Colour colour, Map<Position, BasePiece> boardMap) {
+            private Position getKingPosition(Colour colour, Map<Position, ChessPiece> boardMap) {
                 for(Position position: boardMap.keySet()) {
-                    BasePiece piece = boardMap.get(position);
+                    ChessPiece piece = boardMap.get(position);
                     if(piece instanceof King && piece.getColour()==colour) {
                         return position;
                     }
