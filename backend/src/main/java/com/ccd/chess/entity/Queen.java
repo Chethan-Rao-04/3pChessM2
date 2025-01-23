@@ -89,6 +89,7 @@ public class Queen extends ChessPiece {
      * */
     @Override
     public String toString() {
-        return this.colour.toString()+"P";
+        return this.colour.toString() + "P";
+    }
     }
 
