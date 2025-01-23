@@ -1,10 +1,11 @@
-package model;
+package com.ccd.chess.entity;
 
-import common.Colour;
-import common.Direction;
-import common.InvalidPositionException;
-import common.Position;
-import utility.Log; 
+import com.ccd.chess.entity.ChessPiece;
+
+import com.ccd.chess.entity.enums.Colour;
+import com.ccd.chess.entity.enums.Direction;
+import com.ccd.chess.exceptions.InvalidPositionException;
+import com.ccd.chess.entity.enums.Position;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,8 +15,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static utility.MovementUtil.step;
-import static utility.MovementUtil.stepOrNull;
+import com.ccd.chess.utility.Logger;
+
+import static com.ccd.chess.utility.MovementUtil.stepOrNull;
+
 
 /**
  * King class extends BasePiece. Move directions for the King, the polygons
@@ -43,7 +46,7 @@ public class King extends ChessPiece {
                 castlingPositionMapping.put(c, castlingPositions);
             }
         } catch (Exception e) {
-            Log.e(TAG, "Exception while adding castling end position: "+e.getMessage());
+            Logger.e(TAG, "Exception while adding castling end position: "+e.getMessage());
         }
     }
 
@@ -80,11 +83,11 @@ public class King extends ChessPiece {
             if (end != null) {
                 if(boardMap.get(end)!=null) {
                     if(boardMap.get(end).getColour()!=mover.getColour()) {
-                        Log.d(TAG, "position enemy: " + end);
+                        Logger.d(TAG, "position enemy: " + end);
                         positionSet.add(end);
                     }
                 } else {
-                    Log.d(TAG, "position: "+end);
+                    Logger.d(TAG, "position: "+end);
                     positionSet.add(end);
                 }
             }
@@ -93,7 +96,7 @@ public class King extends ChessPiece {
         List<Position> castlingPositions = castlingPositionMapping.getOrDefault(mover.getColour(), new ArrayList<>());
         for(Position end: castlingPositions) {
             if (boardMap.get(end)==null && isCastlingPossible(boardMap, start, end)) {
-                Log.d(TAG, "position castling: " + end);
+                Logger.d(TAG, "position castling: " + end);
                 positionSet.add(end);
             }
         }
@@ -109,7 +112,7 @@ public class King extends ChessPiece {
      * @return bool if castling is possible
      * */
     private boolean isCastlingPossible(Map<Position, ChessPiece> board, Position start, Position end) {
-        Log.d(TAG, "isCastlingPossible: start: "+start+", end: "+end);
+        Logger.d(TAG, "isCastlingPossible: start: "+start+", end: "+end);
         ChessPiece mover = this;
         Colour moverCol = mover.getColour();
         try{
@@ -120,7 +123,7 @@ public class King extends ChessPiece {
                     ChessPiece empty2 = board.get(Position.get(moverCol,0,6));
                     if(castle instanceof Rook && castle.getColour() == mover.getColour()
                             && empty1 == null && empty2 == null) {
-                        Log.d(TAG, "Castling Legal Move 1: True");
+                        Logger.d(TAG, "Castling Legal Move 1: True");
                         return true;
                     }
                 }
@@ -131,14 +134,14 @@ public class King extends ChessPiece {
                     ChessPiece empty3 = board.get(Position.get(moverCol,0,3));
                     if(castle instanceof Rook && castle.getColour() == mover.getColour()
                             && empty1 == null && empty2 == null && empty3 == null) {
-                        Log.d(TAG, "Castling Legal Move 2: True");
+                        Logger.d(TAG, "Castling Legal Move 2: True");
                         return true;
                     }
                 }
             }
         } catch (InvalidPositionException e) {
             //do nothing, steps went off board.
-            Log.e(TAG, "InvalidPositionException: " + e.getMessage());
+            Logger.e(TAG, "InvalidPositionException: " + e.getMessage());
         }
         return false;
     }

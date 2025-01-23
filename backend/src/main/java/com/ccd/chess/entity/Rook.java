@@ -4,11 +4,18 @@ import com.ccd.chess.entity.enums.Colour;
 import com.ccd.chess.entity.enums.Direction;
 import com.ccd.chess.entity.enums.Position;
 
+import java.util.Map;
+import java.util.Set;
+
+
+import com.ccd.chess.utility.Logger;
+
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import com.ccd.chess.utility.Logger;
+
 import static com.ccd.chess.utility.MovementUtil.step;
 import static com.ccd.chess.utility.MovementUtil.stepOrNull;
 
@@ -56,24 +63,24 @@ public class Rook extends ChessPiece {
             Position tmp = stepOrNull(mover, step, start);
             while(tmp != null &&
                     (boardMap.get(tmp)==null || (boardMap.get(tmp) instanceof Wall && boardMap.get(tmp).getColour() == mover.getColour()))) {
-                Log.d(TAG, "tmp: "+tmp);
+                Logger.d(TAG, "tmp: "+tmp);
                 positionSet.add(tmp);
                 tmp = stepOrNull(mover, step, tmp, tmp.getColour()!=start.getColour());
             }
 
             if(tmp!=null) {
                 if(boardMap.get(tmp).getColour()!=mover.getColour()) {
-                    Log.d(TAG, "Opponent tmp: " + tmp);
+                    Logger.d(TAG, "Opponent tmp: " + tmp);
                     positionSet.add(tmp);
                 } else {
-                    Log.d(TAG, "Mine tmp: " + tmp);
+                    Logger.d(TAG, "Mine tmp: " + tmp);
                 }
             }
         }
 
         for(Position position: wallPiecePositions) {
             if(positionSet.contains(position)) {
-                Log.d(TAG, "Removed a wallPiecePos: "+position);
+                Logger.d(TAG, "Removed a wallPiecePos: "+position);
                 positionSet.remove(position);
             }
         }

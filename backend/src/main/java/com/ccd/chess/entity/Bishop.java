@@ -19,56 +19,78 @@ import static com.ccd.chess.utility.MovementUtil.stepOrNull;
  * Bishop class extends ChessPiece. Move directions for the bishop, the polygons
  * to be highlighted, and its legal moves are checked here
  **/
-public class Bishop extends ChessPiece {
+public class Bishop extends BasePiece {
 
-    private static final String TAG = "BasePiece";
-
-    protected Colour colour; // colour of the chess piece [Red, Green, Blue]
-    protected Direction[][] directions; // List of possible directions a piece can move. [Left, Right, Forward, Backward]
+    private static final String TAG = "BISHOP";
 
     /**
-     * BasePiece constructor
+     * Bishop constructor
      * @param colour: Colour of the chess piece being initiated
      * */
-    public ChessPiece(Colour colour) {
-        this.colour = colour;
-        setupDirections();
+    public Bishop(Colour colour) {
+        super(colour);
     }
 
     /**
      * Method to initialize directions for a chess piece
      **/
-    protected abstract void setupDirections();
-
-    /**
-     * Fetch all the positions of the wall
-     * @param boardMap: Board Map representing current game board
-     * @return map of piece and positions
-     * */
-    protected Map<ChessPiece, Position> getWallPieceMapping(Map<Position, ChessPiece> boardMap) {
-        Map<ChessPiece, Position> res = new HashMap<>();
-        for(Position pos: boardMap.keySet()) {
-            ChessPiece piece = boardMap.get(pos);
-            if(piece instanceof Wall) {
-                res.put(piece, pos);
-            }
-        }
-
-        return res;
+    @Override
+    protected void setupDirections() {
+        this.directions = new Direction[][] {{Direction.FORWARD,Direction.LEFT},{Direction.FORWARD,Direction.RIGHT},
+                {Direction.LEFT,Direction.FORWARD},{Direction.RIGHT,Direction.FORWARD},{Direction.BACKWARD,Direction.LEFT},
+                {Direction.BACKWARD,Direction.RIGHT},{Direction.LEFT,Direction.BACKWARD},{Direction.RIGHT,Direction.BACKWARD}};
     }
 
     /**
      * Fetch all the possible positions where a piece can move on board
-     * @param boardMap: Board Map representing current game board
+     * @param boardMap: Board Map instance representing current game board
      * @param start: position of piece on board
      * @return Set of possible positions a piece is allowed to move
      * */
-    public abstract Set<Position> getHighlightPolygons(Map<Position, BasePiece> boardMap, Position start);
+    @Override
+    public Set<Position> getHighlightPolygons(Map<Position, BasePiece> boardMap, Position start) {
+        Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
+        Set<Position> positionSet = new HashSet<>();
+
+        BasePiece mover = this;
+        Direction[][] steps = this.directions;
+
+        for (Direction[] step : steps) {
+            Position tmp = stepOrNull(mover, step, start);
+            while(tmp != null && !positionSet.contains(tmp)
+                    && (boardMap.get(tmp)==null || (boardMap.get(tmp) instanceof Wall && boardMap.get(tmp).getColour() == mover.getColour()))) {
+                Log.d(TAG, "tmp: "+tmp);
+                positionSet.add(tmp); // to prevent same position to add in list again
+                tmp = stepOrNull(mover, step, tmp, tmp.getColour()!=start.getColour());
+            }
+
+            // found a piece diagonally
+            if(tmp!=null && boardMap.get(tmp)!=null) {
+                if(boardMap.get(tmp).getColour()!=mover.getColour()) {
+                    Log.d(TAG, "Opponent tmp: " + tmp);
+                    positionSet.add(tmp);
+                } else {
+                    Log.d(TAG, "Mine tmp: " + tmp);
+                }
+            }
+        }
+
+        for(Position position: wallPiecePositions) {
+            if(positionSet.contains(position)) {
+                Log.d(TAG, "Removed a wallPiecePos: "+position);
+                positionSet.remove(position);
+            }
+        }
+
+        return positionSet;
+    }
 
     /**
-     * @return Colour of the chess piece
+     * Returns custom string representation of the class
+     * @return String
      * */
-    public Colour getColour() {
-        return this.colour;
+    @Override
+    public String toString() {
+        return this.colour.toString()+"B";
     }
 }
