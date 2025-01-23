@@ -2,16 +2,22 @@ package com.ccd.chess.main;
 
 import abstraction.IGameInterface;
 import com.google.common.collect.ImmutableSet;
-import common.Colour;
-import common.Position;
+import com.ccd.chess.entity.Board;
+
 import entity.Board;
-import utility.Log;
+
+
+import com.ccd.chess.entity.enums.Colour;
+import com.ccd.chess.entity.enums.Position;
+
+import com.ccd.chess.utility.Logger;
+
 
 import java.util.Map;
 import java.util.Set;
 
 /**
- * Class containing the main logic of the backend.
+ * Class containing the main Loggeric of the backend.
  * the click inputs from the webapp is communicated with the backend.
  */
 public class GameMain implements IGameInterface {
@@ -22,10 +28,10 @@ public class GameMain implements IGameInterface {
     private Set<Position> highlightPolygons;
 
     /**
-     * GameMain Constructor. Entry point to the backend logic
+     * GameMain Constructor. Entry point to the backend Loggeric
      * */
     public GameMain() {
-        Log.d(TAG, "initGame GameMain()");
+        Logger.d(TAG, "initGame GameMain()");
         board = new Board();
         moveStartPos = null;
         moveEndPos = null;

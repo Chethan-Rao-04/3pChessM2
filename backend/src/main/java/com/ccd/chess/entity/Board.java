@@ -2,6 +2,7 @@ package com.ccd.chess.entity;
 
 import com.ccd.chess.entity.enums.Colour;
 import com.ccd.chess.exceptions.InvalidPositionException;
+import com.ccd.chess.exceptions.InvalidMoveException;
 import com.ccd.chess.entity.enums.Position;
 import com.ccd.chess.utility.Logger;
 import com.ccd.chess.utility.PieceFactory;
