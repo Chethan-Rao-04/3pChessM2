@@ -4,17 +4,11 @@ import com.ccd.chess.entity.enums.Colour;
 import com.ccd.chess.entity.enums.Direction;
 import com.ccd.chess.entity.enums.Position;
 
-import java.util.Map;
-import java.util.Set;
-
-
-import com.ccd.chess.utility.Logger;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
+import com.ccd.chess.utility.Logger;
 import static com.ccd.chess.utility.MovementUtil.step;
 import static com.ccd.chess.utility.MovementUtil.stepOrNull;
 
