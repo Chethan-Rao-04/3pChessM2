@@ -1,8 +1,8 @@
 package com.ccd.chess.utility;
 
-import common.InvalidPositionException;
-import model.BasePiece;
-import common.Position;
+import com.ccd.chess.exceptions.InvalidPositionException;
+import com.ccd.chess.entity.ChessPiece;
+import com.ccd.chess.entity.enums.Position;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,11 +21,11 @@ public class BoardAdapter {
      * @param modelBoard a map of position and piece as input
      * @return Map of String and String
      **/
-    public static Map<String, String> convertModelBoardToViewBoard(Map<Position, BasePiece> modelBoard) {
+    public static Map<String, String> convertModelBoardToViewBoard(Map<Position, ChessPiece> modelBoard) {
         Map<String, String> viewBoard = new HashMap<>();
 
         for(Position position: modelBoard.keySet()) {
-            BasePiece piece = modelBoard.get(position);
+            ChessPiece piece = modelBoard.get(position);
             if(piece != null) {
                 viewBoard.put(position.toString(), piece.toString());
             }
@@ -67,7 +67,7 @@ public class BoardAdapter {
         char firstChar = Character.toLowerCase(polygon.charAt(0));
         char secondChar = Character.toLowerCase(polygon.charAt(1));
         int number = polygon.charAt(2)-'0';
-        Log.d("BoardAdapter", "firstChar: "+firstChar+", secondChar: "+secondChar+", number: "+number);
+        Logger.d("BoardAdapter", "firstChar: "+firstChar+", secondChar: "+secondChar+", number: "+number);
         boolean isFirstCharInvalid = (firstChar != 'g' && firstChar != 'r' && firstChar != 'b');
         boolean isSecondCharInvalid = (secondChar < 'a' || secondChar > 'h');
         boolean isNumberOutOfRange = (number < 1 || number > 4);
