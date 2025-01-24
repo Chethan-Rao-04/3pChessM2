@@ -18,9 +18,9 @@ import java.util.Set;
 
 import static com.ccd.chess.utility.BoardAdapter.calculatePolygonId;
 
-public class GameService implements IGameInterface {
+public class GameMain implements IGameInterface {
 
-    private static final String TAG = GameService.class.getSimpleName();
+    private static final String TAG = GameMain.class.getSimpleName();
     private final Board board;
     private Position moveStartPos, moveEndPos;
     private Set<Position> highlightPolygons;
@@ -28,7 +28,7 @@ public class GameService implements IGameInterface {
     /**
      * GameMain Constructor. Entry point to the backend logic
      * */
-    public GameService() {
+    public GameMain() {
         Logger.d(TAG, "initGame GameMain()");
         board = new Board();
         moveStartPos = null;
