@@ -1,10 +1,11 @@
-package model;
+package com.ccd.chess.entity;
 
-import common.Colour;
-import common.Direction;
-import common.InvalidPositionException;
-import common.Position;
-import utility.Log;
+import com.ccd.chess.entity.ChessPiece;
+
+import com.ccd.chess.entity.enums.Colour;
+import com.ccd.chess.entity.enums.Direction;
+import com.ccd.chess.exceptions.InvalidPositionException;
+import com.ccd.chess.entity.enums.Position;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,14 +15,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static utility.MovementUtil.step;
-import static utility.MovementUtil.stepOrNull;
+import com.ccd.chess.utility.Logger;
+
+import static com.ccd.chess.utility.MovementUtil.stepOrNull;
+
 
 /**
  * King class extends BasePiece. Move directions for the King, the polygons
  * to be highlighted, and its legal moves are checked here
  **/
-public class King extends BasePiece {
+public class King extends ChessPiece {
 
     public static final String TAG = "KING";
 
@@ -43,7 +46,7 @@ public class King extends BasePiece {
                 castlingPositionMapping.put(c, castlingPositions);
             }
         } catch (Exception e) {
-            Log.e(TAG, "Exception while adding castling end position: "+e.getMessage());
+            Logger.e(TAG, "Exception while adding castling end position: "+e.getMessage());
         }
     }
 
@@ -65,10 +68,10 @@ public class King extends BasePiece {
      * @return Set of possible positions a piece is allowed to move
      * */
     @Override
-    public Set<Position> getHighlightPolygons(Map<Position, BasePiece> boardMap, Position start) {
+    public Set<Position> getHighlightPolygons(Map<Position, ChessPiece> boardMap, Position start) {
         Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
         Set<Position> positionSet = new HashSet<>();
-        BasePiece mover = this;
+        ChessPiece mover = this;
         Direction[][] steps = this.directions;
 
         for (Direction[] step : steps) {
@@ -80,11 +83,11 @@ public class King extends BasePiece {
             if (end != null) {
                 if(boardMap.get(end)!=null) {
                     if(boardMap.get(end).getColour()!=mover.getColour()) {
-                        Log.d(TAG, "position enemy: " + end);
+                        Logger.d(TAG, "position enemy: " + end);
                         positionSet.add(end);
                     }
                 } else {
-                    Log.d(TAG, "position: "+end);
+                    Logger.d(TAG, "position: "+end);
                     positionSet.add(end);
                 }
             }
@@ -93,7 +96,7 @@ public class King extends BasePiece {
         List<Position> castlingPositions = castlingPositionMapping.getOrDefault(mover.getColour(), new ArrayList<>());
         for(Position end: castlingPositions) {
             if (boardMap.get(end)==null && isCastlingPossible(boardMap, start, end)) {
-                Log.d(TAG, "position castling: " + end);
+                Logger.d(TAG, "position castling: " + end);
                 positionSet.add(end);
             }
         }
@@ -108,37 +111,37 @@ public class King extends BasePiece {
      * @param end: start position of piece on board
      * @return bool if castling is possible
      * */
-    private boolean isCastlingPossible(Map<Position, BasePiece> board, Position start, Position end) {
-        Log.d(TAG, "isCastlingPossible: start: "+start+", end: "+end);
-        BasePiece mover = this;
+    private boolean isCastlingPossible(Map<Position, ChessPiece> board, Position start, Position end) {
+        Logger.d(TAG, "isCastlingPossible: start: "+start+", end: "+end);
+        ChessPiece mover = this;
         Colour moverCol = mover.getColour();
         try{
             if(start==Position.get(moverCol,0,4)){
                 if(end==Position.get(moverCol,0,6)){
-                    BasePiece castle = board.get(Position.get(moverCol,0,7));
-                    BasePiece empty1 = board.get(Position.get(moverCol,0,5));
-                    BasePiece empty2 = board.get(Position.get(moverCol,0,6));
+                    ChessPiece castle = board.get(Position.get(moverCol,0,7));
+                    ChessPiece empty1 = board.get(Position.get(moverCol,0,5));
+                    ChessPiece empty2 = board.get(Position.get(moverCol,0,6));
                     if(castle instanceof Rook && castle.getColour() == mover.getColour()
                             && empty1 == null && empty2 == null) {
-                        Log.d(TAG, "Castling Legal Move 1: True");
+                        Logger.d(TAG, "Castling Legal Move 1: True");
                         return true;
                     }
                 }
                 if(end==Position.get(moverCol,0,2)){
-                    BasePiece castle = board.get(Position.get(moverCol,0,0));
-                    BasePiece empty1 = board.get(Position.get(moverCol,0,1));
-                    BasePiece empty2 = board.get(Position.get(moverCol,0,2));
-                    BasePiece empty3 = board.get(Position.get(moverCol,0,3));
+                    ChessPiece castle = board.get(Position.get(moverCol,0,0));
+                    ChessPiece empty1 = board.get(Position.get(moverCol,0,1));
+                    ChessPiece empty2 = board.get(Position.get(moverCol,0,2));
+                    ChessPiece empty3 = board.get(Position.get(moverCol,0,3));
                     if(castle instanceof Rook && castle.getColour() == mover.getColour()
                             && empty1 == null && empty2 == null && empty3 == null) {
-                        Log.d(TAG, "Castling Legal Move 2: True");
+                        Logger.d(TAG, "Castling Legal Move 2: True");
                         return true;
                     }
                 }
             }
         } catch (InvalidPositionException e) {
             //do nothing, steps went off board.
-            Log.e(TAG, "InvalidPositionException: " + e.getMessage());
+            Logger.e(TAG, "InvalidPositionException: " + e.getMessage());
         }
         return false;
     }

@@ -5,13 +5,15 @@ import com.ccd.chess.entity.enums.Direction;
 import com.ccd.chess.entity.enums.Position;
 import com.ccd.chess.exceptions.InvalidPositionException;
 
+import com.ccd.chess.utility.Logger;
+import static com.ccd.chess.utility.MovementUtil.step;
+import static com.ccd.chess.utility.MovementUtil.stepOrNull;
+
 import java.util.*;
 
-//import static utility.MovementUtil.step;
-//import static utility.MovementUtil.stepOrNull;
 
 /**
- * Pawn class extends BasePiece. Move directions for the Pawn, the polygons
+ * Pawn class extends ChessPiece. Move directions for the Pawn, the polygons
  * to be highlighted, and its legal moves are checked here
  **/
 public class Queen extends ChessPiece {
@@ -43,10 +45,10 @@ public class Queen extends ChessPiece {
      * @return Set of possible positions a piece is allowed to move
      * */
     @Override
-    public Set<Position> getHighlightPolygons(Map<Position, BasePiece> boardMap, Position start) {
+    public Set<Position> getHighlightPolygons(Map<Position, ChessPiece> boardMap, Position start) {
         Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
         Set<Position> positionSet = new HashSet<>();
-        BasePiece mover = this;
+        ChessPiece mover = this;
         Colour moverCol = mover.getColour();
         Direction[][] steps = this.directions;
 
@@ -59,8 +61,8 @@ public class Queen extends ChessPiece {
             }
 
             if(end!=null && !positionSet.contains(end)) {
-                BasePiece target = boardMap.get(end);
-                Log.d(TAG, "end: "+end+", step: "+Arrays.toString(step));
+                ChessPiece target = boardMap.get(end);
+                Logger.d(TAG, "end: "+end+", step: "+Arrays.toString(step));
                 try {
                     boolean isOneStepForwardAndNotTakingPieceCase = (target == null && i == 0); // 1 step forward, not taking
                     boolean isTwoStepForwardAndNotTakingPieceCase = (target == null && i == 1 // 2 steps forward,
@@ -69,11 +71,11 @@ public class Queen extends ChessPiece {
                     boolean isDiagonalMoveAndTakingPieceCase = (target != null && target.getColour() != moverCol && i > 1); //or taking diagonally
 
                     if (isOneStepForwardAndNotTakingPieceCase || isTwoStepForwardAndNotTakingPieceCase || isDiagonalMoveAndTakingPieceCase) {
-                        Log.d(TAG, "position: " + end);
+                        Logger.d(TAG, "position: " + end);
                         positionSet.add(end);
                     }
                 } catch (InvalidPositionException e) {
-                    Log.d(TAG, "InvalidPositionException: "+e.getMessage());
+                    Logger.d(TAG, "InvalidPositionException: "+e.getMessage());
                 }
             }
         }
@@ -87,6 +89,7 @@ public class Queen extends ChessPiece {
      * */
     @Override
     public String toString() {
-        return this.colour.toString()+"P";
+        return this.colour.toString() + "P";
+    }
     }
 

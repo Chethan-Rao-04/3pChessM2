@@ -1,7 +1,7 @@
 package application.controller;
 
-import abstraction.IGameInterface;
-import com.ccd.chess.main.GameMain;
+import com.ccd.chess.service.IGameInterface;
+import com.ccd.chess.service.GameMain;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

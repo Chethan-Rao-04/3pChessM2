@@ -6,6 +6,8 @@ import com.ccd.chess.entity.enums.Position;
 import com.ccd.chess.entity.ChessPiece;
 import com.ccd.chess.entity.Pawn;
 
+
+
 /**
  * MovementUtil - helper class for the movement of chess pieces
  * To validate the step with each move in different directions
