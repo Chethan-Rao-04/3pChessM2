@@ -1,13 +1,6 @@
 package com.ccd.chess.utility;
+import com.ccd.chess.entity.*;
 import com.ccd.chess.entity.enums.Colour;
-import com.ccd.chess.entity.ChessPiece;
-import com.ccd.chess.entity.Bishop;
-import com.ccd.chess.entity.Wall;
-import com.ccd.chess.entity.King;
-import com.ccd.chess.entity.Knight;
-import com.ccd.chess.entity.Pawn;
-import com.ccd.chess.entity.Queen;
-import com.ccd.chess.entity.Rook;
 
 
 /**
@@ -22,25 +15,25 @@ public class PieceFactory {
      * @return CheChessPiece
      **/
     public static ChessPiece createPiece(String type, Colour colour) {
-        switch (type.toLowerCase()) {
-            case "bishop":
-                return new Bishop(colour);
-            case "queen":
-                return new Queen(colour);
-            case "king":
-                return new King(colour);
-            case "knight":
-                return new Knight(colour);
-            case "rook":
-                return new Rook(colour);
-            case "pawn":
-                return new Pawn(colour);
-            case "new piece1":
-                return new Wall(colour);
-//            case "new piece2":
-//                return new NewPiece2(colour);
-            default:
-                throw new IllegalArgumentException("Invalid chess piece type: " + type);
+            switch (type.toLowerCase()) {
+                case "bishop":
+                    return new Bishop(colour);
+                case "queen":
+                    return new Queen(colour);
+                case "king":
+                    return new King(colour);
+                case "knight":
+                    return new Knight(colour);
+                case "rook":
+                    return new Rook(colour);
+                case "pawn":
+                    return new Pawn(colour);
+                case "jester":
+                    return new Jester(colour);
+                case "wall":
+                    return new Wall(colour);
+                default:
+                    throw new IllegalArgumentException("Invalid chess piece type: " + type);
+            }
         }
     }
-}
