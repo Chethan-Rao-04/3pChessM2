@@ -1,7 +1,7 @@
 package application.controller;
 
+import com.ccd.chess.service.GameService;
 import com.ccd.chess.service.IGameInterface;
-import com.ccd.chess.service.GameMain;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +21,7 @@ public class GameController {
     @GetMapping("/newGame")
     public void handleNewGame(){
         System.out.println("New Game");
-        this.game = new GameMain();
+        this.game = new GameService();
     }
 
 //    /**
