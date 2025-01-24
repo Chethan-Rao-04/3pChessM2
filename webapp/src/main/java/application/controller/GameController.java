@@ -1,8 +1,12 @@
 package application.controller;
 
+import com.ccd.chess.common.GameState;
+import com.ccd.chess.exceptions.InvalidPositionException;
 import com.ccd.chess.service.GameService;
 import com.ccd.chess.service.IGameInterface;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -24,14 +28,14 @@ public class GameController {
         this.game = new GameService();
     }
 
-//    /**
-//     * Method to notify click events to the backend
-//     **/
-//    @PostMapping("/onClick")
-//    public GameState handleMove(@RequestBody String polygonText) throws InvalidPositionException {
-//        System.out.println("Polygon: " + polygonText);
-//        return game.onClick(polygonText);
-//    }
+    /**
+     * Method to notify click events to the backend
+     **/
+    @PostMapping("/onClick")
+    public GameState handleMove(@RequestBody String polygonText) throws InvalidPositionException {
+        System.out.println("Polygon: " + polygonText);
+        return game.onClick(polygonText);
+    }
 
     /**
      * Method to fetch the current player information from backend
