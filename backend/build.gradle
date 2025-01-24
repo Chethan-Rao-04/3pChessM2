@@ -1,7 +1,7 @@
 plugins {
     id 'application'
     id 'java'
-    id 'checkstyle'
+    // id 'checkstyle'
     id 'jacoco'
 }
 
@@ -32,12 +32,12 @@ jar {
     }
 }
 
-checkstyle {
-    toolVersion = "9.0"
-    configFile = file("${rootProject.projectDir}/config/checkstyle.xml")
-	ignoreFailures = true
-    showViolations = true
-}
+// checkstyle {
+//     toolVersion = "9.0"
+//     configFile = file("${rootProject.projectDir}/config/checkstyle.xml")
+// 	ignoreFailures = true
+//     showViolations = true
+// }
 
 dependencies {
     implementation("com.google.guava:guava:33.0.0-jre")
