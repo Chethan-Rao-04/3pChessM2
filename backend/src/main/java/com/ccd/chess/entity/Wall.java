@@ -16,7 +16,7 @@ import static com.ccd.chess.utility.MovementUtil.stepOrNull;
  * Bishop class extends ChessPiece. Move directions for the bishop, the polygons
  * to be highlighted, and its legal moves are checked here
  **/
-public class NewPiece2 extends ChessPiece {
+public class Wall extends ChessPiece {
 
     private static final String TAG = "BISHOP";
 
@@ -24,7 +24,7 @@ public class NewPiece2 extends ChessPiece {
      * Bishop constructor
      * @param colour: Colour of the chess piece being initiated
      * */
-    public NewPiece2(Colour colour) {
+    public Wall(Colour colour) {
         super(colour);
     }
 
