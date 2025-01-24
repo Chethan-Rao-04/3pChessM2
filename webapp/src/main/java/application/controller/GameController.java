@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
 import java.util.Map;
 
@@ -19,40 +21,53 @@ import java.util.Map;
 public class GameController {
     private IGameInterface game;
 
+    public GameController() {
+        // Initialize game by default
+        this.game = new GameService();
+    }
+
     /**
      * Method to create new game instance
      **/
     @GetMapping("/newGame")
-    public void handleNewGame(){
+    public ResponseEntity<Void> handleNewGame(){
         System.out.println("New Game");
         this.game = new GameService();
+        return ResponseEntity.ok().build();
     }
 
     /**
      * Method to notify click events to the backend
      **/
     @PostMapping("/onClick")
-    public GameState handleMove(@RequestBody String polygonText) throws InvalidPositionException {
+    public ResponseEntity<GameState> handleMove(@RequestBody String polygonText) throws InvalidPositionException {
+        if (game == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
         System.out.println("Polygon: " + polygonText);
-        return game.onClick(polygonText);
+        return ResponseEntity.ok(game.onClick(polygonText));
     }
 
     /**
      * Method to fetch the current player information from backend
      **/
     @GetMapping("/currentPlayer")
-    public String handlePlayerTurn(){
+    public ResponseEntity<String> handlePlayerTurn(){
+        if (game == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
         System.out.println("Requesting current player");
-        return game.getTurn().toString();
+        return ResponseEntity.ok(game.getTurn().toString());
     }
 
     /**
      * Method to fetch the current board information from backend
      **/
     @GetMapping("/board")
-    public Map<String, String> handleBoardRequest(){
-        return game.getBoard();
+    public ResponseEntity<Map<String, String>> handleBoardRequest(){
+        if (game == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        return ResponseEntity.ok(game.getBoard());
     }
-
-
 }

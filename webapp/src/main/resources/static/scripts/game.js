@@ -248,8 +248,22 @@ function requestUpdatedBoard(){
     request.send(null);
 
     if (request.status === 200) {
-        const data = JSON.parse(request.response);
-        updatePieces(data);
+        const response = JSON.parse(request.response);
+        if (response) {
+            updatePieces(response);
+        } else {
+            console.error("Invalid board data received");
+        }
+    } else {
+        console.error("Failed to get board state:", request.status);
+        // Try to create a new game if board request fails
+        const newGameReq = new XMLHttpRequest();
+        newGameReq.open("GET", "/newGame", false);
+        newGameReq.send(null);
+        if (newGameReq.status === 200) {
+            // Retry getting board state
+            requestUpdatedBoard();
+        }
     }
 }
 
@@ -263,7 +277,13 @@ function requestCurrentPlayer(){
 
     if (request.status === 200) {
         const player = request.response;
-        updateCurrenPlayer(player);
+        if (player) {
+            updateCurrenPlayer(player);
+        } else {
+            console.error("Invalid player data received");
+        }
+    } else {
+        console.error("Failed to get current player:", request.status);
     }
 }
 

@@ -13,15 +13,16 @@ import java.util.*;
 
 
 /**
- * Pawn class extends ChessPiece. Move directions for the Pawn, the polygons
- * to be highlighted, and its legal moves are checked here
+ * Queen class extends ChessPiece. Move directions for the Queen, the polygons
+ * to be highlighted, and its legal moves are checked here. Queen can move like
+ * both a Rook and Bishop combined.
  **/
 public class Queen extends ChessPiece {
 
-    private static final String TAG = "PAWN";
+    private static final String TAG = "QUEEN";
 
     /**
-     * Pawn constructor
+     * Queen constructor
      * @param colour: Colour of the chess piece being initiated
      * */
     public Queen(Colour colour) {
@@ -30,12 +31,15 @@ public class Queen extends ChessPiece {
 
     /**
      * Method to initialize directions for a chess piece
+     * Queen can move in any direction (like Rook + Bishop combined)
      **/
     @Override
     public void setupDirections() {
-        this.directions = new Direction[][] {{Direction.FORWARD},{Direction.FORWARD,Direction.FORWARD},
-                {Direction.FORWARD,Direction.LEFT},{Direction.LEFT,Direction.FORWARD},{Direction.FORWARD,Direction.RIGHT},
-                {Direction.RIGHT,Direction.FORWARD}};
+        this.directions = new Direction[][] {
+            {Direction.FORWARD}, {Direction.BACKWARD}, {Direction.LEFT}, {Direction.RIGHT},  // Rook-like moves
+            {Direction.FORWARD, Direction.LEFT}, {Direction.FORWARD, Direction.RIGHT},       // Bishop-like moves
+            {Direction.BACKWARD, Direction.LEFT}, {Direction.BACKWARD, Direction.RIGHT}
+        };
     }
 
     /**
@@ -49,33 +53,23 @@ public class Queen extends ChessPiece {
         Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
         Set<Position> positionSet = new HashSet<>();
         ChessPiece mover = this;
-        Colour moverCol = mover.getColour();
         Direction[][] steps = this.directions;
 
-        for (int i=0; i<steps.length; i++) {
-            Direction[] step = steps[i];
-            Position end = stepOrNull(mover, step, start);
-
-            if(wallPiecePositions.contains(end)) {
-                continue;
-            }
-
-            if(end!=null && !positionSet.contains(end)) {
-                ChessPiece target = boardMap.get(end);
-                Logger.d(TAG, "end: "+end+", step: "+Arrays.toString(step));
-                try {
-                    boolean isOneStepForwardAndNotTakingPieceCase = (target == null && i == 0); // 1 step forward, not taking
-                    boolean isTwoStepForwardAndNotTakingPieceCase = (target == null && i == 1 // 2 steps forward,
-                            && start.getColour() == moverCol && start.getRow() == 1 //must be in initial position
-                            && boardMap.get(Position.get(moverCol, 2, start.getColumn())) == null); //and can't jump a piece;
-                    boolean isDiagonalMoveAndTakingPieceCase = (target != null && target.getColour() != moverCol && i > 1); //or taking diagonally
-
-                    if (isOneStepForwardAndNotTakingPieceCase || isTwoStepForwardAndNotTakingPieceCase || isDiagonalMoveAndTakingPieceCase) {
-                        Logger.d(TAG, "position: " + end);
-                        positionSet.add(end);
-                    }
-                } catch (InvalidPositionException e) {
-                    Logger.d(TAG, "InvalidPositionException: "+e.getMessage());
+        for (Direction[] step : steps) {
+            Position tmp = stepOrNull(mover, step, start);
+            while(tmp != null && !wallPiecePositions.contains(tmp)) {
+                ChessPiece target = boardMap.get(tmp);
+                if(target == null) {
+                    Logger.d(TAG, "Empty position: " + tmp);
+                    positionSet.add(tmp);
+                    tmp = stepOrNull(mover, step, tmp);
+                } else if(target.getColour() != mover.getColour()) {
+                    Logger.d(TAG, "Can capture: " + tmp);
+                    positionSet.add(tmp);
+                    break;
+                } else {
+                    Logger.d(TAG, "Blocked by own piece: " + tmp);
+                    break;
                 }
             }
         }
@@ -89,7 +83,7 @@ public class Queen extends ChessPiece {
      * */
     @Override
     public String toString() {
-        return this.colour.toString() + "P";
+        return this.colour.toString() + "Q";
     }
-    }
+}
 
