@@ -10,6 +10,8 @@ import com.ccd.chess.exceptions.InvalidMoveException;
 import com.ccd.chess.entity.enums.Position;
 import com.ccd.chess.utility.Logger;
 import com.ccd.chess.utility.PieceFactory;
+import com.ccd.chess.utility.BoardAdapter;
+import com.google.common.collect.ImmutableSet;
 
 import java.util.Map;
 import java.util.Set;
