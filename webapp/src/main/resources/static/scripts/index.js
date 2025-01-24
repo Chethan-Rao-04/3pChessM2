@@ -11,21 +11,31 @@ function checkInputs() {
     }
 }
 
-function newGame(){
-    const request = new XMLHttpRequest();
-    request.open("GET", "/newGame", false);
-    //request.setRequestHeader('Content-Type', 'application/json');
-    const pl1 = document.getElementById('pl1').value;
-    const pl2 = document.getElementById('pl2').value;
-    const pl3 = document.getElementById('pl3').value;
+async function newGame() {
+    try {
+        const pl1 = document.getElementById('pl1').value;
+        const pl2 = document.getElementById('pl2').value;
+        const pl3 = document.getElementById('pl3').value;
 
-    localStorage.setItem('Blue', pl1);
-    localStorage.setItem('Green', pl2);
-    localStorage.setItem('Red', pl3);
+        localStorage.setItem('Blue', pl1);
+        localStorage.setItem('Green', pl2);
+        localStorage.setItem('Red', pl3);
 
-    request.send(null);
+        const response = await fetch('/newGame', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
 
-    if (request.status === 200) {
-        window.location.href = '/game.html';
+        if (response.ok) {
+            window.location.href = '/game.html';
+        } else {
+            console.error('Failed to start new game:', response.statusText);
+            alert('Failed to start new game. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error starting new game:', error);
+        alert('Failed to start new game. Please try again.');
     }
 }
