@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  class KingTest {
 
      private Board board;
-     private Map<Position, BasePiece> boardMap;
+     private Map<Position, ChessPiece> boardMap;
 
     /**
      * Initializes a new Board instance before each test.
@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
      */
     @Test
      void setupDirections_initPieceDirectionsIsEmpty_False() {
-        BasePiece king = new King(Colour.GREEN);
+        ChessPiece king = new King(Colour.GREEN);
         assertNotEquals(0, king.directions.length);
     }
 
@@ -55,7 +55,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
     @ParameterizedTest
     @EnumSource(value = Position.class, names = {"BE1", "RE1", "GE1"})
     void check_kingPresentInInitialPosition_True(Position position) {
-        BasePiece piece = boardMap.get(position);
+        ChessPiece piece = boardMap.get(position);
         assertInstanceOf(King.class, piece);
     }
 
@@ -68,7 +68,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
     @ParameterizedTest
     @EnumSource(value = Position.class, names = {"BD2", "RD2", "GD2"})
      void check_kingPresentInInitialPosition_False(Position position) {
-        BasePiece piece = boardMap.get(position);
+        ChessPiece piece = boardMap.get(position);
         assertFalse(piece instanceof King);
     }
 
@@ -86,7 +86,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
          Position kingPosition = BE2;
 
-         BasePiece king = new King(colour);
+         ChessPiece king = new King(colour);
          boardMap.put(kingPosition, king);
 
          Set<Position> actualKingMoves = king.getHighlightPolygons(boardMap, kingPosition);
@@ -101,8 +101,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
      */
      @ParameterizedTest
      @MethodSource("model.DataProvider#pieceProvider")
-     void isLegalMove_kingTakesItsColourPiece_False(BasePiece piece) {
-         BasePiece king = new King(piece.colour);
+     void isLegalMove_kingTakesItsColourPiece_False(ChessPiece piece) {
+         ChessPiece king = new King(piece.colour);
 
          Position startPosition = BE4;
          Position endPosition = BD3;
@@ -122,8 +122,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
      */
      @ParameterizedTest
      @MethodSource("model.DataProvider#pieceProvider")
-     void isLegalMove_kingTakesDifferentColourPiece_True(BasePiece piece) {
-         BasePiece king = new King(piece.colour.next());
+     void isLegalMove_kingTakesDifferentColourPiece_True(ChessPiece piece) {
+         ChessPiece king = new King(piece.colour.next());
 
          Position startPosition = BE4;
          Position endPosition = BD3;
@@ -147,7 +147,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          boardMap.clear();                 //empty board
          Position startPosition = BE4;
 
-         BasePiece king = new King(colour);
+         ChessPiece king = new King(colour);
          boardMap.put(startPosition, king);
 
          Set<Position> expectedKingMoves =
@@ -168,8 +168,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
         Position kingPosition = RE1;
         Position rookPosition = RH1;
 
-        BasePiece king = new King(kingPosition.getColour());
-        BasePiece rook = new Rook(rookPosition.getColour());
+        ChessPiece king = new King(kingPosition.getColour());
+        ChessPiece rook = new Rook(rookPosition.getColour());
 
         boardMap.put(kingPosition, king);
         boardMap.put(rookPosition, rook);
@@ -189,9 +189,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          Position rookPosition = RH1;
          Position knightPosition = RG1;
 
-         BasePiece king = new King(kingPosition.getColour());
-         BasePiece rook = new Rook(rookPosition.getColour());
-         BasePiece knight = new Knight(knightPosition.getColour());
+         ChessPiece king = new King(kingPosition.getColour());
+         ChessPiece rook = new Rook(rookPosition.getColour());
+         ChessPiece knight = new Knight(knightPosition.getColour());
 
          boardMap.put(kingPosition, king);
          boardMap.put(rookPosition, rook);
@@ -211,8 +211,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          Position kingPosition = RE1;
          Position rookPosition = RA1;
 
-         BasePiece king = new King(kingPosition.getColour());
-         BasePiece rook = new Rook(rookPosition.getColour());
+         ChessPiece king = new King(kingPosition.getColour());
+         ChessPiece rook = new Rook(rookPosition.getColour());
 
          boardMap.put(kingPosition, king);
          boardMap.put(rookPosition, rook);
@@ -232,9 +232,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
          Position rookPosition = RA1;
          Position knightPosition = RC1;
 
-         BasePiece king = new King(kingPosition.getColour());
-         BasePiece rook = new Rook(rookPosition.getColour());
-         BasePiece knight = new Knight(knightPosition.getColour());
+         ChessPiece king = new King(kingPosition.getColour());
+         ChessPiece rook = new Rook(rookPosition.getColour());
+         ChessPiece knight = new Knight(knightPosition.getColour());
 
          boardMap.put(kingPosition, king);
          boardMap.put(rookPosition, rook);
@@ -255,7 +255,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
     @ParameterizedTest
     @EnumSource(Colour.class)
     void toString_initKingAllColours_correctStringFormat(Colour colour) {
-        BasePiece king = new King(colour);
+        ChessPiece king = new King(colour);
         String expectedFormat = colour.toString() + "K";
 
         assertEquals(expectedFormat, king.toString());

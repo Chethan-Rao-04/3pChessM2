@@ -1,14 +1,15 @@
 package com.ccd.chess.utility;
+import java.model.ChessPiece;
+import java.model.Bishop;
+import java.model.Jester;
+import java.model.King;
+import java.model.Knight;
+import java.model.Pawn;
+import java.model.Queen;
+import java.model.Rook;
+import java.model.Wall;
+
 import common.Colour;
-import model.BasePiece;
-import model.Bishop;
-import model.Jester;
-import model.King;
-import model.Knight;
-import model.Pawn;
-import model.Queen;
-import model.Rook;
-import model.Wall;
 
 /**
  * PieceFactory - helper class to create objects chess pieces
@@ -19,9 +20,9 @@ public class PieceFactory {
      * createPiece - based on the type and colour, creates a chess piece
      * @param colour - piece colour
      * @param type - piece name e.g. king
-     * @return BasePiece
+     * @return ChessPiece
      **/
-    public static BasePiece createPiece(String type, Colour colour) {
+    public static ChessPiece createPiece(String type, Colour colour) {
         switch (type.toLowerCase()) {
             case "bishop":
                 return new Bishop(colour);

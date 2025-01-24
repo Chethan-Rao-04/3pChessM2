@@ -7,7 +7,7 @@ import com.ccd.chess.entity.enums.Direction;
 
     public abstract class ChessPiece {
 
-        private static final String TAG = "BasePiece";
+        private static final String TAG = "ChessPiece";
 
         protected Colour colour; // colour of the chess piece [White, Black]
         protected Direction[][] directions; // List of possible directions a piece can move. [Left, Right, Forward, Backward]

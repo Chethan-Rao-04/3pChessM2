@@ -17,7 +17,7 @@ import java.util.Set;
 //import static utility.MovementUtil.stepOrNull;
 
 /**
- * Pawn class extends BasePiece. Move directions for the Pawn, the polygons
+ * Pawn class extends ChessPiece. Move directions for the Pawn, the polygons
  * to be highlighted, and its legal moves are checked here
  **/
 public class Pawn extends ChessPiece {
@@ -49,10 +49,10 @@ public class Pawn extends ChessPiece {
      * @return Set of possible positions a piece is allowed to move
      * */
     @Override
-    public Set<Position> getHighlightPolygons(Map<Position, BasePiece> boardMap, Position start) {
+    public Set<Position> getHighlightPolygons(Map<Position, ChessPiece> boardMap, Position start) {
         Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
         Set<Position> positionSet = new HashSet<>();
-        BasePiece mover = this;
+        ChessPiece mover = this;
         Colour moverCol = mover.getColour();
         Direction[][] steps = this.directions;
 
@@ -65,7 +65,7 @@ public class Pawn extends ChessPiece {
             }
 
             if(end!=null && !positionSet.contains(end)) {
-                BasePiece target = boardMap.get(end);
+                ChessPiece target = boardMap.get(end);
                 Log.d(TAG, "end: "+end+", step: "+Arrays.toString(step));
                 try {
                     boolean isOneStepForwardAndNotTakingPieceCase = (target == null && i == 0); // 1 step forward, not taking

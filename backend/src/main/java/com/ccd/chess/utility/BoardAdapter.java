@@ -1,9 +1,9 @@
 package com.ccd.chess.utility;
 
 import common.InvalidPositionException;
-import model.BasePiece;
 import common.Position;
 
+import java.model.ChessPiece;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,11 +21,11 @@ public class BoardAdapter {
      * @param modelBoard a map of position and piece as input
      * @return Map of String and String
      **/
-    public static Map<String, String> convertModelBoardToViewBoard(Map<Position, BasePiece> modelBoard) {
+    public static Map<String, String> convertModelBoardToViewBoard(Map<Position, ChessPiece> modelBoard) {
         Map<String, String> viewBoard = new HashMap<>();
 
         for(Position position: modelBoard.keySet()) {
-            BasePiece piece = modelBoard.get(position);
+            ChessPiece piece = modelBoard.get(position);
             if(piece != null) {
                 viewBoard.put(position.toString(), piece.toString());
             }
