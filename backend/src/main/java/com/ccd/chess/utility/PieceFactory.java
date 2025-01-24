@@ -1,15 +1,13 @@
 package com.ccd.chess.utility;
 import com.ccd.chess.entity.enums.Colour;
-import com.ccChessPiecentity.ChessPiece;
+import com.ccd.chess.entity.ChessPiece;
 import com.ccd.chess.entity.Bishop;
-import com.ccd.chess.entity.NewPiece1;
+import com.ccd.chess.entity.Wall;
 import com.ccd.chess.entity.King;
 import com.ccd.chess.entity.Knight;
 import com.ccd.chess.entity.Pawn;
 import com.ccd.chess.entity.Queen;
 import com.ccd.chess.entity.Rook;
-import com.ccd.chess.entity.NewPiece2;
-
 
 
 /**
@@ -19,7 +17,7 @@ public class PieceFactory {
 
     /**
      * createPiece - based on the type and colour, creates a chess piece
-     * @param cChessPieceiece colour
+     * @param colour colour
      * @param type - piece name e.g. king
      * @return CheChessPiece
      **/
@@ -37,10 +35,10 @@ public class PieceFactory {
                 return new Rook(colour);
             case "pawn":
                 return new Pawn(colour);
-            case "NewPiece1":
-                return new NewPiece1(colour);
-            case "NewPiece2":
-                return new NewPiece2(colour);
+            case "new piece1":
+                return new Wall(colour);
+//            case "new piece2":
+//                return new NewPiece2(colour);
             default:
                 throw new IllegalArgumentException("Invalid chess piece type: " + type);
         }
