@@ -13,29 +13,22 @@ import java.util.Set;
 import static com.ccd.chess.utility.MovementUtil.stepOrNull;
 
 /**
- * Bishop class extends ChessPiece. Move directions for the bishop, the polygons
+ * Wall class extends Rook. The polygons
  * to be highlighted, and its legal moves are checked here
+ * Move like a rook. It cannot take any piece and other pieces cannot take it too.
+ * Pieces of different colours cannot pass it through, however, pieces of the same colour
+ * as the wall can pass it through.
  **/
-public class Wall extends ChessPiece {
+public class Wall extends Rook {
 
-    private static final String TAG = "BISHOP";
+    private static final String TAG = "WALL";
 
     /**
-     * Bishop constructor
+     * Wall constructor
      * @param colour: Colour of the chess piece being initiated
      * */
     public Wall(Colour colour) {
         super(colour);
-    }
-
-    /**
-     * Method to initialize directions for a chess piece
-     **/
-    @Override
-    protected void setupDirections() {
-        this.directions = new Direction[][] {{Direction.FORWARD,Direction.LEFT},{Direction.FORWARD,Direction.RIGHT},
-                {Direction.LEFT,Direction.FORWARD},{Direction.RIGHT,Direction.FORWARD},{Direction.BACKWARD,Direction.LEFT},
-                {Direction.BACKWARD,Direction.RIGHT},{Direction.LEFT,Direction.BACKWARD},{Direction.RIGHT,Direction.BACKWARD}};
     }
 
     /**
@@ -46,36 +39,17 @@ public class Wall extends ChessPiece {
      * */
     @Override
     public Set<Position> getHighlightPolygons(Map<Position, ChessPiece> boardMap, Position start) {
-        Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
+        //List<Position> positions = new ArrayList<>();
         Set<Position> positionSet = new HashSet<>();
-
         ChessPiece mover = this;
         Direction[][] steps = this.directions;
 
         for (Direction[] step : steps) {
             Position tmp = stepOrNull(mover, step, start);
-            while(tmp != null && !positionSet.contains(tmp)
-                    && (boardMap.get(tmp)==null || (boardMap.get(tmp) instanceof Wall && boardMap.get(tmp).getColour() == mover.getColour()))) {
+            while(tmp != null && boardMap.get(tmp)==null) {
                 Logger.d(TAG, "tmp: "+tmp);
-                positionSet.add(tmp); // to prevent same position to add in list again
+                positionSet.add(tmp);
                 tmp = stepOrNull(mover, step, tmp, tmp.getColour()!=start.getColour());
-            }
-
-            // found a piece diagonally
-            if(tmp!=null && boardMap.get(tmp)!=null) {
-                if(boardMap.get(tmp).getColour()!=mover.getColour()) {
-                    Logger.d(TAG, "Opponent tmp: " + tmp);
-                    positionSet.add(tmp);
-                } else {
-                    Logger.d(TAG, "Mine tmp: " + tmp);
-                }
-            }
-        }
-
-        for(Position position: wallPiecePositions) {
-            if(positionSet.contains(position)) {
-                Logger.d(TAG, "Removed a wallPiecePos: "+position);
-                positionSet.remove(position);
             }
         }
 
@@ -88,6 +62,6 @@ public class Wall extends ChessPiece {
      * */
     @Override
     public String toString() {
-        return this.colour.toString()+"B";
+        return this.colour.toString()+"W";
     }
 }

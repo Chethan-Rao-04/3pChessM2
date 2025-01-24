@@ -37,8 +37,8 @@ public class PieceFactory {
                 return new Pawn(colour);
             case "new piece1":
                 return new Wall(colour);
-            case "new piece2":
-                return new NewPiece2(colour);
+//            case "new piece2":
+//                return new NewPiece2(colour);
             default:
                 throw new IllegalArgumentException("Invalid chess piece type: " + type);
         }
