@@ -1,6 +1,7 @@
 package com.ccd.chess.entity;
 
 import com.ccd.chess.entity.enums.Colour;
+import com.google.common.collect.ImmutableSet;
 import com.ccd.chess.exceptions.InvalidPositionException;
 import com.ccd.chess.exceptions.InvalidMoveException;
 import com.ccd.chess.entity.enums.Position;
@@ -133,7 +134,7 @@ import java.util.HashSet;
 
                     if(taken !=null){
                         // jester switch position with other piece
-                        if (mover instanceof Jester){
+                        if (mover instanceof NewPiece1){
                             // switch places
                             boardMap.put(end,mover);
                             boardMap.put(start, taken);
@@ -251,7 +252,7 @@ import java.util.HashSet;
                 for(Position position: boardMap.keySet()) {
                     ChessPiece piece = boardMap.get(position);
                     // wall and jester piece have no power to take out any piece
-                    if(piece.getColour() != colour && !(piece instanceof Jester) && !(piece instanceof Wall)) {
+                    if(piece.getColour() != colour && !(piece instanceof NewPiece1) && !(piece instanceof NewPiece2)) {
                         Set<Position> possibleTargetPositions = piece.getHighlightPolygons(boardMap, position);
                         if(possibleTargetPositions.contains(kingPosition)) {
                             Logger.d(TAG, "Piece "+piece+" is attacking King of colour "+colour);
