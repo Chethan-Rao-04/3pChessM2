@@ -54,21 +54,20 @@ public class Rook extends ChessPiece {
     @Override
     public Set<Position> getHighlightPolygons(Map<Position, ChessPiece> boardMap, Position start) {
         Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
-        //List<Position> positions = new ArrayList<>();
         Set<Position> positionSet = new HashSet<>();
         ChessPiece mover = this;
         Direction[][] steps = this.directions;
 
         for (Direction[] step : steps) {
             Position tmp = stepOrNull(mover, step, start);
-            while(tmp != null &&
-                    (boardMap.get(tmp)==null || (boardMap.get(tmp) instanceof Wall && boardMap.get(tmp).getColour() == mover.getColour()))) {
+            while(tmp != null && !positionSet.contains(tmp) && boardMap.get(tmp)==null) {
                 Logger.d(TAG, "tmp: "+tmp);
                 positionSet.add(tmp);
                 tmp = stepOrNull(mover, step, tmp, tmp.getColour()!=start.getColour());
             }
 
-            if(tmp!=null) {
+            // found a piece in direction
+            if(tmp!=null && boardMap.get(tmp)!=null) {
                 if(boardMap.get(tmp).getColour()!=mover.getColour()) {
                     Logger.d(TAG, "Opponent tmp: " + tmp);
                     positionSet.add(tmp);

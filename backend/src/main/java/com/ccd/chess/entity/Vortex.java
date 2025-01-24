@@ -50,27 +50,26 @@ public class Vortex extends ChessPiece {
      */
     @Override
     public Set<Position> getHighlightPolygons(Map<Position, ChessPiece> boardMap, Position start) {
-        Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
         Set<Position> positionSet = new HashSet<>();
+        Set<Position> visitedPositions = new HashSet<>(); // Track visited positions to prevent loops
 
         for (Direction[] step : this.directions) {
             Position tmp = stepOrNull(this, step, start);
+            visitedPositions.clear(); // Reset visited positions for each direction
             
             // Continue in direction until board edge
-            while (tmp != null) {
+            while (tmp != null && !visitedPositions.contains(tmp)) {
+                visitedPositions.add(tmp);
+                
                 // Only add position if square is empty
                 if (boardMap.get(tmp) == null) {
                     Logger.d(TAG, "Adding empty position: " + tmp);
                     positionSet.add(tmp);
                 }
+                
                 // Continue past occupied squares (jumping)
-                tmp = stepOrNull(this, step, tmp, tmp.getColour() != start.getColour());
+                tmp = stepOrNull(this, step, tmp, false); // Remove color check to prevent cycling
             }
-        }
-
-        // Remove wall positions
-        for (Position position : wallPiecePositions) {
-            positionSet.remove(position);
         }
 
         return positionSet;

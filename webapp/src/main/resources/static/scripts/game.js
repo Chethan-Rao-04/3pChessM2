@@ -10,7 +10,7 @@ const pieceMap = {
     'K': '♔',
     'P': '♙',
     'J': '⎈',
-    'W': '▩'
+    'V': '◈'  // Diamond shape for Vortex
 };
 
 /**

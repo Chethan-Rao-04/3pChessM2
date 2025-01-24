@@ -4,9 +4,6 @@ import com.ccd.chess.entity.ChessPiece;
 import com.ccd.chess.entity.King;
 import com.ccd.chess.entity.Pawn;
 import com.ccd.chess.entity.Queen;
-import com.ccd.chess.entity.Wall;
-
-
 import com.ccd.chess.entity.enums.Colour;
 import com.ccd.chess.exceptions.InvalidPositionException;
 import com.ccd.chess.exceptions.InvalidMoveException;
@@ -16,7 +13,6 @@ import com.ccd.chess.utility.PieceFactory;
 import com.ccd.chess.utility.BoardAdapter;
 import com.google.common.collect.ImmutableSet;
 import com.ccd.chess.entity.Jester;
-
 
 import java.util.Map;
 import java.util.Set;
@@ -90,10 +86,9 @@ import java.util.HashSet;
                 Position jesterStartPosition = Position.get(colour,1,0);
                 boardMap.put(jesterStartPosition, PieceFactory.createPiece("Jester",colour));
 
-                // place WALL
-                Position wallStartPosition = Position.get(colour, 1, 7);
-                ChessPiece wall = PieceFactory.createPiece("Wall",colour);
-                boardMap.put(wallStartPosition, wall);
+                // place VORTEX
+                Position vortexStartPosition = Position.get(colour, 1, 7);  // Place in Wall's previous position
+                boardMap.put(vortexStartPosition, PieceFactory.createPiece("Vortex",colour));
             }
 
             /**
@@ -260,8 +255,8 @@ import java.util.HashSet;
 
                 for(Position position: boardMap.keySet()) {
                     ChessPiece piece = boardMap.get(position);
-                    // wall and jester piece have no power to take out any piece
-                    if(piece.getColour() != colour && !(piece instanceof Jester) && !(piece instanceof Wall)) {
+                    // jester piece has no power to take out any piece
+                    if(piece.getColour() != colour && !(piece instanceof Jester)) {
                         Set<Position> possibleTargetPositions = piece.getHighlightPolygons(boardMap, position);
                         if(possibleTargetPositions.contains(kingPosition)) {
                             Logger.d(TAG, "Piece "+piece+" is attacking King of colour "+colour);

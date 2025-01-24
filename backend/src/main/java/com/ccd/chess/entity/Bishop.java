@@ -57,8 +57,7 @@ public class Bishop extends ChessPiece {
 
         for (Direction[] step : steps) {
             Position tmp = stepOrNull(mover, step, start);
-            while(tmp != null && !positionSet.contains(tmp)
-                    && (boardMap.get(tmp)==null || (boardMap.get(tmp) instanceof Wall && boardMap.get(tmp).getColour() == mover.getColour()))) {
+            while(tmp != null && !positionSet.contains(tmp) && boardMap.get(tmp)==null) {
                 Logger.d(TAG, "tmp: "+tmp);
                 positionSet.add(tmp); // to prevent same position to add in list again
                 tmp = stepOrNull(mover, step, tmp, tmp.getColour()!=start.getColour());

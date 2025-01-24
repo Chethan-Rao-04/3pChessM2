@@ -36,15 +36,7 @@ public abstract class ChessPiece {
      * @return map of piece and positions
      * */
     protected Map<ChessPiece, Position> getWallPieceMapping(Map<Position, ChessPiece> boardMap) {
-        Map<ChessPiece, Position> res = new HashMap<>();
-        for(Position pos: boardMap.keySet()) {
-            ChessPiece piece = boardMap.get(pos);
-//            if(piece instanceof Wall) {
-//                res.put(piece, pos);
-//            }
-        }
-
-        return res;
+        return new HashMap<>();  // No more wall pieces
     }
 
     /**
