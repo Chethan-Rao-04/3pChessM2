@@ -1,6 +1,6 @@
 package com.ccd.chess.utility;
 import com.ccd.chess.entity.enums.Colour;
-import com.ccd.chess.entity.ChessPiece;
+import com.ccChessPiecentity.ChessPiece;
 import com.ccd.chess.entity.Bishop;
 import com.ccd.chess.entity.NewPiece1;
 import com.ccd.chess.entity.King;
@@ -19,9 +19,9 @@ public class PieceFactory {
 
     /**
      * createPiece - based on the type and colour, creates a chess piece
-     * @param colour - piece colour
+     * @param cChessPieceiece colour
      * @param type - piece name e.g. king
-     * @return ChessPiece
+     * @return CheChessPiece
      **/
     public static ChessPiece createPiece(String type, Colour colour) {
         switch (type.toLowerCase()) {

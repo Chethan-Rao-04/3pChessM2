@@ -21,7 +21,7 @@ import static com.ccd.chess.utility.MovementUtil.stepOrNull;
 
 
 /**
- * King class extends BasePiece. Move directions for the King, the polygons
+ * King class extends ChessPiece. Move directions for the King, the polygons
  * to be highlighted, and its legal moves are checked here
  **/
 public class King extends ChessPiece {
