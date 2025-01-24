@@ -117,6 +117,9 @@ import java.util.HashSet;
                     ChessPiece mover = boardMap.get(start);
                     ChessPiece taken = boardMap.get(end);
                     boardMap.remove(start);  //empty start polygon
+                    
+                    // Clear highlight polygons after validating the move
+                    highlightPolygons.clear();
 
                     if(mover instanceof Pawn && end.getRow()==0 && end.getColour()!=mover.getColour()){
                         boardMap.put(end, new Queen(mover.getColour()));  //promote pawn
@@ -172,9 +175,10 @@ import java.util.HashSet;
                     return false; // No piece present at start position
                 }
                 Colour moverCol = mover.getColour();
-                if(highlightPolygons.isEmpty()) {
-                    highlightPolygons = mover.getHighlightPolygons(this.boardMap, start);
-                }
+                
+                // Always recalculate highlight polygons for the current move
+                highlightPolygons = mover.getHighlightPolygons(this.boardMap, start);
+                
                 if(highlightPolygons.contains(end)) {
                     if(isCheck(turn, boardMap) && isCheckAfterLegalMove(turn, boardMap, start, end)) {
                         Logger.d(TAG, "Colour "+moverCol+" is in check, this move doesn't help. Do again!!");
@@ -225,6 +229,8 @@ import java.util.HashSet;
                 if(mover == null) {
                     return ImmutableSet.of();
                 }
+                
+                // Always calculate fresh highlight polygons
                 highlightPolygons = mover.getHighlightPolygons(this.boardMap, position);
 
                 Colour moverColour = mover.getColour();
