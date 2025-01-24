@@ -4,6 +4,9 @@ import com.ccd.chess.entity.ChessPiece;
 import com.ccd.chess.entity.King;
 import com.ccd.chess.entity.Pawn;
 import com.ccd.chess.entity.Queen;
+import com.ccd.chess.entity.Wall;
+
+
 import com.ccd.chess.entity.enums.Colour;
 import com.ccd.chess.exceptions.InvalidPositionException;
 import com.ccd.chess.exceptions.InvalidMoveException;
@@ -12,6 +15,8 @@ import com.ccd.chess.utility.Logger;
 import com.ccd.chess.utility.PieceFactory;
 import com.ccd.chess.utility.BoardAdapter;
 import com.google.common.collect.ImmutableSet;
+import com.ccd.chess.entity.Jester;
+
 
 import java.util.Map;
 import java.util.Set;
