@@ -15,7 +15,7 @@ import static com.ccd.chess.utility.MovementUtil.stepOrNull;
 /**
  * Vortex class extends ChessPiece. Moves diagonally like a bishop but can jump over pieces.
  * Can also move exactly two squares in any straight direction (forward, backward, left, right).
- * Can only land on empty squares.
+ * Can capture enemy pieces but cannot land on friendly pieces.
  */
 public class Vortex extends ChessPiece {
 
@@ -58,7 +58,7 @@ public class Vortex extends ChessPiece {
 
     /**
      * Fetch all possible positions where Vortex can move on board
-     * Can jump over pieces but can only land on empty squares
+     * Can jump over pieces and capture enemy pieces
      * @param boardMap: Board Map instance representing current game board
      * @param start: position of piece on board
      * @return Set of possible positions piece is allowed to move
@@ -76,8 +76,9 @@ public class Vortex extends ChessPiece {
                 // For two-square straight moves, only consider the final position
                 if (tmp != null && !visitedPositions.contains(tmp)) {
                     visitedPositions.add(tmp);
-                    // Only add if square is empty
-                    if (boardMap.get(tmp) == null) {
+                    ChessPiece targetPiece = boardMap.get(tmp);
+                    // Add if square is empty or contains enemy piece
+                    if (targetPiece == null || targetPiece.getColour() != this.getColour()) {
                         Logger.d(TAG, "Adding two-square move position: " + tmp);
                         positionSet.add(tmp);
                     }
@@ -86,9 +87,10 @@ public class Vortex extends ChessPiece {
                 // For diagonal moves, continue until board edge
                 while (tmp != null && !visitedPositions.contains(tmp)) {
                     visitedPositions.add(tmp);
+                    ChessPiece targetPiece = boardMap.get(tmp);
                     
-                    // Only add position if square is empty
-                    if (boardMap.get(tmp) == null) {
+                    // Add if square is empty or contains enemy piece
+                    if (targetPiece == null || targetPiece.getColour() != this.getColour()) {
                         Logger.d(TAG, "Adding diagonal move position: " + tmp);
                         positionSet.add(tmp);
                     }
