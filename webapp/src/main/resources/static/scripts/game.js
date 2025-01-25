@@ -192,7 +192,7 @@ function getPieceText(x, y, color, pieceToken) {
     textElement.style.stroke = pieceStrokeColors[color];
     textElement.style.strokeWidth = '0.5px';
     
-    textElement.setAttribute('font-size', '35');
+    textElement.setAttribute('font-size', '55');
     textElement.setAttribute('font-weight', 'bold');
     textElement.classList.add('chess-piece', theme);
     textElement.textContent = pieceMap[pieceToken];
