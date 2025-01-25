@@ -14,6 +14,7 @@ import static com.ccd.chess.utility.MovementUtil.stepOrNull;
 
 /**
  * Vortex class extends ChessPiece. Moves diagonally like a bishop but can jump over pieces.
+ * Can also move exactly two squares in any straight direction (forward, backward, left, right).
  * Can only land on empty squares.
  */
 public class Vortex extends ChessPiece {
@@ -29,16 +30,30 @@ public class Vortex extends ChessPiece {
     }
 
     /**
-     * Method to initialize diagonal directions for the Vortex
+     * Method to initialize diagonal and straight directions for the Vortex
      */
     @Override
     protected void setupDirections() {
-        this.directions = new Direction[][] {
+        // Diagonal moves (like bishop)
+        Direction[][] diagonalMoves = {
             {Direction.FORWARD, Direction.LEFT}, {Direction.FORWARD, Direction.RIGHT},
             {Direction.LEFT, Direction.FORWARD}, {Direction.RIGHT, Direction.FORWARD},
             {Direction.BACKWARD, Direction.LEFT}, {Direction.BACKWARD, Direction.RIGHT},
             {Direction.LEFT, Direction.BACKWARD}, {Direction.RIGHT, Direction.BACKWARD}
         };
+        
+        // Two-square straight moves
+        Direction[][] straightMoves = {
+            {Direction.FORWARD, Direction.FORWARD},       // Two squares forward
+            {Direction.BACKWARD, Direction.BACKWARD},     // Two squares backward
+            {Direction.LEFT, Direction.LEFT},             // Two squares left
+            {Direction.RIGHT, Direction.RIGHT}            // Two squares right
+        };
+
+        // Combine both move types
+        this.directions = new Direction[diagonalMoves.length + straightMoves.length][];
+        System.arraycopy(diagonalMoves, 0, this.directions, 0, diagonalMoves.length);
+        System.arraycopy(straightMoves, 0, this.directions, diagonalMoves.length, straightMoves.length);
     }
 
     /**
@@ -57,18 +72,30 @@ public class Vortex extends ChessPiece {
             Position tmp = stepOrNull(this, step, start);
             visitedPositions.clear(); // Reset visited positions for each direction
             
-            // Continue in direction until board edge
-            while (tmp != null && !visitedPositions.contains(tmp)) {
-                visitedPositions.add(tmp);
-                
-                // Only add position if square is empty
-                if (boardMap.get(tmp) == null) {
-                    Logger.d(TAG, "Adding empty position: " + tmp);
-                    positionSet.add(tmp);
+            if (step.length == 2 && step[0] == step[1]) {
+                // For two-square straight moves, only consider the final position
+                if (tmp != null && !visitedPositions.contains(tmp)) {
+                    visitedPositions.add(tmp);
+                    // Only add if square is empty
+                    if (boardMap.get(tmp) == null) {
+                        Logger.d(TAG, "Adding two-square move position: " + tmp);
+                        positionSet.add(tmp);
+                    }
                 }
-                
-                // Continue past occupied squares (jumping)
-                tmp = stepOrNull(this, step, tmp, false); // Remove color check to prevent cycling
+            } else {
+                // For diagonal moves, continue until board edge
+                while (tmp != null && !visitedPositions.contains(tmp)) {
+                    visitedPositions.add(tmp);
+                    
+                    // Only add position if square is empty
+                    if (boardMap.get(tmp) == null) {
+                        Logger.d(TAG, "Adding diagonal move position: " + tmp);
+                        positionSet.add(tmp);
+                    }
+                    
+                    // Continue past occupied squares (jumping)
+                    tmp = stepOrNull(this, step, tmp, false);
+                }
             }
         }
 
