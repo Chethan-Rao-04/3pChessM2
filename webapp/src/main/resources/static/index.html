@@ -44,17 +44,13 @@
         const pl3 = document.getElementById('pl3').value.trim();
         const newgamebtn = document.getElementById('newgamebtn');
 
-        if (pl1 && pl2 && pl3) {
-            newgamebtn.disabled = false;
-        } else {
-            newgamebtn.disabled = true;
-        }
+        newgamebtn.disabled = !(pl1 && pl2 && pl3);
     }
 
     function newGame() {
-        window.location.href = 'game.html';
-        alert('Starting a new game!');
+        window.location.href = 'game.html'; // Redirect to the game page
     }
 </script>
+
 </body>
 </html>
