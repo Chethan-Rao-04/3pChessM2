@@ -9,7 +9,7 @@
 <body onload="bodyLoaded()">
 <div class="gameview">
     <div class="leftpane">
-        <h2>Theme Settings</h2>
+        <h2 style="text-align: center;">Theme Settings</h2>
         <div class="theme-selector">
             <div class="theme-option">
                 <input type="radio" name="font" id="arialTheme" onclick="updateTheme(id)" checked>
@@ -25,9 +25,8 @@
             </div>
         </div>
     </div>
-
     <div class="middlepane">
-        <h1>Three Player Chess</h1>
+        <h1 style="text-align: center;">Three Player Chess</h1>
         <div id="popup" class="popup">
             <h2>Game Over</h2>
             <p id="winner"></p>
@@ -143,12 +142,19 @@
     </div>
 
     <div class="rightpane">
-        <h2>Game Status</h2>
+        <h2 style="text-align: center;">Game Status</h2>
         <div class="game-status">
             <div class="status-row">
                 <span class="status-label">Current Player:</span>
                 <span id="pl-name"></span>
                 <span id="pl-colour">⬤</span>
+            </div>
+            <div class="status-row">
+                <span class="status-label">Timer:</span>
+                <div id="timer">00:00</div>
+                <span id="timer-R"></span>
+                <span id="timer-G"></span>
+                <span id="timer-B"></span>
             </div>
         </div>
     </div>
