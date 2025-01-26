@@ -28,8 +28,8 @@ public class PieceFactory {
                     return new Rook(colour);
                 case "pawn":
                     return new Pawn(colour);
-                case "jester":
-                    return new Jester(colour);
+                case "hawk":
+                    return new Hawk(colour);
                 case "vortex":
                     return new Vortex(colour);
                 default:

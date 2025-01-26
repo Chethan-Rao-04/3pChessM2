@@ -101,7 +101,9 @@ public class GameService implements IGameInterface {
      * */
     @Override
     public Colour getTurn() {
+        Logger.d(TAG, "Current turn: " + board.getTurn());
         return board.getTurn();
+
     }
 
 }

@@ -7,17 +7,18 @@
     --bg-color: #ecf0f1;
     --sidebar-bg: #ffffff;
     --hover-color: rgba(52, 152, 219, 0.2);
-    
+
     /* Board Colors */
-    --red-light: #ffcdd2;
-    --red-dark: #ef5350;
-    --green-light: #c8e6c9;
-    --green-dark: #66bb6a;
-    --blue-light: #bbdefb;
-    --blue-dark: #42a5f5;
-    
+    --red-light: #4f4f4f; /* Slightly lighter charcoal for contrast */
+    --red-dark: #000000; /* Deep Charcoal Gray */
+    --green-light: #4f4f4f;
+    --green-dark: #000000;
+    --blue-light: #4f4f4f;
+    --blue-dark: #000000;
+
+
     /* Piece Colors */
-    --piece-white: #ffffff;
+    --piece-white: #4f4f4f;
     --piece-black: #000000;
     --piece-gray: #666666;
 }
@@ -41,15 +42,15 @@ body {
 }
 
 /* Game board hover and highlight effects */
-.blue.light:hover, .blue.dark:hover, 
-.red.light:hover, .red.dark:hover, 
+.blue.light:hover, .blue.dark:hover,
+.red.light:hover, .red.dark:hover,
 .green.light:hover, .green.dark:hover {
     fill: var(--hover-color);
     transition: fill 0.3s ease;
 }
 
-.red.light.highlight, .red.dark.highlight, 
-.blue.light.highlight, .blue.dark.highlight, 
+.red.light.highlight, .red.dark.highlight,
+.blue.light.highlight, .blue.dark.highlight,
 .green.light.highlight, .green.dark.highlight {
     fill: var(--hover-color);
 }
@@ -226,6 +227,7 @@ h2 {
 /* Game status styles */
 .game-status {
     background-color: white;
+    font-family: Arial, sans-serif;
     padding: 1.5rem;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -234,13 +236,92 @@ h2 {
 .status-row {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 1rem;
     margin-bottom: 1rem;
 }
 
+
 .status-label {
-    font-weight: 500;
+    font-weight: bold;
     color: var(--secondary-color);
+}
+
+#timer #timer-R, #timer-G, #timer-B {
+    ffont-size: 1.2em;
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    display: inline-block;
+    text-align: center;
+}
+#timer-R {
+    background-color: #b8860b;
+    color: white;
+}
+
+#timer-G {
+    background-color: #808080;
+    color: white;
+}
+
+#timer-B {
+    background-color: #8b4513;
+    color: white;
+}
+/* Style for the container */
+.timer-container {
+    margin: 20px;
+    text-align: center;
+}
+
+/* Table styling */
+.timer-table {
+    width: 50%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Table headers styling */
+.timer-table th {
+    padding: 15px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: left;
+}
+
+/* Table data styling */
+.timer-table td {
+    padding: 10px;
+    text-align: center;
+    font-size: 18px;
+}
+
+/* Specific styles for each timer cell */
+#timer-red {
+    color: #c0392b; /* Red */
+    font-weight: bold;
+}
+
+#timer-green {
+    color: #27ae60; /* Green */
+    font-weight: bold;
+}
+
+#timer-blue {
+    color: #2980b9; /* Blue */
+    font-weight: bold;
+}
+
+/* Player names styling */
+#player-red, #player-green, #player-blue {
+    font-size: 16px;
+    font-weight: bold;
 }
 
 #pl-name {
@@ -306,12 +387,13 @@ text {
     .leftpane, .rightpane {
         padding: 1.5rem;
     }
-    
+
     h1 {
         font-size: 2rem;
     }
-    
+
     h2 {
         font-size: 1.5rem;
     }
 }
+

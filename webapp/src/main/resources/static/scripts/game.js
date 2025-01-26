@@ -1,6 +1,9 @@
+// Global theme variable
+let theme = 'arialTheme';  // Default theme
+
 /**
- * maps the piece token to the corresponding unicode character
- * @type {{P: string, Q: string, R: string, B: string, K: string, N: string}}
+ * Maps the piece token to the corresponding Unicode character
+ * @type {{P: string, Q: string, R: string, B: string, K: string, N: string, J: string, V: string}}
  */
 const pieceMap = {
     'R': '♜',
@@ -9,24 +12,24 @@ const pieceMap = {
     'Q': '♛',
     'K': '♚',
     'P': '♟',
-    'J': '⎈',
+    'H': '⎈',
     'V': '◈'  // Diamond shape for Vortex
 };
 
 /**
- * maps the letters R,G,B to the corresponding color string
+ * Maps the letters R, G, B to the corresponding color string
  * @type {{R: string, B: string, G: string}}
  */
 const colorMap = {
-    'R': 'Red',
-    'G': 'Green',
-    'B': 'Blue'
+    'R': 'Gold',
+    'G': 'Silver',
+    'B': 'Bronze'
 };
 
 const pieceColors = {
-    'R': '#c0392b',  // Deep red
-    'G': '#27ae60',  // Deep green
-    'B': '#2980b9'   // Deep blue
+    'R': '#B8860B',  // Goldenrod
+    'G': '#808080',  // Gray
+    'B': '#8B4513'   // SaddleBrown
 };
 
 const pieceStrokeColors = {
@@ -35,32 +38,105 @@ const pieceStrokeColors = {
     'B': '#ffffff'   // White outline for blue pieces
 };
 
-/**
- * global variable storing the current theme
- * @type {string}
- */
-let theme = 'arialTheme'
+// Global timer states for each player
+let timers = {
+    R: { timer: null, minutes: 0, seconds: 0, isRunning: false },
+    G: { timer: null, minutes: 0, seconds: 0, isRunning: false },
+    B: { timer: null, minutes: 0, seconds: 0, isRunning: false }
+};
+
+// Function to format time
+function formatTime(minutes, seconds) {
+    const min = minutes < 10 ? '0' + minutes : minutes;
+    const sec = seconds < 10 ? '0' + seconds : seconds;
+    return `${min}:${sec}`;
+}
 
 /**
- * displays the current player inside p element with the id "playerdisplay"
- * @param color color of the current player as single character (R, G, B)
+ * Starts the timer for a player
+ * @param {string} color The color of the current player
  */
-function updateCurrenPlayer(color){
-    const colourName = colorMap[color];
-    const playerName = localStorage.getItem(colourName);
+function startPlayerTimer(color) {
+    if (timers[color].isRunning) return; // Prevent starting the timer if it's already running for the player
+    timers[color].isRunning = true;
+
+    timers[color].timer = setInterval(() => {
+        timers[color].seconds++;
+        if (timers[color].seconds === 60) {
+            timers[color].seconds = 0;
+            timers[color].minutes++;
+        }
+        document.getElementById(`timer-${color}`).textContent = formatTime(timers[color].minutes, timers[color].seconds);
+    }, 1000);
+}
+
+/**
+ * Stops the timer for a player
+ * @param {string} color The color of the current player
+ */
+function stopPlayerTimer(color) {
+    console.log("Stopping timer for color:", color);
+    if (!timers[color]) {
+        console.error(`Invalid color: ${color}`);  // Log an error for invalid color
+        return;  // Exit the function if the color is not valid
+    }
+
+    if (timers[color].timer) {
+        clearInterval(timers[color].timer);
+        timers[color].isRunning = false;
+    }
+}
+function updateTimerDisplay(color) {
+    const timerElement = document.getElementById(`timer-${color}`);
+
+    // Check if the element exists before trying to update it
+    if (timerElement) {
+        timerElement.textContent = formatTime(timers[color].minutes, timers[color].seconds);
+    } else {
+        console.error(`Timer element for color ${color} not found.`);
+    }
+}
+
+/**
+ * Updates the display of all players' timers
+ */
+function updateAllTimers() {
+    for (const color of ['R', 'G', 'B']) {
+        updateTimerDisplay(color);
+    }
+}
+
+function updateTimerDisplay(color, minutes, seconds) {
+    const timerElement = document.getElementById(`timer-${color.toLowerCase()}`);
+    timerElement.textContent = formatTime(minutes, seconds);
+}
+
+/**
+ * Updates the current player and handles timer transitions
+ * @param {string} color The color of the current player
+ */
+function updateCurrentPlayer(color) {
+    console.log("Updating current player to color:", color);
+    const colorName = colorMap[color];
+    const playerName = localStorage.getItem(colorName);
 
     const p_name = document.getElementById('pl-name');
     p_name.textContent = playerName;
 
     const p_colour = document.getElementById('pl-colour');
-    p_colour.style.color = colourName;
+    p_colour.style.color = colorName;
+
+    // Stop the previous player's timer and start the new player's timer
+    const otherColors = ['R', 'G', 'B'].filter(c => c !== color);
+    otherColors.forEach(c => stopPlayerTimer(c));
+    startPlayerTimer(color);
 }
 
 /**
- * updates the current theme
- * @param name name of the theme (arialTheme, freeSerifTheme, dejaVuSansTheme)
+ * Updates the theme
+ * @param {string} name Name of the theme (arialTheme, freeSerifTheme, dejaVuSansTheme)
  */
-function updateTheme(name){
+function updateTheme(name) {
     console.log('New Font: ' + name);
     theme = name;
     const textElements = document.querySelectorAll('.chess-piece');
@@ -73,47 +149,53 @@ function updateTheme(name){
 }
 
 /**
- * highlights a specific set of polygons
- * @param data set of polygons as JSON array
+ * Highlights a specific set of polygons
+ * @param {Array} data Set of polygons as JSON array
  */
-function displayPossibleMoves(data){
+function displayPossibleMoves(data) {
     console.log('Highlighted Polygons: ' + data);
     removeHighlighting();
     data.forEach(function (polygonId) {
         const polygon = document.getElementById(polygonId);
-        if(polygon != null){
-            polygon.classList.add('highlight')
+        if (polygon != null) {
+            polygon.classList.add('highlight');
         }
-
     });
 }
 
 /**
- * removes the highlighting of all polygons
+ * Removes the highlighting of all polygons
  */
-function removeHighlighting(){
+function removeHighlighting() {
     const polygons = document.querySelectorAll('polygon');
-    polygons.forEach( polygon => polygon.classList.remove('highlight'));
+    polygons.forEach(polygon => polygon.classList.remove('highlight'));
 }
 
 /**
- * updates the chessboard with the new state
- * @param data new board state with the updated piece positions, e.g. {Ba1: "BR", Ba2: "BP", ...}
+ * Updates the chessboard with the new state
+ * @param {Object} response New board state with the updated piece positions, e.g. {Ba1: "BR", Ba2: "BP", ...}
  */
 function updateBoard(response) {
     clearBoard();
     console.log('New Board Configuration:', response);
+
     let board = response['board'];
     let highlightedPolygons = response['highlightedPolygons'];
-    let winner = response['winner'];
-    if(response['gameOver']){
-        showGameOverPopup(response['winner']);
+    //let winner = response['winner'];
+
+    if (response['gameOver']) {
+        stopPlayerTimer(response['winner']); // Stop the timer when the game is over
+        // Placeholder for showing the game over popup
     }
 
     updatePieces(board);
     displayPossibleMoves(highlightedPolygons);
 }
 
+/**
+ * Updates the pieces on the board
+ * @param {Object} board The board state with pieces
+ */
 function updatePieces(board) {
     for (const polygonId in board) {
         const value = board[polygonId];
@@ -121,15 +203,14 @@ function updatePieces(board) {
         const pieceToken = value[1];
 
         displayPiece(polygonId, pieceToken, pieceColor);
-
     }
 }
 
 /**
- * displays the piece as a textElement inside svg
- * @param polygonId Id of the polygon, e.g. Ba1, Ba2, ...
- * @param pieceToken token of the piece, e.g. R, N, B, K, Q, P
- * @param pieceColor color as single character, e.g. R, G, B
+ * Displays the piece as a text element inside an SVG
+ * @param {string} polygonId ID of the polygon, e.g. Ba1, Ba2, ...
+ * @param {string} pieceToken Token of the piece, e.g. R, N, B, K, Q, P
+ * @param {string} pieceColor Color of the piece, e.g. R, G, B
  */
 function displayPiece(polygonId, pieceToken, pieceColor) {
     const polygon = document.getElementById(polygonId);
@@ -144,41 +225,19 @@ function displayPiece(polygonId, pieceToken, pieceColor) {
     // Check if there is existing text, and insert the new text after it
     if (existingText) {
         polygon.parentNode.insertBefore(textElement, existingText.nextSibling);
-    }
-    else {
+    } else {
         // If there's no existing text, just insert the new text after the polygon
         polygon.parentNode.insertBefore(textElement, polygon.nextSibling);
     }
 }
 
 /**
- * creates a new svg text element displaying the polygon name
- * @param polygonId the id of the polygon for which label to be added
- */
-function insertLabels(polygonId) {
-        const polygon = document.getElementById(polygonId);
-        const points = polygon.points;
-        let x = (points.getItem(0).x + points.getItem(2).x) / 2;
-        let y = (points.getItem(0).y + points.getItem(2).y) / 2;
-        const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        textElement.setAttribute('x', x);
-        textElement.setAttribute('y', y);
-        textElement.setAttribute("text-anchor", "middle");
-        textElement.setAttribute("dominant-baseline", "middle");
-        textElement.setAttribute('fill', 'rgba(255,255,255,0.8');
-        textElement.setAttribute('font-size', '14');
-        textElement.setAttribute('font-weight', 'bold');
-        textElement.textContent = polygonId.toUpperCase();
-        polygon.parentNode.insertBefore(textElement, polygon.nextSibling);
-}
-
-/**
- * creates a new svg text element displaying a piece
- * @param x coordinate of the text element
- * @param y coordinate of the text element
- * @param color color of the displayed piece, e.g. R, G, B
- * @param pieceToken token of the displayed piece, e.g. R, N, B, K, Q, P
- * @returns {SVGTextElement}
+ * Creates a new SVG text element displaying a piece
+ * @param {number} x Coordinate of the text element
+ * @param {number} y Coordinate of the text element
+ * @param {string} color Color of the displayed piece, e.g. R, G, B
+ * @param {string} pieceToken Token of the displayed piece, e.g. R, N, B, K, Q, P
+ * @returns {SVGTextElement} The SVG text element
  */
 function getPieceText(x, y, color, pieceToken) {
     const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
@@ -186,12 +245,12 @@ function getPieceText(x, y, color, pieceToken) {
     textElement.setAttribute('y', y);
     textElement.setAttribute("text-anchor", "middle");
     textElement.setAttribute("dominant-baseline", "middle");
-    
+
     // Set piece color and stroke
     textElement.style.fill = pieceColors[color];
     textElement.style.stroke = pieceStrokeColors[color];
     textElement.style.strokeWidth = '0.5px';
-    
+
     textElement.setAttribute('font-size', '55');
     textElement.setAttribute('font-weight', 'bold');
     textElement.classList.add('chess-piece', theme);
@@ -201,7 +260,7 @@ function getPieceText(x, y, color, pieceToken) {
 }
 
 /**
- * removes all displayed pieces from the chessboard
+ * Removes all displayed pieces from the chessboard
  */
 function clearBoard() {
     const textElements = document.querySelectorAll('.chess-piece');
@@ -214,15 +273,14 @@ function clearBoard() {
 }
 
 /**
- * called when the html document finished loading
+ * Called when the HTML document finishes loading
  */
-function bodyLoaded(){
+function bodyLoaded() {
     console.log("Body loaded");
     requestUpdatedBoard();
-    requestCurrentPlayer()
+    requestCurrentPlayer();
 
     const polygons = document.querySelectorAll('polygon');
-
     polygons.forEach(function (polygon) {
         polygon.addEventListener('click', function () {
             const polygonId = polygon.id;
@@ -233,10 +291,10 @@ function bodyLoaded(){
 }
 
 /**
- * post the id of the clicked Polygon to the server on /onClick endpoint
- * @param polygonId id of the clicked polygon, e.g. Ra1, Gb3, ...
+ * Posts the ID of the clicked polygon to the server on /onClick endpoint
+ * @param {string} polygonId ID of the clicked polygon, e.g. Ra1, Gb3, ...
  */
-function sendPolygonClicked(polygonId){
+function sendPolygonClicked(polygonId) {
     const request = new XMLHttpRequest();
     request.open("POST", "/onClick", false);
     request.send(polygonId);
@@ -244,28 +302,16 @@ function sendPolygonClicked(polygonId){
     if (request.status === 200) {
         const data = JSON.parse(request.response);
         updateBoard(data);
+        const currentPlayer = data['currentPlayer'];  // Assuming this comes in the response
+        stopPlayerTimer(currentPlayer);  // Stop the current player's timer after their move
+        // Optionally, you can start the next player's timer here
     }
 }
 
 /**
- * requests all possible Moves of a piece and highlights them on the board
- * @param polygonId id of the polygon on which the piece is located
+ * Requests the new board state and displays it
  */
-function requestHighlightedPolygons(polygonId){
-    const request = new XMLHttpRequest();
-    request.open("GET", "/allMoves", false);
-    request.send(polygonId);
-
-    if (request.status === 200) {
-        const data = JSON.parse(request.response);
-        displayPossibleMoves(data);
-    }
-}
-
-/**
- * requests the new board state and displays it
- */
-function requestUpdatedBoard(){
+function requestUpdatedBoard() {
     console.log("Request Current Board");
     const request = new XMLHttpRequest();
     request.open("GET", "/board", false);
@@ -292,33 +338,22 @@ function requestUpdatedBoard(){
 }
 
 /**
- * requests the current player and displays it
+ * Requests the current player and displays it
  */
-function requestCurrentPlayer(){
+function requestCurrentPlayer() {
+    console.log("Request Current Player");
     const request = new XMLHttpRequest();
     request.open("GET", "/currentPlayer", false);
     request.send(null);
 
     if (request.status === 200) {
-        const player = request.response;
-        if (player) {
-            updateCurrenPlayer(player);
-        } else {
-            console.error("Invalid player data received");
-        }
-    } else {
-        console.error("Failed to get current player:", request.status);
+        const currentPlayerColor = request.response;
+        updateCurrentPlayer(currentPlayerColor);
     }
 }
+updateAllTimers(); // Call the function to update all timers
 
-function showGameOverPopup(winner) {
-    const colourName = colorMap[winner];
-    const playerName = localStorage.getItem(colourName);
-    document.getElementById('popup').style.display = 'block';
-    const winnerText = playerName + " (" + colourName + ") has won the Game!"
-    document.getElementById('winner').innerText = winnerText;
-}
-
-function closePopup() {
-    document.getElementById('popup').style.display = 'none';
-}
+document.addEventListener("DOMContentLoaded", function() {
+    // Now you can safely update the timer display or do other DOM manipulations
+    updateAllTimers();
+});
