@@ -55,6 +55,7 @@ function updateCurrenPlayer(color){
     const p_colour = document.getElementById('pl-colour');
     p_colour.style.color = colourName;
 }
+
 /**
  * updates the current theme
  * @param name name of the theme (arialTheme, freeSerifTheme, dejaVuSansTheme)
@@ -70,29 +71,6 @@ function updateTheme(name){
         element.classList.add(name);
     });
 }
-document.getElementById('toggleDarkMode').addEventListener('click', function() {
-    document.body.classList.toggle('dark-mode');
-    document.querySelectorAll('.leftpane, .middlepane, .rightpane').forEach((pane) => {
-        pane.classList.toggle('dark-mode');
-    });
-    document.querySelectorAll('button').forEach((btn) => {
-        btn.classList.toggle('dark-mode');
-    });
-});
-
-// Toggle Dark Mode
-function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
-    const isDarkMode = document.body.classList.contains('dark-mode');
-    localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
-}
-
-// Persist Dark Mode on Reload
-document.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        document.body.classList.add('dark-mode');
-    }
-});
 
 /**
  * highlights a specific set of polygons
@@ -178,20 +156,20 @@ function displayPiece(polygonId, pieceToken, pieceColor) {
  * @param polygonId the id of the polygon for which label to be added
  */
 function insertLabels(polygonId) {
-        const polygon = document.getElementById(polygonId);
-        const points = polygon.points;
-        let x = (points.getItem(0).x + points.getItem(2).x) / 2;
-        let y = (points.getItem(0).y + points.getItem(2).y) / 2;
-        const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        textElement.setAttribute('x', x);
-        textElement.setAttribute('y', y);
-        textElement.setAttribute("text-anchor", "middle");
-        textElement.setAttribute("dominant-baseline", "middle");
-        textElement.setAttribute('fill', 'rgba(255,255,255,0.8');
-        textElement.setAttribute('font-size', '14');
-        textElement.setAttribute('font-weight', 'bold');
-        textElement.textContent = polygonId.toUpperCase();
-        polygon.parentNode.insertBefore(textElement, polygon.nextSibling);
+    const polygon = document.getElementById(polygonId);
+    const points = polygon.points;
+    let x = (points.getItem(0).x + points.getItem(2).x) / 2;
+    let y = (points.getItem(0).y + points.getItem(2).y) / 2;
+    const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    textElement.setAttribute('x', x);
+    textElement.setAttribute('y', y);
+    textElement.setAttribute("text-anchor", "middle");
+    textElement.setAttribute("dominant-baseline", "middle");
+    textElement.setAttribute('fill', 'rgba(255,255,255,0.8');
+    textElement.setAttribute('font-size', '14');
+    textElement.setAttribute('font-weight', 'bold');
+    textElement.textContent = polygonId.toUpperCase();
+    polygon.parentNode.insertBefore(textElement, polygon.nextSibling);
 }
 
 /**
@@ -208,12 +186,12 @@ function getPieceText(x, y, color, pieceToken) {
     textElement.setAttribute('y', y);
     textElement.setAttribute("text-anchor", "middle");
     textElement.setAttribute("dominant-baseline", "middle");
-    
+
     // Set piece color and stroke
     textElement.style.fill = pieceColors[color];
     textElement.style.stroke = pieceStrokeColors[color];
     textElement.style.strokeWidth = '0.5px';
-    
+
     textElement.setAttribute('font-size', '55');
     textElement.setAttribute('font-weight', 'bold');
     textElement.classList.add('chess-piece', theme);
