@@ -66,7 +66,7 @@ function startPlayerTimer(color) {
             timers[color].seconds = 0;
             timers[color].minutes++;
         }
-        document.getElementById("timer").textContent = formatTime(timers[color].minutes, timers[color].seconds);
+        document.getElementById(`timer-${color}`).textContent = formatTime(timers[color].minutes, timers[color].seconds);
     }, 1000);
 }
 
@@ -85,6 +85,30 @@ function stopPlayerTimer(color) {
         clearInterval(timers[color].timer);
         timers[color].isRunning = false;
     }
+}
+function updateTimerDisplay(color) {
+    const timerElement = document.getElementById(`timer-${color}`);
+
+    // Check if the element exists before trying to update it
+    if (timerElement) {
+        timerElement.textContent = formatTime(timers[color].minutes, timers[color].seconds);
+    } else {
+        console.error(`Timer element for color ${color} not found.`);
+    }
+}
+
+/**
+ * Updates the display of all players' timers
+ */
+function updateAllTimers() {
+    for (const color of ['R', 'G', 'B']) {
+        updateTimerDisplay(color);
+    }
+}
+
+function updateTimerDisplay(color, minutes, seconds) {
+    const timerElement = document.getElementById(`timer-${color.toLowerCase()}`);
+    timerElement.textContent = formatTime(minutes, seconds);
 }
 
 /**
@@ -327,3 +351,9 @@ function requestCurrentPlayer() {
         updateCurrentPlayer(currentPlayerColor);
     }
 }
+updateAllTimers(); // Call the function to update all timers
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Now you can safely update the timer display or do other DOM manipulations
+    updateAllTimers();
+});

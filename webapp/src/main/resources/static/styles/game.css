@@ -246,12 +246,83 @@ h2 {
     color: var(--secondary-color);
 }
 
-#timer {
-    font-size: 24px;
-    font-weight: bold;
-    color: #2c3e50;
-    margin-top: 10px;
+#timer #timer-R, #timer-G, #timer-B {
+    ffont-size: 1.2em;
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    display: inline-block;
+    text-align: center;
 }
+#timer-R {
+    background-color: red;
+    color: white;
+}
+
+#timer-G {
+    background-color: green;
+    color: white;
+}
+
+#timer-B {
+    background-color: blue;
+    color: white;
+}
+/* Style for the container */
+.timer-container {
+    margin: 20px;
+    text-align: center;
+}
+
+/* Table styling */
+.timer-table {
+    width: 50%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Table headers styling */
+.timer-table th {
+    padding: 15px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: left;
+}
+
+/* Table data styling */
+.timer-table td {
+    padding: 10px;
+    text-align: center;
+    font-size: 18px;
+}
+
+/* Specific styles for each timer cell */
+#timer-red {
+    color: #c0392b; /* Red */
+    font-weight: bold;
+}
+
+#timer-green {
+    color: #27ae60; /* Green */
+    font-weight: bold;
+}
+
+#timer-blue {
+    color: #2980b9; /* Blue */
+    font-weight: bold;
+}
+
+/* Player names styling */
+#player-red, #player-green, #player-blue {
+    font-size: 16px;
+    font-weight: bold;
+}
+
 #pl-name {
     font-size: 1.2rem;
     font-weight: 600;
