@@ -82,7 +82,7 @@ public class MovementUtil {
         try {
             return step(piece, step, current);
         } catch (InvalidPositionException e) {
-            Logger.e(TAG, "Exception: "+e.getMessage());
+//            Logger.e(TAG, "Exception: "+e.getMessage());
             return null;
         }
     }
@@ -99,7 +99,7 @@ public class MovementUtil {
         try {
             return step(piece, step, current, reverse);
         } catch (InvalidPositionException e) {
-            Logger.e(TAG, "Exception: "+e.getMessage());
+//            Logger.e(TAG, "Exception: "+e.getMessage());
             return null;
         }
     }
