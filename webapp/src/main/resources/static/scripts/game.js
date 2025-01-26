@@ -21,9 +21,9 @@ const pieceMap = {
  * @type {{R: string, B: string, G: string}}
  */
 const colorMap = {
-    'R': 'Red',
-    'G': 'Green',
-    'B': 'Blue'
+    'R': 'Gold',
+    'G': 'Silver',
+    'B': 'Bronze'
 };
 
 const pieceColors = {
