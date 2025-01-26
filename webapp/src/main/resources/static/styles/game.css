@@ -9,15 +9,16 @@
     --hover-color: rgba(52, 152, 219, 0.2);
 
     /* Board Colors */
-    --red-light: #ffcdd2;
-    --red-dark: #ef5350;
-    --green-light: #c8e6c9;
-    --green-dark: #66bb6a;
-    --blue-light: #bbdefb;
-    --blue-dark: #42a5f5;
+    --red-light: #4f4f4f; /* Slightly lighter charcoal for contrast */
+    --red-dark: #000000; /* Deep Charcoal Gray */
+    --green-light: #4f4f4f;
+    --green-dark: #000000;
+    --blue-light: #4f4f4f;
+    --blue-dark: #000000;
+
 
     /* Piece Colors */
-    --piece-white: #ffffff;
+    --piece-white: #4f4f4f;
     --piece-black: #000000;
     --piece-gray: #666666;
 }

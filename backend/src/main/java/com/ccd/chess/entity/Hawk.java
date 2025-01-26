@@ -17,11 +17,8 @@ import static com.ccd.chess.utility.MovementUtil.stepOrNull;
  * */
 public class Hawk extends Knight {
 
-    /**
-     * Jester constructor
-     *
-     * @param colour: Colour of the chess piece being initiated
-     */
+    private static final String TAG = "HAWK";
+
     public Hawk(Colour colour) {
         super(colour);
     }
@@ -73,7 +70,7 @@ public Set<Position> getHighlightPolygons(Map<Position, ChessPiece> boardMap, Po
          * */
         @Override
         public String toString () {
-            return this.colour.toString() + "J";
+            return this.colour.toString() + "H";
         }
     }
 
