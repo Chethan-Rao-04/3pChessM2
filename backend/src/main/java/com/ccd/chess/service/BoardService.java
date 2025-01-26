@@ -4,9 +4,6 @@ import com.ccd.chess.entity.ChessPiece;
 import com.ccd.chess.entity.King;
 import com.ccd.chess.entity.Pawn;
 import com.ccd.chess.entity.Queen;
-import com.ccd.chess.entity.Wall;
-
-
 import com.ccd.chess.entity.enums.Colour;
 import com.ccd.chess.exceptions.InvalidPositionException;
 import com.ccd.chess.exceptions.InvalidMoveException;
@@ -16,7 +13,6 @@ import com.ccd.chess.utility.PieceFactory;
 import com.ccd.chess.utility.BoardAdapter;
 import com.google.common.collect.ImmutableSet;
 import com.ccd.chess.entity.Jester;
-
 
 import java.util.Map;
 import java.util.Set;
@@ -90,10 +86,9 @@ import java.util.HashSet;
                 Position jesterStartPosition = Position.get(colour,1,0);
                 boardMap.put(jesterStartPosition, PieceFactory.createPiece("Jester",colour));
 
-                // place WALL
-                Position wallStartPosition = Position.get(colour, 1, 7);
-                ChessPiece wall = PieceFactory.createPiece("Wall",colour);
-                boardMap.put(wallStartPosition, wall);
+                // place VORTEX
+                Position vortexStartPosition = Position.get(colour, 1, 7);  // Place in Wall's previous position
+                boardMap.put(vortexStartPosition, PieceFactory.createPiece("Vortex",colour));
             }
 
             /**
@@ -122,6 +117,9 @@ import java.util.HashSet;
                     ChessPiece mover = boardMap.get(start);
                     ChessPiece taken = boardMap.get(end);
                     boardMap.remove(start);  //empty start polygon
+                    
+                    // Clear highlight polygons after validating the move
+                    highlightPolygons.clear();
 
                     if(mover instanceof Pawn && end.getRow()==0 && end.getColour()!=mover.getColour()){
                         boardMap.put(end, new Queen(mover.getColour()));  //promote pawn
@@ -177,9 +175,10 @@ import java.util.HashSet;
                     return false; // No piece present at start position
                 }
                 Colour moverCol = mover.getColour();
-                if(highlightPolygons.isEmpty()) {
-                    highlightPolygons = mover.getHighlightPolygons(this.boardMap, start);
-                }
+                
+                // Always recalculate highlight polygons for the current move
+                highlightPolygons = mover.getHighlightPolygons(this.boardMap, start);
+                
                 if(highlightPolygons.contains(end)) {
                     if(isCheck(turn, boardMap) && isCheckAfterLegalMove(turn, boardMap, start, end)) {
                         Logger.d(TAG, "Colour "+moverCol+" is in check, this move doesn't help. Do again!!");
@@ -230,6 +229,8 @@ import java.util.HashSet;
                 if(mover == null) {
                     return ImmutableSet.of();
                 }
+                
+                // Always calculate fresh highlight polygons
                 highlightPolygons = mover.getHighlightPolygons(this.boardMap, position);
 
                 Colour moverColour = mover.getColour();
@@ -260,8 +261,8 @@ import java.util.HashSet;
 
                 for(Position position: boardMap.keySet()) {
                     ChessPiece piece = boardMap.get(position);
-                    // wall and jester piece have no power to take out any piece
-                    if(piece.getColour() != colour && !(piece instanceof Jester) && !(piece instanceof Wall)) {
+                    // jester piece has no power to take out any piece
+                    if(piece.getColour() != colour && !(piece instanceof Jester)) {
                         Set<Position> possibleTargetPositions = piece.getHighlightPolygons(boardMap, position);
                         if(possibleTargetPositions.contains(kingPosition)) {
                             Logger.d(TAG, "Piece "+piece+" is attacking King of colour "+colour);

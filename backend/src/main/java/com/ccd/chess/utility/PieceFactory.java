@@ -30,8 +30,8 @@ public class PieceFactory {
                     return new Pawn(colour);
                 case "jester":
                     return new Jester(colour);
-                case "wall":
-                    return new Wall(colour);
+                case "vortex":
+                    return new Vortex(colour);
                 default:
                     throw new IllegalArgumentException("Invalid chess piece type: " + type);
             }

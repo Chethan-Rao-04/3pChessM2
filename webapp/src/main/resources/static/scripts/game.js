@@ -3,21 +3,37 @@
  * @type {{P: string, Q: string, R: string, B: string, K: string, N: string}}
  */
 const pieceMap = {
-    'R': '♖',
-    'N': '♘',
-    'B': '♗',
-    'Q': '♕',
-    'K': '♔',
-    'P': '♙',
+    'R': '♜',
+    'N': '♞',
+    'B': '♝',
+    'Q': '♛',
+    'K': '♚',
+    'P': '♟',
     'J': '⎈',
-    'W': '▩'
+    'V': '◈'  // Diamond shape for Vortex
 };
 
 /**
  * maps the letters R,G,B to the corresponding color string
  * @type {{R: string, B: string, G: string}}
  */
-const colorMap = {'R':'Red', 'G':'Green', 'B': 'Blue'};
+const colorMap = {
+    'R': 'Red',
+    'G': 'Green',
+    'B': 'Blue'
+};
+
+const pieceColors = {
+    'R': '#c0392b',  // Deep red
+    'G': '#27ae60',  // Deep green
+    'B': '#2980b9'   // Deep blue
+};
+
+const pieceStrokeColors = {
+    'R': '#ffffff',  // White outline for red pieces
+    'G': '#ffffff',  // White outline for green pieces
+    'B': '#ffffff'   // White outline for blue pieces
+};
 
 /**
  * global variable storing the current theme
@@ -47,9 +63,12 @@ function updateCurrenPlayer(color){
 function updateTheme(name){
     console.log('New Font: ' + name);
     theme = name;
-    const textElements = document.querySelectorAll('text');
+    const textElements = document.querySelectorAll('.chess-piece');
     textElements.forEach(function(element) {
-        element.setAttribute('class', name);
+        // Remove old theme class
+        element.classList.remove('arialTheme', 'freeSerifTheme', 'dejaVuSansTheme');
+        // Add new theme class
+        element.classList.add(name);
     });
 }
 
@@ -167,11 +186,16 @@ function getPieceText(x, y, color, pieceToken) {
     textElement.setAttribute('y', y);
     textElement.setAttribute("text-anchor", "middle");
     textElement.setAttribute("dominant-baseline", "middle");
-    textElement.setAttribute('fill', colorMap[color]);
-    textElement.setAttribute('font-size', '50');
+    
+    // Set piece color and stroke
+    textElement.style.fill = pieceColors[color];
+    textElement.style.stroke = pieceStrokeColors[color];
+    textElement.style.strokeWidth = '0.5px';
+    
+    textElement.setAttribute('font-size', '55');
     textElement.setAttribute('font-weight', 'bold');
+    textElement.classList.add('chess-piece', theme);
     textElement.textContent = pieceMap[pieceToken];
-    textElement.setAttribute('class', theme);
 
     return textElement;
 }
@@ -180,12 +204,13 @@ function getPieceText(x, y, color, pieceToken) {
  * removes all displayed pieces from the chessboard
  */
 function clearBoard() {
-    const textElements = document.querySelectorAll('text');
+    const textElements = document.querySelectorAll('.chess-piece');
     textElements.forEach((textElement) => {
-        if (textElement.classList.contains(theme)) {
-            textElement.remove();
-        }
+        textElement.remove();
     });
+    // Also remove any leftover filter definitions
+    const defs = document.querySelectorAll('defs');
+    defs.forEach(def => def.remove());
 }
 
 /**
@@ -199,7 +224,6 @@ function bodyLoaded(){
     const polygons = document.querySelectorAll('polygon');
 
     polygons.forEach(function (polygon) {
-        insertLabels(polygon.id)
         polygon.addEventListener('click', function () {
             const polygonId = polygon.id;
             sendPolygonClicked(polygonId);
