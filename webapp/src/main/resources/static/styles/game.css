@@ -257,17 +257,17 @@ h2 {
     text-align: center;
 }
 #timer-R {
-    background-color: red;
+    background-color: #b8860b;
     color: white;
 }
 
 #timer-G {
-    background-color: green;
+    background-color: #808080;
     color: white;
 }
 
 #timer-B {
-    background-color: blue;
+    background-color: #8b4513;
     color: white;
 }
 /* Style for the container */
