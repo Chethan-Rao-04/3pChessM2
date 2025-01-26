@@ -55,7 +55,6 @@ function updateCurrenPlayer(color){
     const p_colour = document.getElementById('pl-colour');
     p_colour.style.color = colourName;
 }
-
 /**
  * updates the current theme
  * @param name name of the theme (arialTheme, freeSerifTheme, dejaVuSansTheme)
@@ -71,6 +70,29 @@ function updateTheme(name){
         element.classList.add(name);
     });
 }
+document.getElementById('toggleDarkMode').addEventListener('click', function() {
+    document.body.classList.toggle('dark-mode');
+    document.querySelectorAll('.leftpane, .middlepane, .rightpane').forEach((pane) => {
+        pane.classList.toggle('dark-mode');
+    });
+    document.querySelectorAll('button').forEach((btn) => {
+        btn.classList.toggle('dark-mode');
+    });
+});
+
+// Toggle Dark Mode
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
+}
+
+// Persist Dark Mode on Reload
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+    }
+});
 
 /**
  * highlights a specific set of polygons
