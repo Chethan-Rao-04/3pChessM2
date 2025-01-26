@@ -27,7 +27,7 @@ const colorMap = {
 };
 
 const pieceColors = {
-    'R': '#c0392b',  // Deep red
+    'R': '#000000',  // Deep red
     'G': '#27ae60',  // Deep green
     'B': '#2980b9'   // Deep blue
 };
