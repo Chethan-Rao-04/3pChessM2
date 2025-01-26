@@ -23,18 +23,27 @@
 }
 
 body {
+<<<<<<< HEAD
     height: 100vh;
     margin: 0;
     font-family: 'Segoe UI', Arial, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
+=======
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #1a1a1a, #000);
+    color: black; /* Default text color is black */
+    transition: all 0.3s ease-in-out;
+>>>>>>> 0cb4d1c (Home and Game page frontend)
 }
 
-@font-face {
-    font-family: FreeSerif;
-    src: url(../fonts/FreeSerif.otf);
+body.dark-mode {
+    background: linear-gradient(180deg, #000, #1a1a1a);
+    color: black; /* Ensure text color remains black in dark mode */
 }
 
+<<<<<<< HEAD
 @font-face {
     font-family: DejaVuSans;
     src: url(../fonts/DejaVuSans.ttf);
@@ -165,9 +174,16 @@ polygon.highlight {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+=======
+h1, h2, h3, h4, h5, h6, label, .text {
+    color: black !important; /* Force all headings and labels to be black */
+>>>>>>> 0cb4d1c (Home and Game page frontend)
 }
 
+.leftpane,
+.rightpane,
 .middlepane {
+<<<<<<< HEAD
     width: 50%;
     height: 100vh;
     padding: 2rem;
@@ -191,6 +207,52 @@ h2 {
     margin-bottom: 1.5rem;
     text-align: center;
     font-weight: 500;
+=======
+    background: linear-gradient(135deg, #ffffff, #eaeaea);
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+    color: black; /* Ensure pane text remains black */
+}
+
+.leftpane.dark-mode,
+.middlepane.dark-mode,
+.rightpane.dark-mode {
+    background: linear-gradient(135deg, #333, #1a1a1a);
+    color: black; /* Ensure pane text remains black in dark mode */
+}
+
+button {
+    background: linear-gradient(90deg, #007BFF, #0056b3);
+    color: black; /* Button text is black */
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: linear-gradient(90deg, #0056b3, #004085);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    color: black; /* Ensure button text is black on hover */
+}
+
+.middlepane h1 {
+    background: none; /* Remove gradient background from heading text */
+    color: black; /* Heading text is black */
+    text-align: center;
+    font-size: 2rem;
+    margin: 0;
+}
+
+.text {
+    pointer-events: none;
+    font-size: 1.2rem;
+    color: black !important; /* Force text to be black */
+>>>>>>> 0cb4d1c (Home and Game page frontend)
 }
 
 /* Theme selector styles */
@@ -260,6 +322,7 @@ h2 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+<<<<<<< HEAD
     padding: 2rem;
     background-color: white;
     border-radius: 12px;
@@ -314,4 +377,59 @@ text {
     h2 {
         font-size: 1.5rem;
     }
+=======
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    color: black; /* Popup text remains black */
+}
+
+svg text {
+    fill: black; /* Ensure text inside SVGs is black */
+}
+
+.blue.light:hover,
+.blue.dark:hover,
+.red.light:hover,
+.red.dark:hover,
+.green.light:hover,
+.green.dark:hover {
+    fill: black; /* Hover color for SVG fills is black */
+    transition: fill 0.3s ease;
+}
+
+.red.light.highlight,
+.red.dark.highlight,
+.blue.light.highlight,
+.blue.dark.highlight,
+.green.light.highlight,
+.green.dark.highlight {
+    fill: black; /* Highlight color is black */
+}
+
+.blue.light {
+    fill: #85c1e9;
+}
+
+.blue.dark {
+    fill: #3498db;
+}
+
+.green.light {
+    fill: #82e0aa;
+}
+
+.green.dark {
+    fill: #28b463;
+}
+
+.red.light {
+    fill: #f5b7b1;
+}
+
+.red.dark {
+    fill: #e74c3c;
+>>>>>>> 0cb4d1c (Home and Game page frontend)
 }

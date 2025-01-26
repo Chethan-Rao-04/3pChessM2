@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="styles/game.css">
 </head>
 <body onload="bodyLoaded()">
+<<<<<<< HEAD
     <div class="gameview">
         <div class="leftpane">
             <h2>Theme Settings</h2>
@@ -24,6 +25,33 @@
                     <label for="dejaVuSansTheme">Dejavu Sans</label>
                 </div>
             </div>
+=======
+
+
+<div class="gameview">
+    <div class="leftpane">
+        <h2 style="text-align: center">Themes</h2>
+        <form>
+            <input type="radio" name="font" id="arialTheme"  onclick="updateTheme(id)" checked>
+            <label for="arialTheme">Arial</label><br>
+
+            <input type="radio" name="font" id="freeSerifTheme" onclick="updateTheme(id)">
+            <label for="freeSerifTheme">Free Serif</label><br>
+
+            <input type="radio" name="font" id="dejaVuSansTheme" onclick="updateTheme(id)">
+            <label for="dejaVuSansTheme">Dejavu Sans</label><br>
+        </form>
+        <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+
+    </div>
+    <div class="middlepane">
+        <h1 style="text-align: center">Three Player Chess Application</h1>
+        <div id="popup" class="popup">
+            <h2>Game Over</h2>
+            <p id="winner"></p>
+            <button onclick="window.location.href='/index.html'">New Game</button>
+            <button onclick="closePopup()">Close</button>
+>>>>>>> 0cb4d1c (Home and Game page frontend)
         </div>
         
         <div class="middlepane">
