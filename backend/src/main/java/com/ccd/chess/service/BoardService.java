@@ -82,9 +82,9 @@ import java.util.HashSet;
                     boardMap.put(ithPawnPosition, PieceFactory.createPiece("Pawn",colour));
                 }
 
-                // place JESTER
-                Position jesterStartPosition = Position.get(colour,1,0);
-                boardMap.put(jesterStartPosition, PieceFactory.createPiece("Jester",colour));
+                // place HAWK
+                Position hawkStartPosition = Position.get(colour,1,0);
+                boardMap.put(hawkStartPosition, PieceFactory.createPiece("Hawk",colour));
 
                 // place VORTEX
                 Position vortexStartPosition = Position.get(colour, 1, 7);  // Place in Wall's previous position
@@ -139,14 +139,14 @@ import java.util.HashSet;
                         }
                     }
 
-                    if(taken !=null){
-                        // jester switch position with other piece
-                        if (mover instanceof Hawk){
-                            // switch places
-                            boardMap.put(end,mover);
-                            boardMap.put(start, taken);
-                        }
-                    }
+//                    if(taken !=null){
+//                        // hawk switch position with other piece
+//                        if (mover instanceof Hawk){
+//                            // switch places
+//                            boardMap.put(end,mover);
+//                            boardMap.put(start, taken);
+//                        }
+//                    }
 
                     for(Colour c: Colour.values()) {
                         if(c!=turn) {
@@ -261,7 +261,7 @@ import java.util.HashSet;
 
                 for(Position position: boardMap.keySet()) {
                     ChessPiece piece = boardMap.get(position);
-                    // jester piece has no power to take out any piece
+                    // hawk piece has no power to take out any piece
                     if(piece.getColour() != colour && !(piece instanceof Hawk)) {
                         Set<Position> possibleTargetPositions = piece.getHighlightPolygons(boardMap, position);
                         if(possibleTargetPositions.contains(kingPosition)) {

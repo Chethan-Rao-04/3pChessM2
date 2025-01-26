@@ -12,7 +12,7 @@ const pieceMap = {
     'Q': '♛',
     'K': '♚',
     'P': '♟',
-    'J': '⎈',
+    'H': '⎈',
     'V': '◈'  // Diamond shape for Vortex
 };
 
@@ -27,9 +27,9 @@ const colorMap = {
 };
 
 const pieceColors = {
-    'R': '#000000',  // Deep red
-    'G': '#27ae60',  // Deep green
-    'B': '#2980b9'   // Deep blue
+    'R': '#B8860B',  // Goldenrod
+    'G': '#808080',  // Gray
+    'B': '#8B4513'   // SaddleBrown
 };
 
 const pieceStrokeColors = {
