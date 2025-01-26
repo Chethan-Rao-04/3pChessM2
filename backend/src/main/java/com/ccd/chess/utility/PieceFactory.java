@@ -29,7 +29,7 @@ public class PieceFactory {
                 case "pawn":
                     return new Pawn(colour);
                 case "jester":
-                    return new Jester(colour);
+                    return new Hawk(colour);
                 case "vortex":
                     return new Vortex(colour);
                 default:

@@ -12,7 +12,7 @@ import com.ccd.chess.utility.Logger;
 import com.ccd.chess.utility.PieceFactory;
 import com.ccd.chess.utility.BoardAdapter;
 import com.google.common.collect.ImmutableSet;
-import com.ccd.chess.entity.Jester;
+import com.ccd.chess.entity.Hawk;
 
 import java.util.Map;
 import java.util.Set;
@@ -141,7 +141,7 @@ import java.util.HashSet;
 
                     if(taken !=null){
                         // jester switch position with other piece
-                        if (mover instanceof Jester){
+                        if (mover instanceof Hawk){
                             // switch places
                             boardMap.put(end,mover);
                             boardMap.put(start, taken);
@@ -262,7 +262,7 @@ import java.util.HashSet;
                 for(Position position: boardMap.keySet()) {
                     ChessPiece piece = boardMap.get(position);
                     // jester piece has no power to take out any piece
-                    if(piece.getColour() != colour && !(piece instanceof Jester)) {
+                    if(piece.getColour() != colour && !(piece instanceof Hawk)) {
                         Set<Position> possibleTargetPositions = piece.getHighlightPolygons(boardMap, position);
                         if(possibleTargetPositions.contains(kingPosition)) {
                             Logger.d(TAG, "Piece "+piece+" is attacking King of colour "+colour);
