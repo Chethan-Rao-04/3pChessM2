@@ -1,9 +1,7 @@
-package com.ccd.chess.entity.pieces;
-
-import com.ccd.chess.entity.enums.Colour;
-import com.ccd.chess.entity.enums.Direction;
-import com.ccd.chess.entity.enums.Position;
-
+package com.ccd.chess.model.entity.pieces;
+import com.ccd.chess.model.entity.enums.Colour;
+import com.ccd.chess.model.entity.enums.Direction;
+import com.ccd.chess.model.entity.enums.Position;
 import com.ccd.chess.util.Logger;
 import static com.ccd.chess.util.MovementUtil.step;
 import static com.ccd.chess.util.MovementUtil.stepOrNull;

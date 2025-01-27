@@ -1,25 +1,29 @@
-package com.ccd.chess.service;
+package com.ccd.chess.service.impl;
 
-import com.ccd.chess.entity.pieces.ChessPiece;
-import com.ccd.chess.entity.pieces.King;
-import com.ccd.chess.entity.pieces.Pawn;
-import com.ccd.chess.entity.pieces.Queen;
-import com.ccd.chess.entity.enums.Colour;
 import com.ccd.chess.exceptions.InvalidPositionException;
+import com.ccd.chess.model.entity.enums.Colour;
+import com.ccd.chess.model.entity.enums.Position;
+import com.ccd.chess.model.entity.pieces.ChessPiece;
+import com.ccd.chess.model.entity.pieces.Hawk;
+import com.ccd.chess.model.entity.pieces.King;
+import com.ccd.chess.model.entity.pieces.Pawn;
+import com.ccd.chess.model.entity.pieces.Queen;
 import com.ccd.chess.exceptions.InvalidMoveException;
-import com.ccd.chess.entity.enums.Position;
 import com.ccd.chess.util.Logger;
 import com.ccd.chess.util.PieceFactory;
 import com.ccd.chess.util.BoardAdapter;
 import com.google.common.collect.ImmutableSet;
-import com.ccd.chess.entity.pieces.Hawk;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class BoardService {
+import com.ccd.chess.service.interfaces.IBoardService;
+import org.springframework.stereotype.Service;
+
+@Service
+public class BoardServiceImpl implements IBoardService {
 
     private static final String TAG = "Board";
 
@@ -34,7 +38,7 @@ public class BoardService {
     /**
      * Board constructor. Places pieces on the board and initializes variables
      * */
-    public BoardService(){
+    public BoardServiceImpl(){
         boardMap = new HashMap<Position,ChessPiece>();
         turn = Colour.BLUE;
         gameOver = false;

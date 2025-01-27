@@ -1,9 +1,9 @@
-package com.ccd.chess.entity.pieces;
+package com.ccd.chess.model.entity.pieces;
 
-import com.ccd.chess.entity.enums.Colour;
-import com.ccd.chess.entity.enums.Direction;
+import com.ccd.chess.model.entity.enums.Colour;
+import com.ccd.chess.model.entity.enums.Direction;
+import com.ccd.chess.model.entity.enums.Position;
 import com.ccd.chess.exceptions.InvalidPositionException;
-import com.ccd.chess.entity.enums.Position;
 import static com.ccd.chess.util.MovementUtil.step;
 import static com.ccd.chess.util.MovementUtil.stepOrNull;
 import com.ccd.chess.util.Logger;
@@ -15,8 +15,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-//import static utility.MovementUtil.step;
-//import static utility.MovementUtil.stepOrNull;
 
 /**
  * Pawn class extends ChessPiece. Move directions for the Pawn, the polygons

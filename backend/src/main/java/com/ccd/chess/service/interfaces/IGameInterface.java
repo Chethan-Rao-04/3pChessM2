@@ -1,7 +1,7 @@
 package com.ccd.chess.service.interfaces;
 
-import com.ccd.chess.entity.enums.Colour;
-import com.ccd.chess.entity.dto.GameState;
+import com.ccd.chess.model.entity.enums.Colour;
+import com.ccd.chess.model.dto.GameState;
 import java.util.Map;
 
 public interface IGameInterface {

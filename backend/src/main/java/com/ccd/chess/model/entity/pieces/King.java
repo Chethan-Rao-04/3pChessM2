@@ -1,9 +1,10 @@
-package com.ccd.chess.entity.pieces;
+package com.ccd.chess.model.entity.pieces;
 
-import com.ccd.chess.entity.enums.Colour;
-import com.ccd.chess.entity.enums.Direction;
+import com.ccd.chess.model.entity.enums.Colour;
+import com.ccd.chess.model.entity.enums.Direction;
+import com.ccd.chess.model.entity.enums.Position;
 import com.ccd.chess.exceptions.InvalidPositionException;
-import com.ccd.chess.entity.enums.Position;
+
 
 import java.util.ArrayList;
 import java.util.Collection;

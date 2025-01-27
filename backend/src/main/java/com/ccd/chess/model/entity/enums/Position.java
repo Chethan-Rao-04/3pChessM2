@@ -1,4 +1,4 @@
-package com.ccd.chess.entity.enums;
+package com.ccd.chess.model.entity.enums;
 
 import com.ccd.chess.exceptions.InvalidPositionException;
 

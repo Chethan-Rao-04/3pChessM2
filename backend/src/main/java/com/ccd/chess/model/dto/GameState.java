@@ -1,4 +1,4 @@
-package com.ccd.chess.entity.dto;
+package com.ccd.chess.model.dto;
 
 import java.util.List;
 import java.util.Map;

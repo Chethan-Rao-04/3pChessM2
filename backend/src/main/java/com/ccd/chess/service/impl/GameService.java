@@ -1,18 +1,14 @@
-package com.ccd.chess.service;
+package com.ccd.chess.service.impl;
 
 import com.ccd.chess.exceptions.InvalidPositionException;
+import com.ccd.chess.model.dto.GameState;
+import com.ccd.chess.model.entity.enums.Colour;
+import com.ccd.chess.model.entity.enums.Position;
 import com.ccd.chess.service.interfaces.IGameInterface;
 import com.ccd.chess.util.BoardAdapter;
 import com.google.common.collect.ImmutableSet;
 import com.ccd.chess.exceptions.InvalidMoveException;
-
-import com.ccd.chess.entity.enums.Colour;
-import com.ccd.chess.entity.enums.Position;
-
 import com.ccd.chess.util.Logger;
-import com.ccd.chess.entity.dto.GameState;
-
-
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +19,7 @@ import static com.ccd.chess.util.BoardAdapter.calculatePolygonId;
 public class GameService implements IGameInterface {
 
     private static final String TAG = GameService.class.getSimpleName();
-    private final BoardService board;
+    private final BoardServiceImpl board;
     private Position moveStartPos, moveEndPos;
     private Set<Position> highlightPolygons;
 
@@ -32,7 +28,7 @@ public class GameService implements IGameInterface {
      * */
     public GameService() {
         Logger.d(TAG, "initGame GameMain()");
-        board = new BoardService();
+        board = new BoardServiceImpl();
         moveStartPos = null;
         moveEndPos = null;
         highlightPolygons = ImmutableSet.of();

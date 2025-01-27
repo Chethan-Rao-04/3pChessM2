@@ -1,8 +1,8 @@
-package com.ccd.chess.entity.pieces;
+package com.ccd.chess.model.entity.pieces;
 
-import com.ccd.chess.entity.enums.Colour;
-import com.ccd.chess.entity.enums.Direction;
-import com.ccd.chess.entity.enums.Position;
+import com.ccd.chess.model.entity.enums.Colour;
+import com.ccd.chess.model.entity.enums.Direction;
+import com.ccd.chess.model.entity.enums.Position;
 
 import com.ccd.chess.util.Logger;
 
@@ -10,8 +10,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import static com.ccd.chess.util.MovementUtil.step;
 import static com.ccd.chess.util.MovementUtil.stepOrNull;
 
 /**

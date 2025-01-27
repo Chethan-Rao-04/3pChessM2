@@ -1,8 +1,8 @@
 package com.ccd.chess.controller;
 
-import com.ccd.chess.entity.dto.GameState;
+import com.ccd.chess.model.dto.GameState;
 import com.ccd.chess.exceptions.InvalidPositionException;
-import com.ccd.chess.service.GameService;
+import com.ccd.chess.service.impl.GameService;
 import com.ccd.chess.service.interfaces.IGameInterface;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
