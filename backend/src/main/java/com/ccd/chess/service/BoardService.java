@@ -1,18 +1,18 @@
 package com.ccd.chess.service;
 
-import com.ccd.chess.entity.ChessPiece;
-import com.ccd.chess.entity.King;
-import com.ccd.chess.entity.Pawn;
-import com.ccd.chess.entity.Queen;
+import com.ccd.chess.entity.pieces.ChessPiece;
+import com.ccd.chess.entity.pieces.King;
+import com.ccd.chess.entity.pieces.Pawn;
+import com.ccd.chess.entity.pieces.Queen;
 import com.ccd.chess.entity.enums.Colour;
 import com.ccd.chess.exceptions.InvalidPositionException;
 import com.ccd.chess.exceptions.InvalidMoveException;
 import com.ccd.chess.entity.enums.Position;
-import com.ccd.chess.utility.Logger;
-import com.ccd.chess.utility.PieceFactory;
-import com.ccd.chess.utility.BoardAdapter;
+import com.ccd.chess.util.Logger;
+import com.ccd.chess.util.PieceFactory;
+import com.ccd.chess.util.BoardAdapter;
 import com.google.common.collect.ImmutableSet;
-import com.ccd.chess.entity.Hawk;
+import com.ccd.chess.entity.pieces.Hawk;
 
 import java.util.Map;
 import java.util.Set;

@@ -1,4 +1,4 @@
-package com.ccd.chess.entity;
+package com.ccd.chess.entity.pieces;
 
 import com.ccd.chess.entity.enums.Colour;
 import com.ccd.chess.entity.enums.Direction;

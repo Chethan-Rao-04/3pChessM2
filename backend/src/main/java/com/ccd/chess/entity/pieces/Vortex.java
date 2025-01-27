@@ -1,16 +1,15 @@
-package com.ccd.chess.entity;
+package com.ccd.chess.entity.pieces;
 
 import com.ccd.chess.entity.enums.Colour;
 import com.ccd.chess.entity.enums.Direction;
 import com.ccd.chess.entity.enums.Position;
-import com.ccd.chess.utility.Logger;
+import com.ccd.chess.util.Logger;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static com.ccd.chess.utility.MovementUtil.stepOrNull;
+import static com.ccd.chess.util.MovementUtil.stepOrNull;
 
 /**
  * Vortex class extends ChessPiece. Moves one square diagonally in any direction,

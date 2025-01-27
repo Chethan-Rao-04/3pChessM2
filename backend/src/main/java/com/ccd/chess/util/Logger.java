@@ -1,4 +1,4 @@
-package com.ccd.chess.utility;
+package com.ccd.chess.util;
 
 /**
  * method to print information to debug

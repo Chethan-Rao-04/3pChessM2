@@ -1,7 +1,8 @@
 plugins {
     id 'application'
     id 'java'
-    // id 'checkstyle'
+    id 'org.springframework.boot' version '2.7.18'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'jacoco'
 }
 
@@ -12,41 +13,23 @@ repositories {
     mavenCentral()
 }
 
-application {
-    // Define the main class for the application.
-    mainClass = 'main.GameMain'
+bootJar {
+    mainClass = 'com.ccd.chess.SpringApplication'
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
-
-jar {
-    //archiveBaseName = 'jchess'
-    //archiveVersion =  '0.1.0'
-    manifest {
-        attributes 'Main-Class': application.mainClass
-    }
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-}
-
-// checkstyle {
-//     toolVersion = "9.0"
-//     configFile = file("${rootProject.projectDir}/config/checkstyle.xml")
-// 	ignoreFailures = true
-//     showViolations = true
-// }
 
 dependencies {
-    implementation("com.google.guava:guava:33.0.0-jre")
-    testImplementation platform('org.junit:junit-bom:5.9.1')
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'com.google.guava:guava:33.0.0-jre'
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
 
 test {
-    // Use JUnit Platform for unit tests.
     useJUnitPlatform()
     finalizedBy jacocoTestReport
 }
@@ -54,4 +37,3 @@ test {
 jacocoTestReport {
     dependsOn test
 }
-

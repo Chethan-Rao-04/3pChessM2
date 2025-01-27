@@ -1,7 +1,7 @@
-package com.ccd.chess.utility;
+package com.ccd.chess.util;
 
 import com.ccd.chess.exceptions.InvalidPositionException;
-import com.ccd.chess.entity.ChessPiece;
+import com.ccd.chess.entity.pieces.ChessPiece;
 import com.ccd.chess.entity.enums.Position;
 
 import java.util.ArrayList;

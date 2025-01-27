@@ -1,10 +1,10 @@
-package com.ccd.chess.utility;
+package com.ccd.chess.util;
 
 import com.ccd.chess.entity.enums.Direction;
 import com.ccd.chess.exceptions.InvalidPositionException;
 import com.ccd.chess.entity.enums.Position;
-import com.ccd.chess.entity.ChessPiece;
-import com.ccd.chess.entity.Pawn;
+import com.ccd.chess.entity.pieces.ChessPiece;
+import com.ccd.chess.entity.pieces.Pawn;
 
 
 

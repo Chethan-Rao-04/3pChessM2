@@ -1,19 +1,18 @@
-package com.ccd.chess.entity;
+package com.ccd.chess.entity.pieces;
 
 import com.ccd.chess.entity.enums.Colour;
 import com.ccd.chess.entity.enums.Direction;
-import com.ccd.chess.exceptions.InvalidPositionException;
 import com.ccd.chess.entity.enums.Position;
 
-import com.ccd.chess.utility.Logger;
+import com.ccd.chess.util.Logger;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static com.ccd.chess.utility.MovementUtil.step;
-import static com.ccd.chess.utility.MovementUtil.stepOrNull;
+import static com.ccd.chess.util.MovementUtil.step;
+import static com.ccd.chess.util.MovementUtil.stepOrNull;
 
 /**
  * Bishop class extends ChessPiece. Move directions for the bishop, the polygons

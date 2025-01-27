@@ -1,15 +1,16 @@
 package com.ccd.chess.service;
 
 import com.ccd.chess.exceptions.InvalidPositionException;
-import com.ccd.chess.utility.BoardAdapter;
+import com.ccd.chess.service.interfaces.IGameInterface;
+import com.ccd.chess.util.BoardAdapter;
 import com.google.common.collect.ImmutableSet;
 import com.ccd.chess.exceptions.InvalidMoveException;
 
 import com.ccd.chess.entity.enums.Colour;
 import com.ccd.chess.entity.enums.Position;
 
-import com.ccd.chess.utility.Logger;
-import com.ccd.chess.common.GameState;
+import com.ccd.chess.util.Logger;
+import com.ccd.chess.entity.dto.GameState;
 
 
 
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.ccd.chess.utility.BoardAdapter.calculatePolygonId;
+import static com.ccd.chess.util.BoardAdapter.calculatePolygonId;
 
 public class GameService implements IGameInterface {
 

@@ -1,4 +1,4 @@
-package com.ccd.chess.common;
+package com.ccd.chess.entity.dto;
 
 import java.util.List;
 import java.util.Map;

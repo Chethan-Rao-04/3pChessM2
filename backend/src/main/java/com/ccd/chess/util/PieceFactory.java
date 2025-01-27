@@ -1,6 +1,6 @@
-package com.ccd.chess.utility;
-import com.ccd.chess.entity.*;
+package com.ccd.chess.util;
 import com.ccd.chess.entity.enums.Colour;
+import com.ccd.chess.entity.pieces.*;
 
 
 /**

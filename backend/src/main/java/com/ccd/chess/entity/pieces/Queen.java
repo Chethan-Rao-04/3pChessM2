@@ -1,13 +1,12 @@
-package com.ccd.chess.entity;
+package com.ccd.chess.entity.pieces;
 
 import com.ccd.chess.entity.enums.Colour;
 import com.ccd.chess.entity.enums.Direction;
 import com.ccd.chess.entity.enums.Position;
-import com.ccd.chess.exceptions.InvalidPositionException;
 
-import com.ccd.chess.utility.Logger;
-import static com.ccd.chess.utility.MovementUtil.step;
-import static com.ccd.chess.utility.MovementUtil.stepOrNull;
+import com.ccd.chess.util.Logger;
+import static com.ccd.chess.util.MovementUtil.step;
+import static com.ccd.chess.util.MovementUtil.stepOrNull;
 
 import java.util.*;
 
