@@ -125,13 +125,18 @@ public class BoardService {
             highlightPolygons.clear();
 
             // Handle Hawk's special move
-            if(taken != null && mover instanceof Hawk) {
-                if(!hasHawkMoved) {
-                    hasHawkMoved = true;
-                    boardMap.put(end, mover);  // Just move the Hawk normally
-                    return; // Don't change turn yet, allow second move
+            if(mover instanceof Hawk) {
+                if(taken != null) {  // Only if Hawk captures a piece
+                    if(!hasHawkMoved) {
+                        hasHawkMoved = true;
+                        boardMap.put(end, mover);
+                        return; // Don't change turn yet, allow second move
+                    } else {
+                        hasHawkMoved = false; // Reset for next turn
+                    }
                 } else {
-                    hasHawkMoved = false; // Reset for next turn
+                    // If Hawk moves without capturing, treat as normal move
+                    hasHawkMoved = false;
                 }
             }
 
@@ -269,8 +274,7 @@ public class BoardService {
 
         for(Position position: boardMap.keySet()) {
             ChessPiece piece = boardMap.get(position);
-            // hawk piece has no power to take out any piece
-            if(piece.getColour() != colour && !(piece instanceof Hawk)) {
+            if(piece.getColour() != colour) {
                 Set<Position> possibleTargetPositions = piece.getHighlightPolygons(boardMap, position);
                 if(possibleTargetPositions.contains(kingPosition)) {
                     Logger.d(TAG, "Piece "+piece+" is attacking King of colour "+colour);
@@ -324,4 +328,4 @@ public class BoardService {
         }
         return null;
     }
-}       // }
+}
