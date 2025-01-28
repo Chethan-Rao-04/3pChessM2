@@ -22,14 +22,14 @@ const pieceMap = {
  */
 const colorMap = {
     'R': 'Gold',
-    'G': 'Silver',
-    'B': 'Bronze'
+    'G': 'Bronze',
+    'B': 'Silver'
 };
 
 const pieceColors = {
     'R': '#B8860B',  // Goldenrod
-    'G': '#808080',  // Gray
-    'B': '#8B4513'   // SaddleBrown
+    'G': '#CD7F32',  // Gray
+    'B': '#C0C0C0'   // SaddleBrown
 };
 
 const pieceStrokeColors = {
@@ -101,34 +101,44 @@ function updateTimerDisplay(color) {
  * Updates the display of all players' timers
  */
 function updateAllTimers() {
-    for (const color of ['R', 'G', 'B']) {
+    for (const color of ['B', 'G', 'R']) {
         updateTimerDisplay(color);
     }
 }
-
-function updateTimerDisplay(color, minutes, seconds) {
-    const timerElement = document.getElementById(`timer-${color.toLowerCase()}`);
-    timerElement.textContent = formatTime(minutes, seconds);
-}
-
 /**
  * Updates the current player and handles timer transitions
  * @param {string} color The color of the current player
  */
 function updateCurrentPlayer(color) {
     console.log("Updating current player to color:", color);
-    const colorName = colorMap[color];
-    const playerName = localStorage.getItem(colorName);
 
+    // Update player name and color display
+    const colorName = colorMap[color]; // e.g., "Gold"
+    const playerName = localStorage.getItem(colorName); // Retrieve player's name
     const p_name = document.getElementById('pl-name');
-    p_name.textContent = playerName;
-
     const p_colour = document.getElementById('pl-colour');
-    p_colour.style.color = colorName;
+    p_name.textContent = playerName || colorName; // Use color name if player name is unavailable
+    p_colour.style.color = pieceColors[color]; // Update the circle color
 
-    // Stop the previous player's timer and start the new player's timer
+    // Highlight the current player's timer
+    const timerElement = document.getElementById(`timer-${color}`);
+    if (timerElement) {
+        timerElement.style.color = pieceColors[color]; // Match the timer color to the player's color
+        // Highlight the active timer
+    }
+
+    // Reset the other timers to default styling
     const otherColors = ['R', 'G', 'B'].filter(c => c !== color);
-    otherColors.forEach(c => stopPlayerTimer(c));
+    otherColors.forEach((c) => {
+        const otherTimer = document.getElementById(`timer-${c}`);
+        if (otherTimer) {
+            otherTimer.style.color = '#000'; // Reset to black or neutral color
+            otherTimer.style.fontWeight = "normal"; // Remove bold styling
+        }
+        stopPlayerTimer(c); // Ensure other timers are stopped
+    });
+
+    // Start the current player's timer
     startPlayerTimer(color);
 }
 
@@ -341,14 +351,17 @@ function requestUpdatedBoard() {
  * Requests the current player and displays it
  */
 function requestCurrentPlayer() {
-    console.log("Request Current Player");
+    console.log("Requesting Current Player");
     const request = new XMLHttpRequest();
-    request.open("GET", "/currentPlayer", false);
+    request.open("GET", "/currentPlayer", false); // Synchronous request
     request.send(null);
 
     if (request.status === 200) {
         const currentPlayerColor = request.response;
-        updateCurrentPlayer(currentPlayerColor);
+        console.log("Current Player Color:", currentPlayerColor); // Debugging
+        updateCurrentPlayer(currentPlayerColor.trim()); // Ensure no extra whitespace
+    } else {
+        console.error("Failed to get current player:", request.status);
     }
 }
 updateAllTimers(); // Call the function to update all timers
@@ -357,3 +370,5 @@ document.addEventListener("DOMContentLoaded", function() {
     // Now you can safely update the timer display or do other DOM manipulations
     updateAllTimers();
 });
+
+

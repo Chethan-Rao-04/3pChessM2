@@ -226,7 +226,7 @@ h2 {
 
 /* Game status styles */
 .game-status {
-    background-color: white;
+    background-color: wheat;
     font-family: Arial, sans-serif;
     padding: 1.5rem;
     border-radius: 12px;
@@ -248,26 +248,26 @@ h2 {
 }
 
 #timer #timer-R, #timer-G, #timer-B {
-    ffont-size: 1.2em;
+    font-size: 1.2em;
     margin: 5px;
     padding: 5px;
-    border: 1px solid #ccc;
-    background-color: #f0f0f0;
+    border: 2px solid #ccc;
+    background-color: #81c784;
     display: inline-block;
     text-align: center;
 }
 #timer-R {
-    background-color: #b8860b;
+
     color: white;
 }
 
 #timer-G {
-    background-color: #808080;
+
     color: white;
 }
 
 #timer-B {
-    background-color: #8b4513;
+
     color: white;
 }
 /* Style for the container */
