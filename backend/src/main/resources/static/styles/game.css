@@ -1,6 +1,6 @@
 /* Modern Chess Game UI Styles */
 :root {
-    --primary-color: #2c3e50;
+    --primary-color: #9f0909;
     --secondary-color: #34495e;
     --accent-color: #3498db;
     --text-color: #2c3e50;
@@ -401,5 +401,136 @@ text {
     border: 2px solid gold; /* Gold border for the active timer */
     color: gold; /* Gold text color */
     font-weight: bold; /* Emphasize the active timer */
+}
+
+
+
+/* Theme selector container */
+.theme-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Theme option styling */
+.theme-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.theme-option input[type="radio"] {
+    appearance: none; /* Remove default styling */
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.theme-option input[type="radio"]:checked {
+    border-color: #4caf50;
+    background-color: #4caf50;
+}
+
+.theme-option label {
+    font-size: 1rem;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+/* Hover effect */
+.theme-option:hover input[type="radio"] {
+    border-color: #4caf50;
+}
+
+.theme-option:hover label {
+    color: #4caf50;
+}
+
+.banner {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Mode Toggle Container */
+.dark-mode-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Toggle Switch Styling */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
+
+.switch input {
+    display: none; /* Hide the default checkbox */
+}
+
+.slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.slider:before {
+    content: "";
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+input:checked + .slider {
+    background-color: #4caf50;
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+body.dark-mode .leftpane {
+    background-color: #1e1e1e;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .theme-option label {
+    color: #e0e0e0;
+}
+
+body.dark-mode .theme-option input[type="radio"]:checked {
+    border-color: #76ff03;
+    background-color: #76ff03;
 }
 
