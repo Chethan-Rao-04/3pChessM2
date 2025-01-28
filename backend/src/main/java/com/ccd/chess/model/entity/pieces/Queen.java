@@ -49,19 +49,17 @@ public class Queen extends ChessPiece {
     public Set<Position> getHighlightPolygons(Map<Position, ChessPiece> boardMap, Position start) {
         Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
         Set<Position> positionSet = new HashSet<>();
-        Set<Position> visitedPositions = new HashSet<>();  // Track visited positions
         ChessPiece mover = this;
         Direction[][] steps = this.directions;
 
         for (Direction[] step : steps) {
             Position tmp = stepOrNull(mover, step, start);
-            while(tmp != null && !wallPiecePositions.contains(tmp) && !visitedPositions.contains(tmp)) {
-                visitedPositions.add(tmp);  // Mark position as visited
+            while(tmp != null && !wallPiecePositions.contains(tmp) && !positionSet.contains(tmp)) {
                 ChessPiece target = boardMap.get(tmp);
                 if(target == null) {
                     Logger.d(TAG, "Empty position: " + tmp);
                     positionSet.add(tmp);
-                    tmp = stepOrNull(mover, step, tmp);
+                    tmp = stepOrNull(mover, step, tmp, tmp.getColour()!=start.getColour());
                 } else if(target.getColour() != mover.getColour()) {
                     Logger.d(TAG, "Can capture: " + tmp);
                     positionSet.add(tmp);
