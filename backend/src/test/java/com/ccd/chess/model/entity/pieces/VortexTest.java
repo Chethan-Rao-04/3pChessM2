@@ -38,16 +38,79 @@ class VortexTest {
     }
 
     /**
-     * Tests if the vortex can move in all directions by checking if it has valid moves from a position.
+     * Tests if the vortex can move diagonally and then left from those positions.
      */
     @Test
-    void setupDirections_vortexCanMoveInAllDirections_True() {
+    void getHighlightPolygons_vortexMovesInValidPattern_True() {
         ChessPiece vortex = new Vortex(Colour.GREEN);
         Position startPos = BE2;
         boardMap.clear();
         boardMap.put(startPos, vortex);
         Set<Position> moves = vortex.getHighlightPolygons(boardMap, startPos);
-        assertFalse(moves.isEmpty());
+        // Should include diagonal moves and left moves from those diagonals
+        Set<Position> expectedMoves = ImmutableSet.of(
+            // Diagonal moves
+            BF1, BF3, BD1, BD3,
+            // Left moves from diagonals
+            BE1, BE3, BC1, BC3
+        );
+        assertEquals(expectedMoves, moves);
+    }
+
+    /**
+     * Tests if the vortex can capture enemy pieces.
+     */
+    @ParameterizedTest
+    @MethodSource("com.ccd.chess.test.DataProvider#pieceProvider")
+    void getHighlightPolygons_vortexCapturesEnemyPiece_True(ChessPiece piece) {
+        if(piece.getColour() == Colour.GREEN) return;
+
+        ChessPiece vortex = new Vortex(Colour.GREEN);
+        Position startPos = BE2;
+        Position capturePos = BF1;  // Diagonal position
+        boardMap.clear();
+        boardMap.put(startPos, vortex);
+        boardMap.put(capturePos, piece);
+        Set<Position> moves = vortex.getHighlightPolygons(boardMap, startPos);
+        assertTrue(moves.contains(capturePos));
+    }
+
+    /**
+     * Tests if the vortex cannot move through friendly pieces.
+     */
+    @ParameterizedTest
+    @MethodSource("com.ccd.chess.test.DataProvider#pieceProvider")
+    void getHighlightPolygons_vortexBlockedByFriendlyPiece_False(ChessPiece piece) {
+        if(piece.getColour() != Colour.GREEN) return;
+
+        ChessPiece vortex = new Vortex(Colour.GREEN);
+        Position startPos = BE2;
+        Position blockingPos = BF1;  // Diagonal position
+        Position leftPos = BE1;      // Left move from diagonal
+        boardMap.clear();
+        boardMap.put(startPos, vortex);
+        boardMap.put(blockingPos, piece);
+        Set<Position> moves = vortex.getHighlightPolygons(boardMap, startPos);
+        assertFalse(moves.contains(blockingPos));
+        assertFalse(moves.contains(leftPos));  // Should not be able to move left from blocked diagonal
+    }
+
+    /**
+     * Tests if the vortex can capture enemy pieces with left moves from diagonals.
+     */
+    @ParameterizedTest
+    @MethodSource("com.ccd.chess.test.DataProvider#pieceProvider")
+    void getHighlightPolygons_vortexCapturesWithLeftMove_True(ChessPiece piece) {
+        if(piece.getColour() == Colour.GREEN) return;
+
+        ChessPiece vortex = new Vortex(Colour.GREEN);
+        Position startPos = BE2;
+        Position capturePos = BE1;  // Left move from diagonal
+        boardMap.clear();
+        boardMap.put(startPos, vortex);
+        boardMap.put(capturePos, piece);
+        Set<Position> moves = vortex.getHighlightPolygons(boardMap, startPos);
+        assertTrue(moves.contains(capturePos));
     }
 
     /**
