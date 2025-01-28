@@ -261,6 +261,13 @@ public class BoardService {
         return getPiece(position) != null && getPiece(position).getColour()==turn;
     }
 
+    /**
+     * Gets the current board map.
+     * @return Map of positions to chess pieces
+     */
+    public Map<Position, ChessPiece> getBoardMap() {
+        return boardMap;
+    }
 
     /**     Check / Check-mate logic helper functions **/
 
