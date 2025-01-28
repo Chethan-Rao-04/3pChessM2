@@ -1,7 +1,13 @@
 package com.ccd.chess.test;
 
-import com.ccd.chess.entity.*;
-import com.ccd.chess.entity.enums.Colour;
+import com.ccd.chess.model.entity.pieces.Bishop;
+import com.ccd.chess.model.entity.pieces.ChessPiece;
+import com.ccd.chess.model.entity.pieces.King;
+import com.ccd.chess.model.entity.pieces.Knight;
+import com.ccd.chess.model.entity.pieces.Pawn;
+import com.ccd.chess.model.entity.pieces.Queen;
+import com.ccd.chess.model.entity.pieces.Rook;
+import com.ccd.chess.model.entity.enums.Colour;
 
 import java.util.stream.Stream;
 

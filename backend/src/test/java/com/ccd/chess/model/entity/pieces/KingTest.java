@@ -1,12 +1,13 @@
-package com.ccd.chess.entity;
+package com.ccd.chess.model.entity.pieces;
 
 import com.google.common.collect.ImmutableSet;
-import com.ccd.chess.entity.enums.Colour;
-import com.ccd.chess.entity.enums.Position;
-import com.ccd.chess.service.BoardService;
-import com.ccd.chess.entity.King;
-import com.ccd.chess.entity.Knight;
-import com.ccd.chess.entity.Rook;
+import com.ccd.chess.model.entity.enums.Colour;
+import com.ccd.chess.model.entity.enums.Position;
+import com.ccd.chess.service.impl.BoardServiceImpl;
+import com.ccd.chess.model.entity.pieces.ChessPiece;
+import com.ccd.chess.model.entity.pieces.King;
+import com.ccd.chess.model.entity.pieces.Knight;
+import com.ccd.chess.model.entity.pieces.Rook;
 import com.ccd.chess.test.DataProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Map;
 import java.util.Set;
 
-import static com.ccd.chess.entity.enums.Position.*;
+import static com.ccd.chess.model.entity.enums.Position.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -25,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class KingTest {
 
-    private BoardService board;
+    private BoardServiceImpl board;
     private Map<Position, ChessPiece> boardMap;
 
     /**
@@ -33,18 +34,8 @@ class KingTest {
      */
     @BeforeEach
     void initBeforeEachBoardTest() {
-        board = new BoardService();
+        board = new BoardServiceImpl();
         boardMap = board.getBoardMap();
-    }
-
-    /**
-     * Tests the setupDirections method,
-     * expecting the King movement directions to be non-empty.
-     */
-    @Test
-    void setupDirections_initPieceDirectionsIsEmpty_False() {
-        ChessPiece king = new King(Colour.GREEN);
-        assertNotEquals(0, king.directions.length);
     }
 
     /**
@@ -82,14 +73,10 @@ class KingTest {
     @ParameterizedTest
     @EnumSource(Colour.class)
     void isLegalMove_kingMovesToEmptySquare_True(Colour colour) {
-        BoardService board = new BoardService();
         boardMap.clear();
-
         Position kingPosition = BE2;
-
         ChessPiece king = new King(colour);
         boardMap.put(kingPosition, king);
-
         Set<Position> actualKingMoves = king.getHighlightPolygons(boardMap, kingPosition);
         assertTrue(actualKingMoves.contains(BE3));
     }
@@ -103,14 +90,11 @@ class KingTest {
     @ParameterizedTest
     @MethodSource("com.ccd.chess.test.DataProvider#pieceProvider")
     void isLegalMove_kingTakesItsColourPiece_False(ChessPiece piece) {
-        ChessPiece king = new King(piece.colour);
-
+        ChessPiece king = new King(piece.getColour());
         Position startPosition = BE4;
         Position endPosition = BD3;
-
         boardMap.put(startPosition, king);
         boardMap.put(endPosition, piece);
-
         Set<Position> actualKingMoves = king.getHighlightPolygons(boardMap, startPosition);
         assertFalse(actualKingMoves.contains(endPosition));
     }
@@ -124,11 +108,9 @@ class KingTest {
     @ParameterizedTest
     @MethodSource("com.ccd.chess.test.DataProvider#pieceProvider")
     void isLegalMove_kingTakesDifferentColourPiece_True(ChessPiece piece) {
-        ChessPiece king = new King(piece.colour.next());
-
+        ChessPiece king = new King(piece.getColour().next());
         Position startPosition = BE4;
         Position endPosition = BD3;
-
         boardMap.put(startPosition, king);
         boardMap.put(endPosition, piece);
         Set<Position> actualKingMoves = king.getHighlightPolygons(boardMap, startPosition);
@@ -144,17 +126,12 @@ class KingTest {
     @ParameterizedTest
     @EnumSource(Colour.class)
     void getHighlightPolygons_validPolygons_presentInPolygonList(Colour colour) {
-        BoardService board = new BoardService();
-        boardMap.clear();                 //empty board
+        boardMap.clear();
         Position startPosition = BE4;
-
         ChessPiece king = new King(colour);
         boardMap.put(startPosition, king);
-
-        Set<Position> expectedKingMoves =
-                ImmutableSet.of(GE4, BD3, RC4, BF3, BD4, BE3, RE4, BF4, RD4);
+        Set<Position> expectedKingMoves = ImmutableSet.of(GE4, BD3, RC4, BF3, BD4, BE3, RE4, BF4, RD4);
         Set<Position> actualKingMoves = king.getHighlightPolygons(boardMap, startPosition);
-
         assertEquals(expectedKingMoves, actualKingMoves);
     }
 
@@ -163,15 +140,11 @@ class KingTest {
      */
     @Test
     void isLegalMove_shortCastle_True() {
-        BoardService board = new BoardService();
         boardMap.clear();
-
         Position kingPosition = RE1;
         Position rookPosition = RH1;
-
         ChessPiece king = new King(kingPosition.getColour());
         ChessPiece rook = new Rook(rookPosition.getColour());
-
         boardMap.put(kingPosition, king);
         boardMap.put(rookPosition, rook);
         Set<Position> actualKingMoves = king.getHighlightPolygons(boardMap, kingPosition);
@@ -183,17 +156,13 @@ class KingTest {
      */
     @Test
     void isLegalMove_shortCastleOccupiedSquare_False() {
-        BoardService board = new BoardService();
         boardMap.clear();
-
         Position kingPosition = RE1;
         Position rookPosition = RH1;
         Position knightPosition = RG1;
-
         ChessPiece king = new King(kingPosition.getColour());
         ChessPiece rook = new Rook(rookPosition.getColour());
         ChessPiece knight = new Knight(knightPosition.getColour());
-
         boardMap.put(kingPosition, king);
         boardMap.put(rookPosition, rook);
         boardMap.put(knightPosition, knight);
@@ -206,15 +175,11 @@ class KingTest {
      */
     @Test
     void isLegalMove_longCastle_True() {
-        BoardService board = new BoardService();
         boardMap.clear();
-
         Position kingPosition = RE1;
         Position rookPosition = RA1;
-
         ChessPiece king = new King(kingPosition.getColour());
         ChessPiece rook = new Rook(rookPosition.getColour());
-
         boardMap.put(kingPosition, king);
         boardMap.put(rookPosition, rook);
         Set<Position> actualKingMoves = king.getHighlightPolygons(boardMap, kingPosition);
@@ -226,17 +191,13 @@ class KingTest {
      */
     @Test
     void isLegalMove_longCastleOccupiedSquare_False() {
-        BoardService board = new BoardService();
         boardMap.clear();
-
         Position kingPosition = RE1;
         Position rookPosition = RA1;
         Position knightPosition = RC1;
-
         ChessPiece king = new King(kingPosition.getColour());
         ChessPiece rook = new Rook(rookPosition.getColour());
         ChessPiece knight = new Knight(knightPosition.getColour());
-
         boardMap.put(kingPosition, king);
         boardMap.put(rookPosition, rook);
         boardMap.put(knightPosition, knight);
@@ -258,7 +219,6 @@ class KingTest {
     void toString_initKingAllColours_correctStringFormat(Colour colour) {
         ChessPiece king = new King(colour);
         String expectedFormat = colour.toString() + "K";
-
         assertEquals(expectedFormat, king.toString());
     }
 }

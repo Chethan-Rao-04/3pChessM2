@@ -1,9 +1,11 @@
-package com.ccd.chess.entity;
+package com.ccd.chess.model.entity.pieces;
 
 import com.google.common.collect.ImmutableSet;
-import com.ccd.chess.entity.enums.Colour;
-import com.ccd.chess.entity.enums.Position;
-import com.ccd.chess.service.BoardService;
+import com.ccd.chess.model.entity.enums.Colour;
+import com.ccd.chess.model.entity.enums.Position;
+import com.ccd.chess.service.impl.BoardServiceImpl;
+import com.ccd.chess.model.entity.pieces.ChessPiece;
+import com.ccd.chess.model.entity.pieces.Knight;
 import com.ccd.chess.test.DataProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +16,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Map;
 import java.util.Set;
 
-import static com.ccd.chess.entity.enums.Position.*;
+import static com.ccd.chess.model.entity.enums.Position.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -22,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class KnightTest {
 
-    private BoardService board;
+    private BoardServiceImpl board;
     private Map<Position, ChessPiece> boardMap;
 
     /**
@@ -30,18 +32,21 @@ class KnightTest {
      */
     @BeforeEach
     void initBeforeEachBoardTest() {
-        board = new BoardService();
+        board = new BoardServiceImpl();
         boardMap = board.getBoardMap();
     }
 
     /**
-     * Tests the setupDirections method,
-     * expecting the Knight movement directions to be non-empty.
+     * Tests if the knight can move in all directions by checking if it has valid moves from a position.
      */
     @Test
-    void setupDirections_initPieceDirectionsIsEmpty_False(){
-        ChessPiece knight = new Knight(Colour.BLUE);
-        assertNotEquals(0, knight.directions.length);
+    void setupDirections_knightCanMoveInAllDirections_True() {
+        ChessPiece knight = new Knight(Colour.GREEN);
+        Position startPos = BE2;
+        boardMap.clear();
+        boardMap.put(startPos, knight);
+        Set<Position> moves = knight.getHighlightPolygons(boardMap, startPos);
+        assertFalse(moves.isEmpty());
     }
 
     /**
@@ -53,11 +58,8 @@ class KnightTest {
     @ParameterizedTest
     @EnumSource(Colour.class)
     void isLegalMove_knightMovesToEmptySquare_True(Colour colour) {
-        BoardService board = new BoardService();
         boardMap.clear();
-
         Position knightPosition = BE2;
-
         ChessPiece knight = new Knight(colour);
         boardMap.put(knightPosition, knight);
         Set<Position> actualKnightMoves = knight.getHighlightPolygons(boardMap, knightPosition);
@@ -73,8 +75,7 @@ class KnightTest {
     @ParameterizedTest
     @MethodSource("com.ccd.chess.test.DataProvider#pieceProvider")
     void isLegalMove_knightTakesItsColourPiece_False(ChessPiece piece) {
-        ChessPiece knight = new Knight(piece.colour);
-
+        ChessPiece knight = new Knight(piece.getColour());
         boardMap.put(BE4, knight);
         boardMap.put(BC3, piece);
         Set<Position> actualKnightMoves = knight.getHighlightPolygons(boardMap, BE4);
@@ -90,9 +91,8 @@ class KnightTest {
     @ParameterizedTest
     @MethodSource("com.ccd.chess.test.DataProvider#pieceProvider")
     void isLegalMove_knightTakesDifferentColourPiece_True(ChessPiece piece) {
-        ChessPiece knight = new Knight(piece.colour.next());
+        ChessPiece knight = new Knight(piece.getColour().next());
         boardMap.put(BE4, knight);
-
         boardMap.put(BC3, piece);
         Set<Position> actualKnightMoves = knight.getHighlightPolygons(boardMap, BE4);
         assertTrue(actualKnightMoves.contains(BC3));
@@ -106,17 +106,13 @@ class KnightTest {
      */
     @ParameterizedTest
     @EnumSource(Colour.class)
-    void getHighlightPolygons_validPolygons_presentInPolygonList(Colour colour){
-        BoardService board = new BoardService();
+    void getHighlightPolygons_validPolygons_presentInPolygonList(Colour colour) {
         boardMap.clear();
         Position startPosition = BE4;
-
         ChessPiece knight = new Knight(colour);
         boardMap.put(startPosition, knight);
-
         Set<Position> expectedKnightMoves = ImmutableSet.of(BG3, BF2, BD2, BC3, GF4, GE3, RB4, RC3, RF4, RE3);
         Set<Position> actualKnightMoves = knight.getHighlightPolygons(boardMap, startPosition);
-
         assertEquals(expectedKnightMoves, actualKnightMoves);
     }
 
@@ -134,7 +130,6 @@ class KnightTest {
     void toString_initKnightAllColours_correctStringFormat(Colour colour) {
         ChessPiece knight = new Knight(colour);
         String expectedFormat = colour.toString() + "N";
-
         assertEquals(expectedFormat, knight.toString());
     }
 }

@@ -1,8 +1,12 @@
-package com.ccd.chess.entity;
+package com.ccd.chess.model.entity.pieces;
 
 import com.google.common.collect.ImmutableSet;
-import com.ccd.chess.entity.enums.Colour;
-import com.ccd.chess.entity.enums.Position;
+import com.ccd.chess.model.entity.enums.Colour;
+import com.ccd.chess.model.entity.enums.Position;
+import com.ccd.chess.service.impl.BoardServiceImpl;
+import com.ccd.chess.model.entity.pieces.ChessPiece;
+import com.ccd.chess.model.entity.pieces.Pawn;
+import com.ccd.chess.test.DataProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,48 +16,38 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Map;
 import java.util.Set;
 
-import static com.ccd.chess.entity.enums.Position.*;
+import static com.ccd.chess.model.entity.enums.Position.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test class for the {@link Pawn} class.
  * Contains various tests to verify the behavior of the Pawn piece in the game.
  */
- class PawnTest {
+class PawnTest {
 
-     private Board board;
-     private Map<Position, BasePiece> boardMap;
+    private BoardServiceImpl board;
+    private Map<Position, ChessPiece> boardMap;
 
     /**
      * Initializes a new Board instance before each test.
      */
-     @BeforeEach
-     void initBeforeEachBoardTest() {
-         board = new Board();
-         boardMap = board.boardMap;
-     }
-
-    /**
-     * Tests the setupDirections method,
-     * expecting the pawn movement directions to be non-empty.
-     */
-    @Test
-     void setupDirections_initPieceDirectionsIsEmpty_False() {
-        BasePiece pawn = new Pawn(Colour.BLUE);
-        assertNotEquals(0, pawn.directions.length);
+    @BeforeEach
+    void initBeforeEachBoardTest() {
+        board = new BoardServiceImpl();
+        boardMap = board.getBoardMap();
     }
 
     /**
      * Tests the isLegalMove method when a pawn moves forward to an empty square,
      * expecting true.
      */
-     @Test
-     void isLegalMove_pawnMoveForwardToEmptySquare_True() {
-         BasePiece pawn = new Pawn(Colour.BLUE);
-         boardMap.put(BE4, pawn);
-         Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, BE4);
-         assertTrue(actualPawnMoves.contains(RD4));
-     }
+    @Test
+    void isLegalMove_pawnMoveForwardToEmptySquare_True() {
+        ChessPiece pawn = new Pawn(Colour.BLUE);
+        boardMap.put(BE4, pawn);
+        Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, BE4);
+        assertTrue(actualPawnMoves.contains(RD4));
+    }
 
     /**
      * Parameterized test for isLegalMove method
@@ -64,8 +58,8 @@ import static org.junit.jupiter.api.Assertions.*;
      */
     @ParameterizedTest
     @EnumSource(Colour.class)
-     void isLegalMove_pawnAbsentFromStartPosition_False(Colour colour) {
-        BasePiece pawn = new Pawn(colour);
+    void isLegalMove_pawnAbsentFromStartPosition_False(Colour colour) {
+        ChessPiece pawn = new Pawn(colour);
         Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, BE4);
         assertFalse(actualPawnMoves.contains(BD3));
     }
@@ -78,14 +72,13 @@ import static org.junit.jupiter.api.Assertions.*;
      * @param piece Piece to be placed on the board
      */
     @ParameterizedTest
-    @MethodSource("model.DataProvider#pieceProvider")
-     void isLegalMove_pawnMoveForwardToTakeOpponentPiece_False(BasePiece piece) {
-        BasePiece pawn = new Pawn(Colour.BLUE);
+    @MethodSource("com.ccd.chess.test.DataProvider#pieceProvider")
+    void isLegalMove_pawnMoveForwardToTakeOpponentPiece_False(ChessPiece piece) {
+        ChessPiece pawn = new Pawn(Colour.BLUE);
         Position startPosition = BE4;
         Position endPosition = RD4;
 
         boardMap.put(startPosition, pawn);
-
         boardMap.put(endPosition, piece);
         Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, startPosition);
         assertFalse(actualPawnMoves.contains(endPosition));
@@ -99,17 +92,15 @@ import static org.junit.jupiter.api.Assertions.*;
      * @param piece Piece to be placed on the board
      */
     @ParameterizedTest
-     @MethodSource("model.DataProvider#pieceProvider")
-     void isLegalMove_pawnMoveDiagonalToTakeOpponentPiece_True(BasePiece piece) {
-        if(piece.getColour()==Colour.BLUE) return;
+    @MethodSource("com.ccd.chess.test.DataProvider#pieceProvider")
+    void isLegalMove_pawnMoveDiagonalToTakeOpponentPiece_True(ChessPiece piece) {
+        if(piece.getColour() == Colour.BLUE) return;
 
-        BasePiece pawn = new Pawn(Colour.BLUE);
-
+        ChessPiece pawn = new Pawn(Colour.BLUE);
         Position startPosition = BE4;
         Position endPosition = RC4;
 
         boardMap.put(startPosition, pawn);
-
         boardMap.put(endPosition, piece);
         Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, startPosition);
         assertTrue(actualPawnMoves.contains(endPosition));
@@ -122,35 +113,31 @@ import static org.junit.jupiter.api.Assertions.*;
      *
      * @param piece Piece to be placed on the board
      */
-     @ParameterizedTest
-     @MethodSource("model.DataProvider#pieceProvider")
-     void isLegalMove_pawnTakesItsColourPiece_False(BasePiece piece) {
+    @ParameterizedTest
+    @MethodSource("com.ccd.chess.test.DataProvider#pieceProvider")
+    void isLegalMove_pawnTakesItsColourPiece_False(ChessPiece piece) {
         if(piece.getColour() != Colour.BLUE) return;
 
-        BasePiece pawn = new Pawn(Colour.BLUE);
+        ChessPiece pawn = new Pawn(Colour.BLUE);
         Position startPosition = BE4;
         Position endPosition = RC4;
 
         boardMap.put(startPosition, pawn);
-
         boardMap.put(endPosition, piece);
-         Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, startPosition);
-         assertFalse(actualPawnMoves.contains(endPosition));
+        Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, startPosition);
+        assertFalse(actualPawnMoves.contains(endPosition));
     }
 
     /**
      * Tests the getHighlightPolygons method for a pawn in its initial position,
      * expecting valid polygons to be present in the list.
      */
-     @Test
-     void getHighlightPolygons_pawnInitialPosition_presentInPolygonList() {
-         Position startPosition = BB2;
-
-         BasePiece pawn = new Pawn(startPosition.getColour());
-
-         Set<Position> expectedPawnMoves = ImmutableSet.of(BB3, BB4);
-         Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, startPosition);
-
+    @Test
+    void getHighlightPolygons_pawnInitialPosition_presentInPolygonList() {
+        Position startPosition = BB2;
+        ChessPiece pawn = new Pawn(startPosition.getColour());
+        Set<Position> expectedPawnMoves = ImmutableSet.of(BB3, BB4);
+        Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, startPosition);
         assertEquals(expectedPawnMoves, actualPawnMoves);
     }
 
@@ -158,17 +145,14 @@ import static org.junit.jupiter.api.Assertions.*;
      * Tests the getHighlightPolygons method for a pawn that has already moved,
      * expecting valid polygons to be present in the list.
      */
-     @Test
-     void getHighlightPolygons_pawnAlreadyMoved_presentInPolygonList() {
-         Position startPosition = BE4;
-
-         BasePiece pawn = new Pawn(startPosition.getColour());
-
-         Set<Position> expectedPawnMoves = ImmutableSet.of(RD4);
-         Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, startPosition);
-
-         assertEquals(expectedPawnMoves, actualPawnMoves);
-     }
+    @Test
+    void getHighlightPolygons_pawnAlreadyMoved_presentInPolygonList() {
+        Position startPosition = BE4;
+        ChessPiece pawn = new Pawn(startPosition.getColour());
+        Set<Position> expectedPawnMoves = ImmutableSet.of(RD4);
+        Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, startPosition);
+        assertEquals(expectedPawnMoves, actualPawnMoves);
+    }
 
     /**
      * Parameterized test for toString method,
@@ -182,10 +166,8 @@ import static org.junit.jupiter.api.Assertions.*;
     @ParameterizedTest
     @EnumSource(Colour.class)
     void toString_initPawnAllColours_correctStringFormat(Colour colour) {
-        BasePiece pawn = new Pawn(colour);
+        ChessPiece pawn = new Pawn(colour);
         String expectedFormat = colour.toString() + "P";
-
         assertEquals(expectedFormat, pawn.toString());
     }
-
 }
