@@ -194,7 +194,7 @@ function updateBoard(response) {
 
     if (response['gameOver']) {
         stopPlayerTimer(response['winner']); // Stop the timer when the game is over
-        // Placeholder for showing the game over popup
+        alert(`Game Over!\nThe winner is ${response['winner']}`);
     }
 
     updatePieces(board);

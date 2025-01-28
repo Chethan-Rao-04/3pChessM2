@@ -167,6 +167,7 @@ public class BoardServiceImpl implements IBoardService {
                     if(isCheckMate(c, boardMap)) {
                         gameOver = true;
                         winner = mover.getColour().toString();
+
                     }
                 }
             }

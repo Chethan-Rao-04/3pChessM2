@@ -86,6 +86,13 @@ public class GameService implements IGameInterface {
         GameState clickResponse = new GameState(getBoard(), highlightPolygonsList);
         if(board.isGameOver()) {
             String winner = board.getWinner();
+            if (winner.equals("B")) {
+                winner = "SILVER";
+            } else if (winner.equals("G")) {
+                winner = "BRONZE";
+            } else if (winner.equals("R")) {
+                winner = "GOLD";
+            }
             Logger.d(TAG, "Winner: "+winner);
             clickResponse.setGameOver(winner);
         }
