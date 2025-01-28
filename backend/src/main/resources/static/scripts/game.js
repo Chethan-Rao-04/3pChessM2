@@ -123,8 +123,7 @@ function updateCurrentPlayer(color) {
     // Highlight the current player's timer
     const timerElement = document.getElementById(`timer-${color}`);
     if (timerElement) {
-        timerElement.style.color = pieceColors[color]; // Match the timer color to the player's color
-        // Highlight the active timer
+        timerElement.classList.add('timer-active'); // Add the active class
     }
 
     // Reset the other timers to default styling
@@ -132,8 +131,8 @@ function updateCurrentPlayer(color) {
     otherColors.forEach((c) => {
         const otherTimer = document.getElementById(`timer-${c}`);
         if (otherTimer) {
-            otherTimer.style.color = '#000'; // Reset to black or neutral color
-            otherTimer.style.fontWeight = "normal"; // Remove bold styling
+            otherTimer.classList.remove('timer-active'); // Remove the active class
+            otherTimer.style.color = 'black'; // Reset text color to black
         }
         stopPlayerTimer(c); // Ensure other timers are stopped
     });
