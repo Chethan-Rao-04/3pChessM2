@@ -9,22 +9,30 @@
 <body onload="bodyLoaded()">
 <div class="gameview">
     <div class="leftpane">
-        <h2 style="text-align: center;">Theme Settings</h2>
+        <h2 class ="banner" style="text-align: center;">Theme Settings</h2>
         <div class="theme-selector">
             <div class="theme-option">
                 <input type="radio" name="font" id="arialTheme" onclick="updateTheme(id)" checked>
-                <label for="arialTheme">Arial</label>
+                <label for="arialTheme">Plain</label>
             </div>
             <div class="theme-option">
                 <input type="radio" name="font" id="freeSerifTheme" onclick="updateTheme(id)">
-                <label for="freeSerifTheme">Free Serif</label>
+                <label for="freeSerifTheme">Royal</label>
             </div>
             <div class="theme-option">
                 <input type="radio" name="font" id="dejaVuSansTheme" onclick="updateTheme(id)">
-                <label for="dejaVuSansTheme">Dejavu Sans</label>
+                <label for="dejaVuSansTheme">Supreme</label>
             </div>
         </div>
-    </div>
+        <!-- Dark Mode Toggle -->
+        <div class="dark-mode-toggle">
+            <label class="switch">
+                <input type="checkbox" id="darkModeToggle" onclick="toggleDarkMode()">
+                <span class="slider"></span>
+            </label>
+            <span>Dark Mode</span>
+        </div>
+</div>
     <div class="middlepane">
         <h1 style="text-align: center;">Three Player Chess</h1>
         <div id="popup" class="popup">
@@ -142,7 +150,7 @@
     </div>
 
     <div class="rightpane">
-        <h2 style="text-align: center;">Game Status</h2>
+        <h2 class = "banner" style="text-align: center;">Game Status</h2>
         <div class="game-status">
             <div class="status-row">
                 <span class="status-label">Current Player:</span>
