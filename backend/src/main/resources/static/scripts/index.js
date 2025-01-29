@@ -1,26 +1,35 @@
 function checkInputs() {
-    const pl1 = document.getElementById('pl1').value;
-    const pl2 = document.getElementById('pl2').value;
-    const pl3 = document.getElementById('pl3').value;
+    const goldPlayer = document.getElementById('gold-name').value.trim();
+    const silverPlayer = document.getElementById('silver-name').value.trim();
+    const bronzePlayer = document.getElementById('bronze-name').value.trim();
     const newGameButton = document.getElementById('newgamebtn');
 
-    if (pl1 !== '' && pl2 !== '' && pl3 !== '') {
-        newGameButton.removeAttribute('disabled');
+    if (goldPlayer && silverPlayer && bronzePlayer) {
+        newGameButton.removeAttribute('disabled'); // Enable button
     } else {
-        newGameButton.setAttribute('disabled', 'true');
+        newGameButton.setAttribute('disabled', 'true'); // Keep it disabled
     }
 }
 
+// Event listeners to check input fields dynamically
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("gold-name").addEventListener("input", checkInputs);
+    document.getElementById("silver-name").addEventListener("input", checkInputs);
+    document.getElementById("bronze-name").addEventListener("input", checkInputs);
+});
+
 async function newGame() {
     try {
-        const pl1 = document.getElementById('pl1').value;
-        const pl2 = document.getElementById('pl2').value;
-        const pl3 = document.getElementById('pl3').value;
+        const goldPlayer = document.getElementById('gold-name').value.trim();
+        const silverPlayer = document.getElementById('silver-name').value.trim();
+        const bronzePlayer = document.getElementById('bronze-name').value.trim();
 
-        localStorage.setItem('Blue', pl1);
-        localStorage.setItem('Green', pl2);
-        localStorage.setItem('Red', pl3);
+        // Store player names in localStorage
+        localStorage.setItem('Gold', goldPlayer);
+        localStorage.setItem('Silver', silverPlayer);
+        localStorage.setItem('Bronze', bronzePlayer);
 
+        // Send request to start a new game
         const response = await fetch('/newGame', {
             method: 'GET',
             headers: {
@@ -29,7 +38,7 @@ async function newGame() {
         });
 
         if (response.ok) {
-            window.location.href = '/game.html';
+            window.location.href = '/game.html'; // Navigate to the game page
         } else {
             console.error('Failed to start new game:', response.statusText);
             alert('Failed to start new game. Please try again.');

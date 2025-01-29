@@ -122,3 +122,75 @@ button:hover:enabled {
 .footer a:hover {
     color: #81c784;
 }
+
+/* Container for players */
+.player-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Individual player card */
+.player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    width: 140px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.player:hover {
+    transform: scale(1.05);
+}
+
+/* Player Colors */
+.gold-player {
+    background-color: #FFD700;
+    color: black;
+}
+
+.silver-player {
+    background-color: #C0C0C0;
+    color: black;
+}
+
+.bronze-player {
+    background-color: #CD7F32;
+    color: white;
+}
+
+/* Chess Symbol Styling */
+.player-symbol {
+    font-size: 3em;
+    margin-bottom: 5px;
+}
+
+/* Player Title */
+.player-title {
+    font-size: 1em;
+    margin-bottom: 5px;
+}
+
+/* Input Field */
+.player input {
+    width: 80%;
+    padding: 5px;
+    margin-top: 5px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 0.9em;
+    transition: border-color 0.3s ease;
+}
+
+.player input:focus {
+    border-color: black;
+    outline: none;
+}
