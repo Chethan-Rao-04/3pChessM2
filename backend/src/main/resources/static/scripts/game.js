@@ -381,3 +381,17 @@ function toggleDarkMode() {
 }
 
 
+// Show the Quit Confirmation Popup
+function showQuitPopup() {
+    document.getElementById('quit-popup').classList.add('show');
+}
+
+// Close the Quit Popup
+function closeQuitPopup() {
+    document.getElementById('quit-popup').classList.remove('show');
+}
+
+// Quit the Game (Redirect to Home)
+function quitGame() {
+    window.location.href = "index.html"; // Redirect to home page
+}

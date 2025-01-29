@@ -194,3 +194,17 @@ button:hover:enabled {
     border-color: black;
     outline: none;
 }
+
+/* Style for player symbols */
+.player-symbol {
+    font-size: 40px;  /* Increase visibility */
+    font-weight: bold;
+    margin-right: 10px;
+    display: inline-block;
+    text-align: center;
+    width: 50px;
+}
+
+.gold-player .player-symbol::before { content: "♚"; }
+.silver-player .player-symbol::before { content: "♛"; }
+.bronze-player .player-symbol::before { content: "♞"; }

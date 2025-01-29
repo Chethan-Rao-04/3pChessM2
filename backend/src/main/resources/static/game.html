@@ -183,7 +183,21 @@
             </div>
         </div>
     </div>
+    <!-- Quit Button - Now Outside of game-status -->
+
+    <!-- Quit Confirmation Popover -->
+    <div id="quit-popup" class="popup-overlay">
+        <div class="popup-box">
+            <h2>Are you sure you want to quit?</h2>
+            <p>Your progress will be lost.</p>
+            <div class="popup-buttons">
+                <button onclick="quitGame()">Yes, Quit</button>
+                <button onclick="closeQuitPopup()">Continue Playing</button>
+            </div>
+        </div>
+    </div>
 </div>
+<button id="quit-btn" onclick="showQuitPopup()">Quit Game</button>
 <script src="scripts/game.js"></script>
 </body>
 </html>
