@@ -3,10 +3,13 @@ package com.ccd.chess.controller;
 import com.ccd.chess.model.dto.GameState;
 import com.ccd.chess.exceptions.InvalidPositionException;
 import com.ccd.chess.service.impl.GameService;
+import com.ccd.chess.service.impl.BoardServiceImpl;
 import com.ccd.chess.service.interfaces.IGameInterface;
+import com.ccd.chess.service.interfaces.IBoardService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
 
@@ -15,15 +18,18 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:8090")
 public class GameController {
     private IGameInterface game;
+    private final IBoardService boardService;
 
-    public GameController() {
-        this.game = new GameService();
+    @Autowired
+    public GameController(IBoardService boardService) {
+        this.boardService = boardService;
+        this.game = new GameService(boardService);
     }
 
     @GetMapping("/newGame")
     public ResponseEntity<Void> handleNewGame() {
         System.out.println("New Game");
-        this.game = new GameService();
+        this.game = new GameService(boardService);
         return ResponseEntity.ok().build();
     }
 
