@@ -2,7 +2,7 @@ package com.ccd.chess.model.entity.enums;
 
 import com.ccd.chess.exceptions.InvalidPositionException;
 
-public enum Position{
+public enum PositionOnBoard{
 
     BA1(Colour.BLUE,0,0), BA2(Colour.BLUE,1,0), BA3(Colour.BLUE,2,0), BA4(Colour.BLUE,3,0),
     BB1(Colour.BLUE,0,1), BB2(Colour.BLUE,1,1), BB3(Colour.BLUE,2,1), BB4(Colour.BLUE,3,1),
@@ -38,7 +38,7 @@ public enum Position{
     /**
      * Position enum constructor
      **/
-    Position(Colour colour, int row, int column){
+    PositionOnBoard(Colour colour, int row, int column){
         this.colour = colour; this.row = row; this.column = column;
     }
 
@@ -74,13 +74,13 @@ public enum Position{
      * @return the position of the specified colour, row and column
      * @throws InvalidPositionException if outside the bounds of the board.
      **/
-    public static Position get(Colour colour, int row, int column) throws InvalidPositionException {
+    public static PositionOnBoard get(Colour colour, int row, int column) throws InvalidPositionException {
         int index= row+4*column;
         if(index>=0 && index<32){
             switch(colour){
-                case BLUE: return Position.values()[index];
-                case GREEN: return Position.values()[index+32];
-                case RED: return Position.values()[index+64];
+                case BLUE: return PositionOnBoard.values()[index];
+                case GREEN: return PositionOnBoard.values()[index+32];
+                case RED: return PositionOnBoard.values()[index+64];
             }
         }
         throw new InvalidPositionException("No such position.");
@@ -91,9 +91,9 @@ public enum Position{
      * @return the position of the specified polygon Index
      * @throws InvalidPositionException if outside the bounds of the board.
      **/
-    public static Position get(int polygonIndex) throws InvalidPositionException {
+    public static PositionOnBoard get(int polygonIndex) throws InvalidPositionException {
         if(polygonIndex >=0 && polygonIndex <=95) {
-            return Position.values()[polygonIndex];
+            return PositionOnBoard.values()[polygonIndex];
         }
         throw new InvalidPositionException("No such position.");
     }
@@ -104,7 +104,7 @@ public enum Position{
      * @return Position the position of the specified polygon Index
      * @throws InvalidPositionException if outside the bounds of the board.
      **/
-    public Position neighbour(Direction direction) throws InvalidPositionException {
+    public PositionOnBoard neighbour(Direction direction) throws InvalidPositionException {
         switch(direction){
             case FORWARD:
                 if(row<3) {

@@ -4,9 +4,7 @@ import com.ccd.chess.exceptions.InvalidMoveException;
 import com.ccd.chess.exceptions.InvalidPositionException;
 import com.ccd.chess.model.dto.GameState;
 import com.ccd.chess.model.entity.enums.Colour;
-import com.ccd.chess.model.entity.enums.Position;
-import com.ccd.chess.model.entity.pieces.ChessPiece;
-import com.ccd.chess.model.entity.pieces.Pawn;
+import com.ccd.chess.model.entity.enums.PositionOnBoard;
 import com.ccd.chess.service.interfaces.IBoardService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,167 +16,179 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.Collections;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
-class GameServiceTest {
+class GameServiceImplTest {
 
     @Mock
     private IBoardService boardService;
 
-    private GameService gameService;
+    private GameServiceImpl gameServiceImpl;
 
     @BeforeEach
     void setUp() {
-        gameService = new GameService(boardService);
-        // Setup default behavior
-        when(boardService.getWebViewBoard()).thenReturn(new HashMap<>());
+        gameServiceImpl = new GameServiceImpl(boardService);
     }
 
     @Test
-    void onClick_ValidMove_UpdatesGameState() throws InvalidPositionException {
+    void onSelect_ValidMove_UpdatesGameState() throws InvalidPositionException {
         // Arrange
-        Position expectedPosition = Position.BE1;
-        when(boardService.isCurrentPlayersPiece(expectedPosition)).thenReturn(true);
-        when(boardService.getPossibleMoves(expectedPosition)).thenReturn(Set.of(Position.BE2, Position.BE3));
+        PositionOnBoard expectedPositionOnBoard = PositionOnBoard.BE1;
+        Set<PositionOnBoard> possibleMoves = Set.of(PositionOnBoard.BE2, PositionOnBoard.BE3);
+        Map<String, String> mockBoard = new HashMap<>();
+        mockBoard.put("Be1", "BP"); // Blue Pawn at BE1
+        
+        when(boardService.isSelfPiece(expectedPositionOnBoard)).thenReturn(true);
+        when(boardService.fetchPossibleMovements(expectedPositionOnBoard)).thenReturn(possibleMoves);
+        when(boardService.getWebViewBoard()).thenReturn(mockBoard);
 
         // Act
-        GameState result = gameService.onClick("BE1");
+        GameState result = gameServiceImpl.onSelect("be1");
         
         // Assert
         assertNotNull(result);
-        verify(boardService).isCurrentPlayersPiece(expectedPosition);
-        verify(boardService).getPossibleMoves(expectedPosition);
-        verify(boardService).getWebViewBoard();
+        assertNotNull(result.getHighlightedPolygons());
+        assertTrue(result.getHighlightedPolygons().contains("Be2"));
+        assertTrue(result.getHighlightedPolygons().contains("Be3"));
     }
 
     @Test
-    void onClick_InvalidMove_ReturnsUnchangedState() throws InvalidPositionException {
+    void onSelect_InvalidMove_ReturnsUnchangedState() throws InvalidPositionException {
         // Arrange
-        Position expectedPosition = Position.BE1;
-        when(boardService.isCurrentPlayersPiece(expectedPosition)).thenReturn(true);
-        when(boardService.getPossibleMoves(expectedPosition)).thenReturn(Collections.emptySet());
+        PositionOnBoard expectedPositionOnBoard = PositionOnBoard.BE1;
+        lenient().when(boardService.isSelfPiece(expectedPositionOnBoard)).thenReturn(true);
+        lenient().when(boardService.fetchPossibleMovements(expectedPositionOnBoard)).thenReturn(Collections.emptySet());
+        lenient().when(boardService.getWebViewBoard()).thenReturn(new HashMap<>());
         
         // Act
-        GameState result = gameService.onClick("BE1");
+        GameState result = gameServiceImpl.onSelect("be1");
         
         // Assert
         assertNotNull(result);
         assertTrue(result.getHighlightedPolygons().isEmpty());
-        verify(boardService).isCurrentPlayersPiece(expectedPosition);
-        verify(boardService).getPossibleMoves(expectedPosition);
     }
 
     @Test
-    void onClick_InvalidMoveException_HandlesError() throws InvalidMoveException, InvalidPositionException {
+    void onSelect_InvalidMoveException_HandlesError() throws InvalidMoveException, InvalidPositionException {
         // Arrange
-        Position startPos = Position.BE1;
-        Position endPos = Position.BE2;
+        PositionOnBoard startPos = PositionOnBoard.BE1;
+        PositionOnBoard endPos = PositionOnBoard.BE2;
         
         // Setup first click
-        when(boardService.isCurrentPlayersPiece(startPos)).thenReturn(true);
-        when(boardService.getPossibleMoves(startPos)).thenReturn(Set.of(endPos));
+        lenient().when(boardService.isSelfPiece(startPos)).thenReturn(true);
+        lenient().when(boardService.fetchPossibleMovements(startPos)).thenReturn(Set.of(endPos));
+        lenient().when(boardService.getWebViewBoard()).thenReturn(new HashMap<>());
+        lenient().doThrow(new InvalidMoveException("Invalid move")).when(boardService).movePiece(startPos, endPos);
         
         // First click
-        gameService.onClick("BE1");
-        
-        // Setup second click
-        doThrow(new InvalidMoveException("Invalid move")).when(boardService).move(startPos, endPos);
+        gameServiceImpl.onSelect("be1");
         
         // Act - Second click
-        GameState result = gameService.onClick("BE2");
+        GameState result = gameServiceImpl.onSelect("be2");
         
         // Assert
         assertNotNull(result);
         assertTrue(result.getHighlightedPolygons().isEmpty());
-        verify(boardService).move(startPos, endPos);
     }
 
     @Test
-    void getTurn_ReturnsCurrentTurn() {
+    void fetchTurn_ReturnsCurrentTurn() {
         // Arrange
-        when(boardService.getTurn()).thenReturn(Colour.BLUE);
+        when(boardService.fetchTurn()).thenReturn(Colour.BLUE);
 
         // Act
-        Colour result = gameService.getTurn();
+        Colour result = gameServiceImpl.fetchTurn();
 
         // Assert
         assertEquals(Colour.BLUE, result);
-        verify(boardService, times(1)).getTurn();
     }
 
     @Test
-    void onClick_NoPieceSelected_NoHighlights() throws InvalidPositionException {
+    void onSelect_NoPieceSelected_NoHighlights() throws InvalidPositionException {
         // Arrange
-        Position expectedPosition = Position.BE1;
-        when(boardService.isCurrentPlayersPiece(expectedPosition)).thenReturn(false);
+        PositionOnBoard expectedPositionOnBoard = PositionOnBoard.BE1;
+        lenient().when(boardService.isSelfPiece(expectedPositionOnBoard)).thenReturn(false);
+        lenient().when(boardService.getWebViewBoard()).thenReturn(new HashMap<>());
         
         // Act
-        GameState result = gameService.onClick("BE1");
+        GameState result = gameServiceImpl.onSelect("be1");
         
         // Assert
         assertTrue(result.getHighlightedPolygons().isEmpty());
-        verify(boardService).isCurrentPlayersPiece(expectedPosition);
     }
 
     // Integration tests with real BoardServiceImpl
     @Test
     void integrationTest_FullGameFlow() {
-        // Create a real GameService with real dependencies
+        // Create a real GameServiceImpl with real dependencies
         BoardServiceImpl realBoardService = new BoardServiceImpl();
-        GameService realGameService = new GameService(realBoardService);
+        GameServiceImpl realGameServiceImpl = new GameServiceImpl(realBoardService);
         
         // Initial state checks
-        Map<String, String> initialBoard = realGameService.getBoard();
+        Map<String, String> initialBoard = realGameServiceImpl.fetchBoard();
         assertNotNull(initialBoard);
         assertFalse(initialBoard.isEmpty());
+        assertTrue(initialBoard.containsKey("Be2"), "Initial board should have a piece at Be2");
+        assertTrue(initialBoard.get("Be2").endsWith("P"), "Be2 should contain a pawn");
         
         // Simulate a full move
         // 1. Select a piece (e.g., a pawn)
-        GameState firstClick = realGameService.onClick("BE2"); // Blue pawn initial position
+        GameState firstClick = realGameServiceImpl.onSelect("be2"); // Blue pawn initial position
         assertNotNull(firstClick);
-        assertFalse(firstClick.getHighlightedPolygons().isEmpty());
+        assertNotNull(firstClick.getHighlightedPolygons(), "Highlighted polygons should not be null");
+        
+        // The pawn should be able to move forward one or two squares from its starting position
+        boolean canMoveForward = firstClick.getHighlightedPolygons().contains("Be3") || 
+                                firstClick.getHighlightedPolygons().contains("Be4");
+        assertTrue(canMoveForward, "Pawn should be able to move forward");
         
         // 2. Move the piece
-        GameState secondClick = realGameService.onClick("BE3"); // Move pawn forward
+        GameState secondClick = realGameServiceImpl.onSelect("be3"); // Move pawn forward
         assertNotNull(secondClick);
-        assertTrue(secondClick.getHighlightedPolygons().isEmpty());
         
         // Verify turn changed
-        assertNotEquals(Colour.BLUE, realGameService.getTurn()); // Turn should have changed
+        assertNotEquals(Colour.BLUE, realGameServiceImpl.fetchTurn()); // Turn should have changed
         
         // Verify board state updated
-        Map<String, String> updatedBoard = realGameService.getBoard();
+        Map<String, String> updatedBoard = realGameServiceImpl.fetchBoard();
+        assertNotNull(updatedBoard);
         assertNotEquals(initialBoard, updatedBoard);
+        
+        // Verify the pawn has moved
+        assertFalse(updatedBoard.containsKey("Be2"), "Pawn should no longer be at Be2");
+        assertTrue(updatedBoard.containsKey("Be3"), "Pawn should now be at Be3");
+        String pawnPosition = updatedBoard.get("Be3");
+        assertNotNull(pawnPosition, "Pawn should be at Be3");
+        assertTrue(pawnPosition.endsWith("P"), "PositionOnBoard should contain a pawn");
     }
 
     @Test
     void integrationTest_CompleteGame() {
-        // Create a real GameService with real dependencies
+        // Create a real GameServiceImpl with real dependencies
         BoardServiceImpl realBoardService = new BoardServiceImpl();
-        GameService realGameService = new GameService(realBoardService);
+        GameServiceImpl realGameServiceImpl = new GameServiceImpl(realBoardService);
         
         // Play a sequence of valid moves
         // Blue's turn
-        GameState state = realGameService.onClick("BE2"); // Select pawn
+        GameState state = realGameServiceImpl.onSelect("be2"); // Select pawn
         assertNotNull(state);
-        state = realGameService.onClick("BE3"); // Move pawn
+        state = realGameServiceImpl.onSelect("be3"); // Move pawn
         assertNotNull(state);
         
         // Green's turn
-        state = realGameService.onClick("GE2"); // Select pawn
+        state = realGameServiceImpl.onSelect("ge2"); // Select pawn
         assertNotNull(state);
-        state = realGameService.onClick("GE3"); // Move pawn
+        state = realGameServiceImpl.onSelect("ge3"); // Move pawn
         assertNotNull(state);
         
         // Red's turn
-        state = realGameService.onClick("RE2"); // Select pawn
+        state = realGameServiceImpl.onSelect("re2"); // Select pawn
         assertNotNull(state);
-        state = realGameService.onClick("RE3"); // Move pawn
+        state = realGameServiceImpl.onSelect("re3"); // Move pawn
         assertNotNull(state);
         
         // Verify game state

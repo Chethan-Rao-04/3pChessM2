@@ -1,12 +1,9 @@
 package com.ccd.chess.model.entity.pieces;
 
+import com.ccd.chess.model.entity.enums.PositionOnBoard;
+import com.ccd.chess.service.impl.BoardServiceImpl;
 import com.google.common.collect.ImmutableSet;
 import com.ccd.chess.model.entity.enums.Colour;
-import com.ccd.chess.model.entity.enums.Position;
-import com.ccd.chess.service.impl.BoardServiceImpl;
-import com.ccd.chess.model.entity.pieces.ChessPiece;
-import com.ccd.chess.model.entity.pieces.Pawn;
-import com.ccd.chess.test.DataProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,7 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Map;
 import java.util.Set;
 
-import static com.ccd.chess.model.entity.enums.Position.*;
+import static com.ccd.chess.model.entity.enums.PositionOnBoard.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -26,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PawnTest {
 
     private BoardServiceImpl board;
-    private Map<Position, ChessPiece> boardMap;
+    private Map<PositionOnBoard, ChessPiece> boardMap;
 
     /**
      * Initializes a new Board instance before each test.
@@ -38,19 +35,19 @@ class PawnTest {
     }
 
     /**
-     * Tests the isLegalMove method when a pawn moves forward to an empty square,
+     * Tests the isAllowedMove method when a pawn moves forward to an empty square,
      * expecting true.
      */
     @Test
     void isLegalMove_pawnMoveForwardToEmptySquare_True() {
         ChessPiece pawn = new Pawn(Colour.BLUE);
         boardMap.put(BE4, pawn);
-        Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, BE4);
+        Set<PositionOnBoard> actualPawnMoves = pawn.getMovablePositions(boardMap, BE4);
         assertTrue(actualPawnMoves.contains(RD4));
     }
 
     /**
-     * Parameterized test for isLegalMove method
+     * Parameterized test for isAllowedMove method
      * when a pawn is absent from its starting position,
      * expecting false.
      *
@@ -60,12 +57,12 @@ class PawnTest {
     @EnumSource(Colour.class)
     void isLegalMove_pawnAbsentFromStartPosition_False(Colour colour) {
         ChessPiece pawn = new Pawn(colour);
-        Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, BE4);
+        Set<PositionOnBoard> actualPawnMoves = pawn.getMovablePositions(boardMap, BE4);
         assertFalse(actualPawnMoves.contains(BD3));
     }
 
     /**
-     * Parameterized test for isLegalMove method
+     * Parameterized test for isAllowedMove method
      * when a pawn moves forward to take an opponent's piece,
      * expecting false.
      *
@@ -75,17 +72,17 @@ class PawnTest {
     @MethodSource("com.ccd.chess.test.DataProvider#pieceProvider")
     void isLegalMove_pawnMoveForwardToTakeOpponentPiece_False(ChessPiece piece) {
         ChessPiece pawn = new Pawn(Colour.BLUE);
-        Position startPosition = BE4;
-        Position endPosition = RD4;
+        PositionOnBoard startPositionOnBoard = BE4;
+        PositionOnBoard endPositionOnBoard = RD4;
 
-        boardMap.put(startPosition, pawn);
-        boardMap.put(endPosition, piece);
-        Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, startPosition);
-        assertFalse(actualPawnMoves.contains(endPosition));
+        boardMap.put(startPositionOnBoard, pawn);
+        boardMap.put(endPositionOnBoard, piece);
+        Set<PositionOnBoard> actualPawnMoves = pawn.getMovablePositions(boardMap, startPositionOnBoard);
+        assertFalse(actualPawnMoves.contains(endPositionOnBoard));
     }
 
     /**
-     * Parameterized test for isLegalMove method
+     * Parameterized test for isAllowedMove method
      * when a pawn moves diagonally to take an opponent's piece,
      * expecting true.
      *
@@ -97,17 +94,17 @@ class PawnTest {
         if(piece.getColour() == Colour.BLUE) return;
 
         ChessPiece pawn = new Pawn(Colour.BLUE);
-        Position startPosition = BE4;
-        Position endPosition = RC4;
+        PositionOnBoard startPositionOnBoard = BE4;
+        PositionOnBoard endPositionOnBoard = RC4;
 
-        boardMap.put(startPosition, pawn);
-        boardMap.put(endPosition, piece);
-        Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, startPosition);
-        assertTrue(actualPawnMoves.contains(endPosition));
+        boardMap.put(startPositionOnBoard, pawn);
+        boardMap.put(endPositionOnBoard, piece);
+        Set<PositionOnBoard> actualPawnMoves = pawn.getMovablePositions(boardMap, startPositionOnBoard);
+        assertTrue(actualPawnMoves.contains(endPositionOnBoard));
     }
 
     /**
-     * Parameterized test for isLegalMove method
+     * Parameterized test for isAllowedMove method
      * when a pawn takes a piece of its own colour,
      * expecting false.
      *
@@ -119,38 +116,38 @@ class PawnTest {
         if(piece.getColour() != Colour.BLUE) return;
 
         ChessPiece pawn = new Pawn(Colour.BLUE);
-        Position startPosition = BE4;
-        Position endPosition = RC4;
+        PositionOnBoard startPositionOnBoard = BE4;
+        PositionOnBoard endPositionOnBoard = RC4;
 
-        boardMap.put(startPosition, pawn);
-        boardMap.put(endPosition, piece);
-        Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, startPosition);
-        assertFalse(actualPawnMoves.contains(endPosition));
+        boardMap.put(startPositionOnBoard, pawn);
+        boardMap.put(endPositionOnBoard, piece);
+        Set<PositionOnBoard> actualPawnMoves = pawn.getMovablePositions(boardMap, startPositionOnBoard);
+        assertFalse(actualPawnMoves.contains(endPositionOnBoard));
     }
 
     /**
-     * Tests the getHighlightPolygons method for a pawn in its initial position,
+     * Tests the getMovablePositions method for a pawn in its initial position,
      * expecting valid polygons to be present in the list.
      */
     @Test
-    void getHighlightPolygons_pawnInitialPosition_presentInPolygonList() {
-        Position startPosition = BB2;
-        ChessPiece pawn = new Pawn(startPosition.getColour());
-        Set<Position> expectedPawnMoves = ImmutableSet.of(BB3, BB4);
-        Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, startPosition);
+    void getMovablePositions_pawnInitialPosition_presentInPolygonList() {
+        PositionOnBoard startPositionOnBoard = BB2;
+        ChessPiece pawn = new Pawn(startPositionOnBoard.getColour());
+        Set<PositionOnBoard> expectedPawnMoves = ImmutableSet.of(BB3, BB4);
+        Set<PositionOnBoard> actualPawnMoves = pawn.getMovablePositions(boardMap, startPositionOnBoard);
         assertEquals(expectedPawnMoves, actualPawnMoves);
     }
 
     /**
-     * Tests the getHighlightPolygons method for a pawn that has already moved,
+     * Tests the getMovablePositions method for a pawn that has already moved,
      * expecting valid polygons to be present in the list.
      */
     @Test
-    void getHighlightPolygons_pawnAlreadyMoved_presentInPolygonList() {
-        Position startPosition = BE4;
-        ChessPiece pawn = new Pawn(startPosition.getColour());
-        Set<Position> expectedPawnMoves = ImmutableSet.of(RD4);
-        Set<Position> actualPawnMoves = pawn.getHighlightPolygons(boardMap, startPosition);
+    void getMovablePositions_pawnAlreadyMoved_presentInPolygonList() {
+        PositionOnBoard startPositionOnBoard = BE4;
+        ChessPiece pawn = new Pawn(startPositionOnBoard.getColour());
+        Set<PositionOnBoard> expectedPawnMoves = ImmutableSet.of(RD4);
+        Set<PositionOnBoard> actualPawnMoves = pawn.getMovablePositions(boardMap, startPositionOnBoard);
         assertEquals(expectedPawnMoves, actualPawnMoves);
     }
 
