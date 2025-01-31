@@ -3,7 +3,7 @@ package com.ccd.chess.service.impl;
 import com.ccd.chess.exceptions.InvalidPositionException;
 import com.ccd.chess.model.dto.GameState;
 import com.ccd.chess.model.entity.enums.Colour;
-import com.ccd.chess.model.entity.enums.Position;
+import com.ccd.chess.model.entity.enums.PositionOnBoard;
 import com.ccd.chess.service.interfaces.IGameInterface;
 import com.ccd.chess.service.interfaces.IBoardService;
 import com.ccd.chess.util.BoardAdapter;
@@ -21,15 +21,9 @@ public class GameService implements IGameInterface {
 
     private static final String TAG = GameService.class.getSimpleName();
     private final IBoardService board;
-    private Position moveStartPos, moveEndPos;
-    private Set<Position> highlightPolygons;
+    private PositionOnBoard moveStartPos, moveEndPos;
+    private Set<PositionOnBoard> highlightPolygons;
 
-    /**
-     * GameMain Constructor. Entry point to the backend logic
-     * */
-    public GameService() {
-        this(new BoardServiceImpl());
-    }
 
     /**
      * Constructor with dependency injection for testing
@@ -66,7 +60,7 @@ public class GameService implements IGameInterface {
             int polygonPos = calculatePolygonId(polygonLabel);
             Logger.d(TAG, ">>> onClick called: polygonPos:  "+polygonPos);
 
-            Position position = Position.get(polygonPos);
+            PositionOnBoard position = PositionOnBoard.get(polygonPos);
             if (board.isCurrentPlayersPiece(position)) { // player selects his own piece - first move
                 moveStartPos = position;
                 Logger.d(TAG, ">>> moveStartPos: " + moveStartPos);
@@ -75,7 +69,7 @@ public class GameService implements IGameInterface {
                     moveStartPos = null;
                 }
             } else if(moveStartPos != null){
-                moveEndPos = Position.get(polygonPos);
+                moveEndPos = PositionOnBoard.get(polygonPos);
                 board.move(moveStartPos, moveEndPos);
                 Logger.d(TAG, ">>> moveStartPos: " + moveStartPos + ", moveEndPos: " + moveEndPos);
 
@@ -116,7 +110,5 @@ public class GameService implements IGameInterface {
     public Colour getTurn() {
         Logger.d(TAG, "Current turn: " + board.getTurn());
         return board.getTurn();
-
     }
-
 }

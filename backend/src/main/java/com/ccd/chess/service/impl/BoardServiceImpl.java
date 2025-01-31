@@ -1,7 +1,7 @@
 package com.ccd.chess.service.impl;
 
 import com.ccd.chess.exceptions.InvalidPositionException;
-import com.ccd.chess.exceptions.InvalidPositionOnBoardException;
+import com.ccd.chess.exceptions.InvalidPositionException;
 import com.ccd.chess.model.entity.enums.Colour;
 import com.ccd.chess.model.entity.enums.PositionOnBoard;
 import com.ccd.chess.model.entity.pieces.ChessPiece;

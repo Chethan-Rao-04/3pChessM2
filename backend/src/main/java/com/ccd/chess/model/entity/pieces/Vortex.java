@@ -1,7 +1,7 @@
 package com.ccd.chess.model.entity.pieces;
 import com.ccd.chess.model.entity.enums.Colour;
 import com.ccd.chess.model.entity.enums.Direction;
-import com.ccd.chess.model.entity.enums.Position;
+import com.ccd.chess.model.entity.enums.PositionOnBoard;
 import com.ccd.chess.util.Logger;
 
 import java.util.HashSet;
@@ -46,15 +46,15 @@ public class Vortex extends ChessPiece {
      * First moves one square diagonally, then can move one square left from those positions
      * @param boardMap: Board Map instance representing current game board
      * @param start: position of piece on board
-     * @return Set of possible positions piece is allowed to move
+     * @return Set of possible PositionOnBoardds piece is allowed to move
      */
     @Override
-    public Set<Position> getMovablePositions(Map<Position, ChessPiece> boardMap, Position start) {
-        Set<Position> positionSet = new HashSet<>();
+    public Set<PositionOnBoard> getMovablePositions(Map<PositionOnBoard, ChessPiece> boardMap, PositionOnBoard start) {
+        Set<PositionOnBoard> positionSet = new HashSet<>();
 
         // First get all diagonal positions (one square)
         for (Direction[] step : this.directions) {
-            Position diagonalPos = stepOrNull(this, step, start);
+            PositionOnBoard diagonalPos = stepOrNull(this, step, start);
             if (diagonalPos != null) {
                 ChessPiece targetPiece = boardMap.get(diagonalPos);
                 // Can move to or capture at diagonal position
@@ -63,7 +63,7 @@ public class Vortex extends ChessPiece {
                     positionSet.add(diagonalPos);
                     
                     // From diagonal position, try to move one square left
-                    Position leftPos = stepOrNull(this, new Direction[]{Direction.LEFT}, diagonalPos);
+                    PositionOnBoard leftPos = stepOrNull(this, new Direction[]{Direction.LEFT}, diagonalPos);
                     if (leftPos != null) {
                         ChessPiece leftPiece = boardMap.get(leftPos);
                         if (leftPiece == null || leftPiece.getColour() != this.getColour()) {

@@ -2,7 +2,7 @@ package com.ccd.chess.model.entity.pieces;
 
 import com.ccd.chess.model.entity.enums.Colour;
 import com.ccd.chess.model.entity.enums.Direction;
-import com.ccd.chess.model.entity.enums.Position;
+import com.ccd.chess.model.entity.enums.PositionOnBoard;
 
 import com.ccd.chess.util.Logger;
 
@@ -45,15 +45,15 @@ public class Bishop extends ChessPiece {
      * @return Set of possible positions a piece is allowed to move
      * */
     @Override
-    public Set<Position> getMovablePositions(Map<Position, ChessPiece> boardMap, Position start) {
-        Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
-        Set<Position> positionSet = new HashSet<>();
+    public Set<PositionOnBoard> getMovablePositions(Map<PositionOnBoard, ChessPiece> boardMap, PositionOnBoard start) {
+        Collection<PositionOnBoard> wallPiecePositions = getWallPieceMapping(boardMap).values();
+        Set<PositionOnBoard> positionSet = new HashSet<>();
 
         ChessPiece mover = this;
         Direction[][] steps = this.directions;
 
         for (Direction[] step : steps) {
-            Position tmp = stepOrNull(mover, step, start);
+            PositionOnBoard tmp = stepOrNull(mover, step, start);
             while(tmp != null && !positionSet.contains(tmp) && boardMap.get(tmp)==null) {
                 Logger.d(TAG, "tmp: "+tmp);
                 positionSet.add(tmp); // to prevent same position to add in list again
@@ -71,7 +71,7 @@ public class Bishop extends ChessPiece {
             }
         }
 
-        for(Position position: wallPiecePositions) {
+        for(PositionOnBoard position: wallPiecePositions) {
             if(positionSet.contains(position)) {
                 Logger.d(TAG, "Removed a wallPiecePos: "+position);
                 positionSet.remove(position);

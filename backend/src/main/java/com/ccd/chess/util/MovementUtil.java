@@ -2,7 +2,7 @@ package com.ccd.chess.util;
 
 import com.ccd.chess.model.entity.enums.Colour;
 import com.ccd.chess.model.entity.enums.Direction;
-import com.ccd.chess.model.entity.enums.Position;
+import com.ccd.chess.model.entity.enums.PositionOnBoard;
 import com.ccd.chess.exceptions.InvalidPositionException;
 
 import com.ccd.chess.model.entity.pieces.ChessPiece;
@@ -25,7 +25,7 @@ public class MovementUtil {
      * @param current current position of the piece
      * @return Position of the piece after the step
      **/
-    public static Position step(ChessPiece piece, Direction[] step, Position current) throws InvalidPositionException {
+    public static PositionOnBoard step(ChessPiece piece, Direction[] step,PositionOnBoard current) throws InvalidPositionException {
         boolean reverse = false;
         for(Direction d: step){
             if((piece.getColour()!=current.getColour() && piece instanceof Pawn) || reverse){//reverse directions for knights
@@ -36,7 +36,7 @@ public class MovementUtil {
                     case RIGHT: d = Direction.LEFT; break;
                 }
             }
-            Position next = current.neighbour(d);
+           PositionOnBoard next = current.neighbour(d);
             if(next.getColour()!= current.getColour()){//need to reverse directions when switching between sections of the board
                 reverse=true;
             }
@@ -53,7 +53,7 @@ public class MovementUtil {
      * @param reverse if movement is in reverse direction
      * @return Position of the piece after the step
      **/
-    public static Position step(ChessPiece piece, Direction[] step, Position current, boolean reverse) throws InvalidPositionException {
+    public static PositionOnBoard step(ChessPiece piece, Direction[] step,PositionOnBoard current, boolean reverse) throws InvalidPositionException {
         for(Direction d: step){
             if((piece.getColour()!=current.getColour() && piece instanceof Pawn) || reverse){//reverse directions for knights
                 switch(d){
@@ -63,7 +63,7 @@ public class MovementUtil {
                     case RIGHT: d = Direction.LEFT; break;
                 }
             }
-            Position next = current.neighbour(d);
+           PositionOnBoard next = current.neighbour(d);
             if(next.getColour()!= current.getColour()){//need to reverse directions when switching between sections of the board
                 reverse=true;
             }
@@ -80,7 +80,7 @@ public class MovementUtil {
      * @param current current position of the piece
      * @return Position of the piece after the step
      **/
-    public static Position stepOrNull(ChessPiece piece, Direction[] step, Position current) {
+    public static PositionOnBoard stepOrNull(ChessPiece piece, Direction[] step,PositionOnBoard current) {
         try {
             return step(piece, step, current);
         } catch (InvalidPositionException e) {
@@ -97,7 +97,7 @@ public class MovementUtil {
      * @param reverse if movement is in reverse direction
      * @return Position of the piece after the step
      **/
-    public static Position stepOrNull(ChessPiece piece, Direction[] step, Position current, boolean reverse) {
+    public static PositionOnBoard stepOrNull(ChessPiece piece, Direction[] step,PositionOnBoard current, boolean reverse) {
         try {
             return step(piece, step, current, reverse);
         } catch (InvalidPositionException e) {

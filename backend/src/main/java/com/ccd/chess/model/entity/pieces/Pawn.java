@@ -2,19 +2,16 @@ package com.ccd.chess.model.entity.pieces;
 
 import com.ccd.chess.model.entity.enums.Colour;
 import com.ccd.chess.model.entity.enums.Direction;
-import com.ccd.chess.model.entity.enums.Position;
+import com.ccd.chess.model.entity.enums.PositionOnBoard;
 import com.ccd.chess.exceptions.InvalidPositionException;
-import static com.ccd.chess.util.MovementUtil.step;
 import static com.ccd.chess.util.MovementUtil.stepOrNull;
 import com.ccd.chess.util.Logger;
-
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 
 /**
  * Pawn class extends ChessPiece. Move directions for the Pawn, the polygons
@@ -51,16 +48,16 @@ public class Pawn extends ChessPiece {
      * @return Set of possible positions a piece is allowed to move
      */
     @Override
-    public Set<Position> getMovablePositions(Map<Position, ChessPiece> boardMap, Position start) {
-        Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
-        Set<Position> positionSet = new HashSet<>();
+    public Set<PositionOnBoard> getMovablePositions(Map<PositionOnBoard, ChessPiece> boardMap, PositionOnBoard start) {
+        Collection<PositionOnBoard> wallPiecePositions = getWallPieceMapping(boardMap).values();
+        Set<PositionOnBoard> positionSet = new HashSet<>();
         ChessPiece mover = this;
         Colour moverCol = mover.getColour();
         Direction[][] steps = this.directions;
 
         for (int i = 0; i < steps.length; i++) {
             Direction[] step = steps[i];
-            Position end = stepOrNull(mover, step, start);
+            PositionOnBoard end = stepOrNull(mover, step, start);
 
             if (wallPiecePositions.contains(end)) {
                 continue;
@@ -73,7 +70,7 @@ public class Pawn extends ChessPiece {
                     boolean isOneStepForwardAndNotTakingPieceCase = (target == null && i == 0); // 1 step forward, not taking
                     boolean isTwoStepForwardAndNotTakingPieceCase = (target == null && i == 1 // 2 steps forward,
                             && start.getColour() == moverCol && start.getRow() == 1 //must be in initial position
-                            && boardMap.get(Position.get(moverCol, 2, start.getColumn())) == null); //and can't jump a piece;
+                            && boardMap.get(PositionOnBoard.get(moverCol, 2, start.getColumn())) == null); //and can't jump a piece;
                     boolean isDiagonalMoveAndTakingPieceCase = (target != null && target.getColour() != moverCol && i > 1); //or taking diagonally
 
                     if (isOneStepForwardAndNotTakingPieceCase || isTwoStepForwardAndNotTakingPieceCase || isDiagonalMoveAndTakingPieceCase) {
@@ -99,4 +96,3 @@ public class Pawn extends ChessPiece {
         return this.colour.toString() + "P";
     }
 }
-

@@ -1,6 +1,6 @@
 package com.ccd.chess.service.interfaces;
 
-import com.ccd.chess.model.entity.enums.Position;
+import com.ccd.chess.model.entity.enums.PositionOnBoard;
 import com.ccd.chess.model.entity.enums.Colour;
 import com.ccd.chess.exceptions.InvalidMoveException;
 import com.ccd.chess.exceptions.InvalidPositionException;
@@ -13,15 +13,15 @@ public interface IBoardService {
     
     String getWinner();
     
-    void move(Position start, Position end) throws InvalidMoveException, InvalidPositionException;
+    void move(PositionOnBoard start, PositionOnBoard end) throws InvalidMoveException, InvalidPositionException;
     
-    boolean isLegalMove(Position start, Position end);
+    boolean isLegalMove(PositionOnBoard start, PositionOnBoard end);
     
     Colour getTurn();
     
     Map<String, String> getWebViewBoard();
     
-    Set<Position> getPossibleMoves(Position position);
+    Set<PositionOnBoard> getPossibleMoves(PositionOnBoard position);
     
-    boolean isCurrentPlayersPiece(Position position);
+    boolean isCurrentPlayersPiece(PositionOnBoard position);
 }
