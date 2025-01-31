@@ -2,7 +2,7 @@ package com.ccd.chess.model.entity.pieces;
 
 import com.google.common.collect.ImmutableSet;
 import com.ccd.chess.model.entity.enums.Colour;
-import com.ccd.chess.model.entity.enums.Position;
+import com.ccd.chess.model.entity.enums.PositionOnBoard;
 import com.ccd.chess.service.impl.BoardServiceImpl;
 import com.ccd.chess.test.DataProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class HawkTest {
 
     private BoardServiceImpl board;
-    private Map<Position, ChessPiece> boardMap;
+    private Map<PositionOnBoard, ChessPiece> boardMap;
 
     /**
      * Initializes a new Board instance before each test.
@@ -40,10 +40,10 @@ class HawkTest {
     @Test
     void setupDirections_hawkCanMoveInSpecialPattern_True() {
         ChessPiece hawk = new Hawk(Colour.GREEN);
-        Position startPos = BE2;
+        PositionOnBoard startPos = BE2;
         boardMap.clear();
         boardMap.put(startPos, hawk);
-        Set<Position> moves = hawk.getMovablePositions(boardMap, startPos);
+        Set<PositionOnBoard> moves = hawk.getMovablePositions(boardMap, startPos);
         assertFalse(moves.isEmpty());
     }
 
@@ -57,10 +57,10 @@ class HawkTest {
     @EnumSource(Colour.class)
     void isLegalMove_hawkMovesToEmptySquare_True(Colour colour) {
         boardMap.clear();
-        Position hawkPosition = BE2;
+        PositionOnBoard hawkPositionOnBoard= BE2;
         ChessPiece hawk = new Hawk(colour);
         boardMap.put(hawkPosition, hawk);
-        Set<Position> actualHawkMoves = hawk.getMovablePositions(boardMap, hawkPosition);
+        Set<PositionOnBoard> actualHawkMoves = hawk.getMovablePositions(boardMap, hawkPosition);
         // Test two-step move
         assertTrue(actualHawkMoves.contains(BE4));
     }
@@ -77,7 +77,7 @@ class HawkTest {
         ChessPiece hawk = new Hawk(piece.getColour());
         boardMap.put(BE2, hawk);
         boardMap.put(BE4, piece);
-        Set<Position> actualHawkMoves = hawk.getMovablePositions(boardMap, BE2);
+        Set<PositionOnBoard> actualHawkMoves = hawk.getMovablePositions(boardMap, BE2);
         assertFalse(actualHawkMoves.contains(BE4));
     }
 
@@ -93,7 +93,7 @@ class HawkTest {
         ChessPiece hawk = new Hawk(piece.getColour().next());
         boardMap.put(BE2, hawk);
         boardMap.put(BE4, piece);
-        Set<Position> actualHawkMoves = hawk.getMovablePositions(boardMap, BE2);
+        Set<PositionOnBoard> actualHawkMoves = hawk.getMovablePositions(boardMap, BE2);
         assertTrue(actualHawkMoves.contains(BE4));
     }
 
@@ -103,12 +103,12 @@ class HawkTest {
     @Test
     void isLegalMove_hawkBlockedByIntermediateSquare_False() {
         boardMap.clear();
-        Position startPosition = BE2;
+        PositionOnBoard startPositionOnBoard= BE2;
         ChessPiece hawk = new Hawk(Colour.BLUE);
         ChessPiece blocker = new Pawn(Colour.GREEN);
         boardMap.put(startPosition, hawk);
         boardMap.put(BE3, blocker); // Place blocking piece
-        Set<Position> moves = hawk.getMovablePositions(boardMap, startPosition);
+        Set<PositionOnBoard> moves = hawk.getMovablePositions(boardMap, startPosition);
         // Should not be able to move to BE4 since BE3 is blocked
         assertFalse(moves.contains(BE4));
     }
@@ -123,15 +123,15 @@ class HawkTest {
     @EnumSource(Colour.class)
     void getMovablePositions_validPolygons_presentInPolygonList(Colour colour) {
         boardMap.clear();
-        Position startPosition = BE2;
+        PositionOnBoard startPositionOnBoard= BE2;
         ChessPiece hawk = new Hawk(colour);
         boardMap.put(startPosition, hawk);
         // Hawk should be able to move two steps in each direction from BE2
-        Set<Position> expectedHawkMoves = ImmutableSet.of(
+        Set<PositionOnBoard> expectedHawkMoves = ImmutableSet.of(
             BE4,       // Forward two steps
             BG2, BC2   // Horizontal two steps
         );
-        Set<Position> actualHawkMoves = hawk.getMovablePositions(boardMap, startPosition);
+        Set<PositionOnBoard> actualHawkMoves = hawk.getMovablePositions(boardMap, startPosition);
         assertEquals(expectedHawkMoves, actualHawkMoves);
     }
 
@@ -141,10 +141,10 @@ class HawkTest {
     @Test
     void getMovablePositions_hawkMovesAcrossBoardSections_True() {
         boardMap.clear();
-        Position startPosition = BE4; // Edge of blue section
+        PositionOnBoardstartPositionOnBoard= BE4; // Edge of blue section
         ChessPiece hawk = new Hawk(Colour.BLUE);
         boardMap.put(startPosition, hawk);
-        Set<Position> moves = hawk.getMovablePositions(boardMap, startPosition);
+        Set<PositionOnBoard> moves = hawk.getMovablePositions(boardMap, startPosition);
         // Should be able to move to green section
         assertTrue(moves.contains(GE1));
     }

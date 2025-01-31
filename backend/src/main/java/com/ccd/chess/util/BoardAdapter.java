@@ -1,7 +1,7 @@
 package com.ccd.chess.util;
 
 import com.ccd.chess.exceptions.InvalidPositionException;
-import com.ccd.chess.model.entity.enums.Position;
+import com.ccd.chess.model.entity.enums.PositionOnBoard;
 import com.ccd.chess.model.entity.pieces.ChessPiece;
 
 import java.util.ArrayList;
@@ -18,13 +18,13 @@ public class BoardAdapter {
 
     /**
      *  Method to convert board data to Map of Strings for webapp
-     * @param modelBoard a map of position and piece as input
+     * @param modelBoard a map of PositionOnBoard and piece as input
      * @return Map of String and String
      **/
-    public static Map<String, String> convertModelBoardToViewBoard(Map<Position, ChessPiece> modelBoard) {
+    public static Map<String, String> convertModelBoardToViewBoard(Map<PositionOnBoard, ChessPiece> modelBoard) {
         Map<String, String> viewBoard = new HashMap<>();
 
-        for(Position position: modelBoard.keySet()) {
+        for(PositionOnBoard position: modelBoard.keySet()) {
             ChessPiece piece = modelBoard.get(position);
             if(piece != null) {
                 viewBoard.put(position.toString(), piece.toString());
@@ -39,12 +39,12 @@ public class BoardAdapter {
      * @param possibleMoves a list of positions to highlight
      * @return list of strings
      **/
-    public static List<String> convertHighlightPolygonsToViewBoard(Set<Position> possibleMoves) {
+    public static List<String> convertHighlightPolygonsToViewBoard(Set<PositionOnBoard> possibleMoves) {
         List<String> moves = new ArrayList<>();
         if(possibleMoves == null) {
             return Collections.emptyList();
         }
-        for(Position pi: possibleMoves) {
+        for(PositionOnBoard pi: possibleMoves) {
             moves.add(pi.toString());
         }
 

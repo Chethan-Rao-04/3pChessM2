@@ -2,7 +2,7 @@ package com.ccd.chess.model.entity.pieces;
 
 import com.ccd.chess.model.entity.enums.Colour;
 import com.ccd.chess.model.entity.enums.Direction;
-import com.ccd.chess.model.entity.enums.Position;
+import com.ccd.chess.model.entity.enums.PositionOnBoard;
 
 
 
@@ -31,21 +31,21 @@ public abstract class ChessPiece {
     protected abstract void setupDirections();
 
     /**
-     * Fetch all the positions of the wall
+     * Fetch all the PositionOnBoards of the wall
      * @param boardMap: Board Map representing current game board
-     * @return map of piece and positions
+     * @return map of piece and PositionOnBoards
      * */
-    protected Map<ChessPiece, Position> getWallPieceMapping(Map<Position, ChessPiece> boardMap) {
+    protected Map<ChessPiece, PositionOnBoard> getWallPieceMapping(Map<PositionOnBoard, ChessPiece> boardMap) {
         return new HashMap<>();  // No more wall pieces
     }
 
     /**
-     * Fetch all the possible positions where a piece can move on board
+     * Fetch all the possible PositionOnBoards where a piece can move on board
      * @param boardMap: Board Map representing current game board
-     * @param start: position of piece on board
-     * @return Set of possible positions a piece is allowed to move
+     * @param start: PositionOnBoard of piece on board
+     * @return Set of possible PositionOnBoards a piece is allowed to move
      * */
-    public abstract Set<Position> getMovablePositions(Map<Position, ChessPiece> boardMap, Position start);
+    public abstract Set<PositionOnBoard> getMovablePositions(Map<PositionOnBoard, ChessPiece> boardMap, PositionOnBoard start);
 
     /**
      * @return Colour of the chess piece

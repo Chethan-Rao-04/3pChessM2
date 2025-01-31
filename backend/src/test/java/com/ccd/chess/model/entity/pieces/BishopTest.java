@@ -1,8 +1,9 @@
 package com.ccd.chess.model.entity.pieces;
 
+import com.ccd.chess.model.entity.enums.PositionOnBoardOnBoard;
 import com.google.common.collect.ImmutableSet;
 import com.ccd.chess.model.entity.enums.Colour;
-import com.ccd.chess.model.entity.enums.Position;
+import com.ccd.chess.model.entity.enums.PositionOnBoard;
 import com.ccd.chess.service.impl.BoardServiceImpl;
 import com.ccd.chess.test.DataProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +15,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Map;
 import java.util.Set;
 
-import static com.ccd.chess.model.entity.enums.Position.*;
+import static com.ccd.chess.model.entity.enums.PositionOnBoard.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BishopTest {
 
     private BoardServiceImpl board;
-    private Map<Position, ChessPiece> boardMap;
+    private Map<PositionOnBoard, ChessPiece> boardMap;
 
     /**
      * Initializes a new Board instance before each test.
@@ -35,15 +36,15 @@ class BishopTest {
     }
 
     /**
-     * Tests if the bishop can move in diagonal directions by checking if it has valid moves from a position.
+     * Tests if the bishop can move in diagonal directions by checking if it has valid moves from a PositionOnBoard.
      */
     @Test
     void setupDirections_bishopCanMoveInDiagonalDirections_True() {
         ChessPiece bishop = new Bishop(Colour.GREEN);
-        Position startPos = BE2;
+        PositionOnBoard startPos = BE2;
         boardMap.clear();
         boardMap.put(startPos, bishop);
-        Set<Position> moves = bishop.getMovablePositions(boardMap, startPos);
+        Set<PositionOnBoard> moves = bishop.getMovablePositions(boardMap, startPos);
         assertFalse(moves.isEmpty());
     }
 
@@ -57,10 +58,10 @@ class BishopTest {
     @EnumSource(Colour.class)
     void isLegalMove_bishopMovesToEmptySquare_True(Colour colour) {
         boardMap.clear();
-        Position bishopPosition = BE2;
+        PositionOnBoard bishopPositionOnBoard = BE2;
         ChessPiece bishop = new Bishop(colour);
-        boardMap.put(bishopPosition, bishop);
-        Set<Position> actualBishopMoves = bishop.getMovablePositions(boardMap, bishopPosition);
+        boardMap.put(bishopPositionOnBoard, bishop);
+        Set<PositionOnBoard> actualBishopMoves = bishop.getMovablePositionOnBoards(boardMap, bishopPositionOnBoard);
         // Test diagonal move
         assertTrue(actualBishopMoves.contains(BG4));
     }
@@ -77,7 +78,7 @@ class BishopTest {
         ChessPiece bishop = new Bishop(piece.getColour());
         boardMap.put(BE2, bishop);
         boardMap.put(BG4, piece);
-        Set<Position> actualBishopMoves = bishop.getMovablePositions(boardMap, BE2);
+        Set<PositionOnBoard> actualBishopMoves = bishop.getMovablePositionOnBoards(boardMap, BE2);
         assertFalse(actualBishopMoves.contains(BG4));
     }
 
@@ -93,29 +94,29 @@ class BishopTest {
         ChessPiece bishop = new Bishop(piece.getColour().next());
         boardMap.put(BE2, bishop);
         boardMap.put(BG4, piece);
-        Set<Position> actualBishopMoves = bishop.getMovablePositions(boardMap, BE2);
+        Set<PositionOnBoard> actualBishopMoves = bishop.getMovablePositionOnBoards(boardMap, BE2);
         assertTrue(actualBishopMoves.contains(BG4));
     }
 
     /**
-     * Parameterized test for getMovablePositions method,
+     * Parameterized test for getMovablePositionOnBoards method,
      * expecting valid polygons to be present in the list.
      *
      * @param colour Colour of the bishop
      */
     @ParameterizedTest
     @EnumSource(Colour.class)
-    void getMovablePositions_validPolygons_presentInPolygonList(Colour colour) {
+    void getMovablePositionOnBoards_validPolygons_presentInPolygonList(Colour colour) {
         boardMap.clear();
-        Position startPosition = BE2;
+        PositionOnBoard startPositionOnBoard = BE2;
         ChessPiece bishop = new Bishop(colour);
-        boardMap.put(startPosition, bishop);
-        // Bishop should be able to move to all these diagonal positions from BE2
-        Set<Position> expectedBishopMoves = ImmutableSet.of(
+        boardMap.put(startPositionOnBoard, bishop);
+        // Bishop should be able to move to all these diagonal PositionOnBoards from BE2
+        Set<PositionOnBoard> expectedBishopMoves = ImmutableSet.of(
             BG4, BF3, BD1,  // Forward diagonals
             BG2, BF1, BD3   // Backward diagonals
         );
-        Set<Position> actualBishopMoves = bishop.getMovablePositions(boardMap, startPosition);
+        Set<PositionOnBoard> actualBishopMoves = bishop.getMovablePositionOnBoards(boardMap, startPositionOnBoard);
         assertEquals(expectedBishopMoves, actualBishopMoves);
     }
 
@@ -123,12 +124,12 @@ class BishopTest {
      * Tests that bishop can move across board sections properly
      */
     @Test
-    void getMovablePositions_bishopMovesAcrossBoardSections_True() {
+    void getMovablePositionOnBoards_bishopMovesAcrossBoardSections_True() {
         boardMap.clear();
-        Position startPosition = BE4; // Edge of blue section
+        PositionOnBoard startPositionOnBoard = BE4; // Edge of blue section
         ChessPiece bishop = new Bishop(Colour.BLUE);
-        boardMap.put(startPosition, bishop);
-        Set<Position> moves = bishop.getMovablePositions(boardMap, startPosition);
+        boardMap.put(startPositionOnBoard, bishop);
+        Set<PositionOnBoard> moves = bishop.getMovablePositionOnBoards(boardMap, startPositionOnBoard);
         // Should be able to move diagonally to red section
         assertTrue(moves.contains(RF4));
     }
