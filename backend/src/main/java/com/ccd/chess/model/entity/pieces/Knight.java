@@ -9,7 +9,6 @@ import java.util.Set;
 
 import com.ccd.chess.model.entity.enums.Colour;
 import com.ccd.chess.model.entity.enums.Direction;
-import com.ccd.chess.exceptions.InvalidPositionException;
 import com.ccd.chess.model.entity.enums.PositionOnBoard;
 
 import com.ccd.chess.util.Logger;

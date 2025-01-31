@@ -18,7 +18,7 @@ public class BoardAdapter {
 
     /**
      *  Method to convert board data to Map of Strings for webapp
-     * @param modelBoard a map of PositionOnBoard and piece as input
+     * @param modelBoard a map of position and piece as input
      * @return Map of String and String
      **/
     public static Map<String, String> convertModelBoardToViewBoard(Map<PositionOnBoard, ChessPiece> modelBoard) {
