@@ -1,4 +1,3 @@
 rootProject.name = 'BugFreeBrigade'
-include 'webapp'
 include 'backend'
 

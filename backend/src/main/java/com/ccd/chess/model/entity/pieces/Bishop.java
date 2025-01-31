@@ -33,9 +33,10 @@ public class Bishop extends ChessPiece {
      **/
     @Override
     protected void setupDirections() {
-        this.directions = new Direction[][] {{Direction.FORWARD,Direction.LEFT},{Direction.FORWARD,Direction.RIGHT},
-                {Direction.LEFT,Direction.FORWARD},{Direction.RIGHT,Direction.FORWARD},{Direction.BACKWARD,Direction.LEFT},
-                {Direction.BACKWARD,Direction.RIGHT},{Direction.LEFT,Direction.BACKWARD},{Direction.RIGHT,Direction.BACKWARD}};
+        this.directions = new Direction[][] {{Direction.FORWARD,Direction.LEFT},
+                {Direction.FORWARD,Direction.RIGHT},
+                {Direction.BACKWARD,Direction.LEFT},
+                {Direction.BACKWARD,Direction.RIGHT}};
     }
 
     /**
@@ -46,7 +47,7 @@ public class Bishop extends ChessPiece {
      * */
     @Override
     public Set<Position> getHighlightPolygons(Map<Position, ChessPiece> boardMap, Position start) {
-        Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
+//        Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
         Set<Position> positionSet = new HashSet<>();
 
         ChessPiece mover = this;
@@ -71,12 +72,6 @@ public class Bishop extends ChessPiece {
             }
         }
 
-        for(Position position: wallPiecePositions) {
-            if(positionSet.contains(position)) {
-                Logger.d(TAG, "Removed a wallPiecePos: "+position);
-                positionSet.remove(position);
-            }
-        }
 
         return positionSet;
     }

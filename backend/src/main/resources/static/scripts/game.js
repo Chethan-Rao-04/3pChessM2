@@ -27,9 +27,9 @@ const colorMap = {
 };
 
 const pieceColors = {
-    'R': '#B8860B',  // Goldenrod
-    'G': '#CD7F32',  // Gray
-    'B': '#C0C0C0'   // SaddleBrown
+    'R': '#B8860B',  // Gold
+    'G': '#CD7F32',  // Bronze
+    'B': '#C0C0C0'   // Silver
 };
 
 const pieceStrokeColors = {
@@ -156,6 +156,33 @@ function updateTheme(name) {
         element.classList.add(name);
     });
 }
+// ... existing code ...
+
+function displayPolygonIds() {
+    const polygons = document.getElementsByTagName('polygon');
+    for (let polygon of polygons) {
+        const points = polygon.points;
+        let x = (points.getItem(0).x + points.getItem(2).x) / 2;
+        let y = (points.getItem(0).y + points.getItem(2).y) / 2;
+        
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", x);
+        text.setAttribute("y", y);
+        text.setAttribute("text-anchor", "middle");
+        text.setAttribute("fill", "black");
+        text.setAttribute("font-size", "12");
+        text.textContent = polygon.id;
+        
+        polygon.parentNode.insertBefore(text, polygon.nextSibling);
+    }
+}
+
+// Add this to window.onload
+window.onload = function() {
+    // ... existing onload code ...
+    displayPolygonIds();
+    // ... existing onload code ...
+};
 
 /**
  * Highlights a specific set of polygons

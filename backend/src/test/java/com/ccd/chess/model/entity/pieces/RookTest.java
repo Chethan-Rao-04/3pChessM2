@@ -112,8 +112,8 @@ class RookTest {
         boardMap.put(startPosition, rook);
         // Rook should be able to move to all these straight positions from BE2
         Set<Position> expectedRookMoves = ImmutableSet.of(
-            BE3, BE4, BE1,       // Vertical moves
-            BF2, BG2, BD2, BC2   // Horizontal moves
+            BE3, BE4, BE1, RD4, RD3, RD2 ,RD1, // Vertical moves
+            BF2, BG2,BH2 , BD2, BC2 ,BB2, BA2 // Horizontal moves
         );
         Set<Position> actualRookMoves = rook.getHighlightPolygons(boardMap, startPosition);
         assertEquals(expectedRookMoves, actualRookMoves);
@@ -129,8 +129,8 @@ class RookTest {
         ChessPiece rook = new Rook(Colour.BLUE);
         boardMap.put(startPosition, rook);
         Set<Position> moves = rook.getHighlightPolygons(boardMap, startPosition);
-        // Should be able to move to green section
-        assertTrue(moves.contains(GE1));
+        // Should be able to move to bronze section
+        assertTrue(moves.contains(RD1));
     }
 
     /**

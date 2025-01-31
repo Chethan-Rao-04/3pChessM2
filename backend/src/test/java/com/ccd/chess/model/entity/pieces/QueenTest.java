@@ -131,14 +131,14 @@ class QueenTest {
     @Test
     void getHighlightPolygons_queenMovesAcrossBoardSections_True() {
         boardMap.clear();
-        Position startPosition = BE4; // Edge of blue section
+        Position startPosition = BE4; // Edge of Silver section
         ChessPiece queen = new Queen(Colour.BLUE);
         boardMap.put(startPosition, queen);
         Set<Position> moves = queen.getHighlightPolygons(boardMap, startPosition);
-        // Should be able to move to green section
-        assertTrue(moves.contains(GE1));
-        // Should be able to move diagonally to red section
-        assertTrue(moves.contains(RF4));
+        // Should be able to move horizontally to Gold section
+        assertTrue(moves.contains(RD1));
+        // Should be able to move diagonally to Gold section
+        assertTrue(moves.contains(RB3));
     }
 
     /**
