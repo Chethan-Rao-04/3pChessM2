@@ -1,6 +1,6 @@
 package com.ccd.chess.model.entity.pieces;
 
-import com.ccd.chess.model.entity.enums.PositionOnBoard;
+import com.ccd.chess.model.entity.enums.Position;
 import com.ccd.chess.service.impl.BoardServiceImpl;
 import com.google.common.collect.ImmutableSet;
 import com.ccd.chess.model.entity.enums.Colour;
@@ -13,7 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Map;
 import java.util.Set;
 
-import static com.ccd.chess.model.entity.enums.PositionOnBoard.*;
+import static com.ccd.chess.model.entity.enums.Position.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class RookTest {
 
     private BoardServiceImpl board;
-    private Map<PositionOnBoard, ChessPiece> boardMap;
+    private Map<Position, ChessPiece> boardMap;
 
     /**
      * Initializes a new Board instance before each test.
@@ -39,10 +39,10 @@ class RookTest {
     @Test
     void setupDirections_rookCanMoveInStraightDirections_True() {
         ChessPiece rook = new Rook(Colour.GREEN);
-        PositionOnBoard startPos = BE2;
+        Position startPos = BE2;
         boardMap.clear();
         boardMap.put(startPos, rook);
-        Set<PositionOnBoard> moves = rook.getMovablePositions(boardMap, startPos);
+        Set<Position> moves = rook.getMovablePositions(boardMap, startPos);
         assertFalse(moves.isEmpty());
     }
 
@@ -56,10 +56,10 @@ class RookTest {
     @EnumSource(Colour.class)
     void isLegalMove_rookMovesToEmptySquare_True(Colour colour) {
         boardMap.clear();
-        PositionOnBoard rookPositionOnBoard = BE2;
+        Position rookPosition = BE2;
         ChessPiece rook = new Rook(colour);
-        boardMap.put(rookPositionOnBoard, rook);
-        Set<PositionOnBoard> actualRookMoves = rook.getMovablePositions(boardMap, rookPositionOnBoard);
+        boardMap.put(rookPosition, rook);
+        Set<Position> actualRookMoves = rook.getMovablePositions(boardMap, rookPosition);
         // Test straight move
         assertTrue(actualRookMoves.contains(BE4));
     }
@@ -76,7 +76,7 @@ class RookTest {
         ChessPiece rook = new Rook(piece.getColour());
         boardMap.put(BE2, rook);
         boardMap.put(BE4, piece);
-        Set<PositionOnBoard> actualRookMoves = rook.getMovablePositions(boardMap, BE2);
+        Set<Position> actualRookMoves = rook.getMovablePositions(boardMap, BE2);
         assertFalse(actualRookMoves.contains(BE4));
     }
 
@@ -92,7 +92,7 @@ class RookTest {
         ChessPiece rook = new Rook(piece.getColour().next());
         boardMap.put(BE2, rook);
         boardMap.put(BE4, piece);
-        Set<PositionOnBoard> actualRookMoves = rook.getMovablePositions(boardMap, BE2);
+        Set<Position> actualRookMoves = rook.getMovablePositions(boardMap, BE2);
         assertTrue(actualRookMoves.contains(BE4));
     }
 
@@ -106,15 +106,15 @@ class RookTest {
     @EnumSource(Colour.class)
     void getMovablePositions_validPolygons_presentInPolygonList(Colour colour) {
         boardMap.clear();
-        PositionOnBoard startPositionOnBoard = BE2;
+        Position startPosition = BE2;
         ChessPiece rook = new Rook(colour);
-        boardMap.put(startPositionOnBoard, rook);
+        boardMap.put(startPosition, rook);
         // Rook should be able to move to all these straight positions from BE2
-        Set<PositionOnBoard> expectedRookMoves = ImmutableSet.of(
-            BE3, BE4, BE1, RD4, RD3, RD2 ,RD1, // Vertical moves
-            BF2, BG2,BH2 , BD2, BC2 ,BB2, BA2 // Horizontal moves
+        Set<Position> expectedRookMoves = ImmutableSet.of(
+                BE3, BE4, BE1, RD4, RD3, RD2 ,RD1, // Vertical moves
+                BF2, BG2,BH2 , BD2, BC2 ,BB2, BA2 // Horizontal moves
         );
-        Set<PositionOnBoard> actualRookMoves = rook.getMovablePositions(boardMap, startPositionOnBoard);
+        Set<Position> actualRookMoves = rook.getMovablePositions(boardMap, startPosition);
         assertEquals(expectedRookMoves, actualRookMoves);
     }
 
@@ -124,10 +124,10 @@ class RookTest {
     @Test
     void getMovablePositions_rookMovesAcrossBoardSections_True() {
         boardMap.clear();
-        PositionOnBoard startPositionOnBoard = BE4; // Edge of blue section
+        Position startPosition = BE4; // Edge of blue section
         ChessPiece rook = new Rook(Colour.BLUE);
-        boardMap.put(startPositionOnBoard, rook);
-        Set<PositionOnBoard> moves = rook.getMovablePositions(boardMap, startPositionOnBoard);
+        boardMap.put(startPosition, rook);
+        Set<Position> moves = rook.getMovablePositions(boardMap, startPosition);
         // Should be able to move to bronze section
         assertTrue(moves.contains(RD1));
     }

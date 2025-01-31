@@ -51,7 +51,7 @@ public class Pawn extends ChessPiece {
      * @return Set of possible positions a piece is allowed to move
      */
     @Override
-    public Set<Position> getHighlightPolygons(Map<Position, ChessPiece> boardMap, Position start) {
+    public Set<Position> getMovablePositions(Map<Position, ChessPiece> boardMap, Position start) {
         Collection<Position> wallPiecePositions = getWallPieceMapping(boardMap).values();
         Set<Position> positionSet = new HashSet<>();
         ChessPiece mover = this;

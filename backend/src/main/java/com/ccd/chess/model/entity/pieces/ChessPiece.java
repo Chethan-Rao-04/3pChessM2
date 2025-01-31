@@ -45,7 +45,7 @@ public abstract class ChessPiece {
      * @param start: position of piece on board
      * @return Set of possible positions a piece is allowed to move
      * */
-    public abstract Set<Position> getHighlightPolygons(Map<Position, ChessPiece> boardMap, Position start);
+    public abstract Set<Position> getMovablePositions(Map<Position, ChessPiece> boardMap, Position start);
 
     /**
      * @return Colour of the chess piece

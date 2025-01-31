@@ -1,8 +1,10 @@
 package com.ccd.chess.model.entity.pieces;
 
-import com.ccd.chess.model.entity.enums.PositionOnBoard;
+import com.google.common.collect.ImmutableSet;
 import com.ccd.chess.model.entity.enums.Colour;
+import com.ccd.chess.model.entity.enums.Position;
 import com.ccd.chess.service.impl.BoardServiceImpl;
+import com.ccd.chess.test.DataProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,7 +14,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Map;
 import java.util.Set;
 
-import static com.ccd.chess.model.entity.enums.PositionOnBoard.*;
+import static com.ccd.chess.model.entity.enums.Position.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -21,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class QueenTest {
 
     private BoardServiceImpl board;
-    private Map<PositionOnBoard, ChessPiece> boardMap;
+    private Map<Position, ChessPiece> boardMap;
 
     /**
      * Initializes a new Board instance before each test.
@@ -30,7 +32,6 @@ class QueenTest {
     void initBeforeEachBoardTest() {
         board = new BoardServiceImpl();
         boardMap = board.getBoardMap();
-        boardMap.clear(); // Ensure clean board for each test
     }
 
     /**
@@ -38,15 +39,16 @@ class QueenTest {
      */
     @Test
     void setupDirections_queenCanMoveInAllDirections_True() {
-        ChessPiece queen = new Queen(Colour.BLUE);
-        PositionOnBoard startPos = BB2; // Use a position that allows all types of moves
+        ChessPiece queen = new Queen(Colour.GREEN);
+        Position startPos = BE2;
+        boardMap.clear();
         boardMap.put(startPos, queen);
-        Set<PositionOnBoard> moves = queen.getMovablePositions(boardMap, startPos);
+        Set<Position> moves = queen.getMovablePositions(boardMap, startPos);
         assertFalse(moves.isEmpty());
     }
 
     /**
-     * Parameterized test for isAllowedMove method when queen moves to an empty square,
+     * Parameterized test for isLegalMove method when queen moves to an empty square,
      * expecting true.
      *
      * @param colour Colour of the queen
@@ -55,47 +57,18 @@ class QueenTest {
     @EnumSource(Colour.class)
     void isLegalMove_queenMovesToEmptySquare_True(Colour colour) {
         boardMap.clear();
-        PositionOnBoard startPos;
-        switch (colour) {
-            case BLUE: startPos = BB2; break;
-            case GREEN: startPos = GB2; break;
-            case RED: startPos = RB2; break;
-            default: throw new IllegalStateException("Unknown colour: " + colour);
-        }
+        Position queenPosition = BE2;
         ChessPiece queen = new Queen(colour);
-        boardMap.put(startPos, queen);
-        Set<PositionOnBoard> moves = queen.getMovablePositions(boardMap, startPos);
-        
-        // Test that queen has valid moves
-        assertFalse(moves.isEmpty(), "Queen should have at least one valid move");
-        
-        // Test specific moves based on color
-        PositionOnBoard expectedDiagonal;
-        PositionOnBoard expectedStraight;
-        switch (colour) {
-            case BLUE:
-                expectedDiagonal = BC3;
-                expectedStraight = BB3;
-                break;
-            case GREEN:
-                expectedDiagonal = GC3;
-                expectedStraight = GB3;
-                break;
-            case RED:
-                expectedDiagonal = RC3;
-                expectedStraight = RB3;
-                break;
-            default:
-                throw new IllegalStateException("Unknown colour: " + colour);
-        }
-        
-        // Test at least one type of move works
-        assertTrue(moves.contains(expectedDiagonal) || moves.contains(expectedStraight),
-                  "Queen should be able to move either diagonally or straight from starting position");
+        boardMap.put(queenPosition, queen);
+        Set<Position> actualQueenMoves = queen.getMovablePositions(boardMap, queenPosition);
+        // Test diagonal move
+        assertTrue(actualQueenMoves.contains(BG4));
+        // Test straight move
+        assertTrue(actualQueenMoves.contains(BE4));
     }
 
     /**
-     * Parameterized test for isAllowedMove method when queen takes a piece of its own color,
+     * Parameterized test for isLegalMove method when queen takes a piece of its own color,
      * expecting false.
      *
      * @param piece Piece to be placed on the board
@@ -104,16 +77,14 @@ class QueenTest {
     @MethodSource("com.ccd.chess.test.DataProvider#pieceProvider")
     void isLegalMove_queenTakesItsColourPiece_False(ChessPiece piece) {
         ChessPiece queen = new Queen(piece.getColour());
-        PositionOnBoard startPos = BB2;
-        PositionOnBoard targetPos = BC3;
-        boardMap.put(startPos, queen);
-        boardMap.put(targetPos, piece);
-        Set<PositionOnBoard> actualQueenMoves = queen.getMovablePositions(boardMap, startPos);
-        assertFalse(actualQueenMoves.contains(targetPos));
+        boardMap.put(BE2, queen);
+        boardMap.put(BG4, piece);
+        Set<Position> actualQueenMoves = queen.getMovablePositions(boardMap, BE2);
+        assertFalse(actualQueenMoves.contains(BG4));
     }
 
     /**
-     * Parameterized test for isAllowedMove method when queen takes a piece of a different color,
+     * Parameterized test for isLegalMove method when queen takes a piece of a different color,
      * expecting true.
      *
      * @param piece Piece to be placed on the board
@@ -121,36 +92,37 @@ class QueenTest {
     @ParameterizedTest
     @MethodSource("com.ccd.chess.test.DataProvider#pieceProvider")
     void isLegalMove_queenTakesDifferentColourPiece_True(ChessPiece piece) {
-        if (piece.getColour() == Colour.BLUE) return; // Skip if same color
-        ChessPiece queen = new Queen(Colour.BLUE);
-        PositionOnBoard startPos = BB2;
-        PositionOnBoard targetPos = BC3;
-        boardMap.put(startPos, queen);
-        boardMap.put(targetPos, piece);
-        Set<PositionOnBoard> actualQueenMoves = queen.getMovablePositions(boardMap, startPos);
-        assertTrue(actualQueenMoves.contains(targetPos));
+        ChessPiece queen = new Queen(piece.getColour().next());
+        boardMap.put(BE2, queen);
+        boardMap.put(BG4, piece);
+        Set<Position> actualQueenMoves = queen.getMovablePositions(boardMap, BE2);
+        assertTrue(actualQueenMoves.contains(BG4));
     }
 
     /**
      * Parameterized test for getMovablePositions method,
      * expecting valid polygons to be present in the list.
+     *
+     * @param colour Colour of the queen
      */
-    @Test
-    void getMovablePositions_validPolygons_presentInPolygonList() {
+    @ParameterizedTest
+    @EnumSource(Colour.class)
+    void getMovablePositions_validPolygons_presentInPolygonList(Colour colour) {
         boardMap.clear();
-        PositionOnBoard startPos = BB2;
-        ChessPiece queen = new Queen(Colour.BLUE);
-        boardMap.put(startPos, queen);
-        Set<PositionOnBoard> moves = queen.getMovablePositions(boardMap, startPos);
-        
-        // Test that queen has valid moves
-        assertFalse(moves.isEmpty(), "Queen should have at least one valid move");
-        
-        // Test at least one type of move works
-        boolean hasValidMove = moves.contains(BB3) || // Straight forward
-                             moves.contains(BC2) || // Straight right
-                             moves.contains(BC3);   // Diagonal forward-right
-        assertTrue(hasValidMove, "Queen should be able to move in at least one direction");
+        Position startPosition = BE2;
+        ChessPiece queen = new Queen(colour);
+        boardMap.put(startPosition, queen);
+        // Queen should be able to move to all these positions from BE2
+        Set<Position> expectedQueenMoves = ImmutableSet.of(
+            // Diagonal moves
+            BG4, BF3, BD1, BC2,  // Forward diagonals
+            BG2, BF1, BD3, BC4,  // Backward diagonals
+            // Straight moves
+            BE3, BE4, BE1,       // Vertical moves
+            BF2, BG2, BD2, BC2   // Horizontal moves
+        );
+        Set<Position> actualQueenMoves = queen.getMovablePositions(boardMap, startPosition);
+        assertEquals(expectedQueenMoves, actualQueenMoves);
     }
 
     /**
@@ -159,13 +131,14 @@ class QueenTest {
     @Test
     void getMovablePositions_queenMovesAcrossBoardSections_True() {
         boardMap.clear();
-        PositionOnBoard startPos = BE4; // Edge of blue section
+        Position startPosition = BE4; // Edge of blue section
         ChessPiece queen = new Queen(Colour.BLUE);
-        boardMap.put(startPos, queen);
-        Set<PositionOnBoard> moves = queen.getMovablePositions(boardMap, startPos);
-        
-        // Just verify some valid moves exist when at section edge
-        assertFalse(moves.isEmpty(), "Queen should have valid moves at section edge");
+        boardMap.put(startPosition, queen);
+        Set<Position> moves = queen.getMovablePositions(boardMap, startPosition);
+        // Should be able to move to green section
+        assertTrue(moves.contains(GE1));
+        // Should be able to move diagonally to red section
+        assertTrue(moves.contains(RF4));
     }
 
     /**

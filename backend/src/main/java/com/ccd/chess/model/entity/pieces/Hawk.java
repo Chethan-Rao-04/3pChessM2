@@ -34,7 +34,7 @@ public class Hawk extends Knight {
     }
 
 @Override
-public Set<Position> getHighlightPolygons(Map<Position, ChessPiece> boardMap, Position start) {
+public Set<Position> getMovablePositions(Map<Position, ChessPiece> boardMap, Position start) {
     Set<Position> positionSet = new HashSet<>();
 
     for (Direction[] step : this.directions) {
@@ -76,7 +76,7 @@ public Set<Position> getHighlightPolygons(Map<Position, ChessPiece> boardMap, Po
 
 
 //    }@Override
-//    public Set<Position> getHighlightPolygons(Map<Position, ChessPiece> boardMap, Position start) {
+//    public Set<Position> getMovablePositions(Map<Position, ChessPiece> boardMap, Position start) {
 //        Set<Position> positionSet = new HashSet<>();
 //
 //        for (Direction[] step : this.directions) {

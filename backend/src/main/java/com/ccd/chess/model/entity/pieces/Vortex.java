@@ -49,7 +49,7 @@ public class Vortex extends ChessPiece {
      * @return Set of possible positions piece is allowed to move
      */
     @Override
-    public Set<Position> getHighlightPolygons(Map<Position, ChessPiece> boardMap, Position start) {
+    public Set<Position> getMovablePositions(Map<Position, ChessPiece> boardMap, Position start) {
         Set<Position> positionSet = new HashSet<>();
 
         // First get all diagonal positions (one square)

@@ -195,7 +195,7 @@ public class BoardServiceImpl implements IBoardService {
         Colour moverCol = mover.getColour();
 
         // Always recalculate highlight polygons for the current move
-        highlightPolygons = mover.getHighlightPolygons(this.boardMap, start);
+        highlightPolygons = mover.getMovablePositions(this.boardMap, start);
 
         if(highlightPolygons.contains(end)) {
             if(isCheck(turn, boardMap) && isCheckAfterLegalMove(turn, boardMap, start, end)) {
@@ -249,7 +249,7 @@ public class BoardServiceImpl implements IBoardService {
         }
 
         // Always calculate fresh highlight polygons
-        highlightPolygons = mover.getHighlightPolygons(this.boardMap, position);
+        highlightPolygons = mover.getMovablePositions(this.boardMap, position);
 
         Colour moverColour = mover.getColour();
         Set<Position> nonCheckPositions = new HashSet<>();
@@ -287,7 +287,7 @@ public class BoardServiceImpl implements IBoardService {
         for(Position position: boardMap.keySet()) {
             ChessPiece piece = boardMap.get(position);
             if(piece.getColour() != colour) {
-                Set<Position> possibleTargetPositions = piece.getHighlightPolygons(boardMap, position);
+                Set<Position> possibleTargetPositions = piece.getMovablePositions(boardMap, position);
                 if(possibleTargetPositions.contains(kingPosition)) {
                     Logger.d(TAG, "Piece "+piece+" is attacking King of colour "+colour);
                     return true;
@@ -305,7 +305,7 @@ public class BoardServiceImpl implements IBoardService {
         for(Position position: boardMap.keySet()) {
             ChessPiece piece = boardMap.get(position);
             if(piece.getColour()==colour) {
-                Set<Position> possibleMoves = piece.getHighlightPolygons(boardMap, position);
+                Set<Position> possibleMoves = piece.getMovablePositions(boardMap, position);
                 for(Position endPos: possibleMoves) {
                     if(!isCheckAfterLegalMove(colour, boardMap, position, endPos)) {
                         Logger.d(TAG, "Piece "+piece+" can help colour "+colour+" to come out of check: st: "+position+", end: "+endPos);
