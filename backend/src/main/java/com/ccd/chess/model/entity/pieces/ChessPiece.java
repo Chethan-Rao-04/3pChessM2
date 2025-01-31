@@ -31,19 +31,19 @@ public abstract class ChessPiece {
     protected abstract void setupDirections();
 
     /**
-     * Fetch all the PositionOnBoards of the wall
+     * Fetch all the positions of the wall
      * @param boardMap: Board Map representing current game board
-     * @return map of piece and PositionOnBoards
+     * @return map of piece and positions
      * */
     protected Map<ChessPiece, PositionOnBoard> getWallPieceMapping(Map<PositionOnBoard, ChessPiece> boardMap) {
         return new HashMap<>();  // No more wall pieces
     }
 
     /**
-     * Fetch all the possible PositionOnBoards where a piece can move on board
+     * Fetch all the possible positions where a piece can move on board
      * @param boardMap: Board Map representing current game board
-     * @param start: PositionOnBoard of piece on board
-     * @return Set of possible PositionOnBoards a piece is allowed to move
+     * @param start: position of piece on board
+     * @return Set of possible positions a piece is allowed to move
      * */
     public abstract Set<PositionOnBoard> getMovablePositions(Map<PositionOnBoard, ChessPiece> boardMap, PositionOnBoard start);
 

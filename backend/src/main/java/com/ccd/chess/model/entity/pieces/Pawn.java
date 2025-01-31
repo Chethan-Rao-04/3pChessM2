@@ -4,14 +4,17 @@ import com.ccd.chess.model.entity.enums.Colour;
 import com.ccd.chess.model.entity.enums.Direction;
 import com.ccd.chess.model.entity.enums.PositionOnBoard;
 import com.ccd.chess.exceptions.InvalidPositionException;
+import static com.ccd.chess.util.MovementUtil.step;
 import static com.ccd.chess.util.MovementUtil.stepOrNull;
 import com.ccd.chess.util.Logger;
+
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 
 /**
  * Pawn class extends ChessPiece. Move directions for the Pawn, the polygons
@@ -96,3 +99,4 @@ public class Pawn extends ChessPiece {
         return this.colour.toString() + "P";
     }
 }
+

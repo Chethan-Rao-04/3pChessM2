@@ -1,7 +1,6 @@
 package com.ccd.chess.service.impl;
 
 import com.ccd.chess.exceptions.InvalidPositionException;
-import com.ccd.chess.exceptions.InvalidPositionException;
 import com.ccd.chess.model.entity.enums.Colour;
 import com.ccd.chess.model.entity.enums.PositionOnBoard;
 import com.ccd.chess.model.entity.pieces.ChessPiece;
@@ -28,7 +27,7 @@ public class BoardServiceImpl implements IBoardService {
 
     private static final String TAG = "Board";
 
-    /** A map from board PositionOnBoards to the pieces at that PositionOnBoard **/
+    /** A map from board positions to the pieces at that position **/
     protected Map<PositionOnBoard, ChessPiece> boardMap;
     private Colour turn;
     private boolean gameOver;
@@ -50,51 +49,51 @@ public class BoardServiceImpl implements IBoardService {
                 placeChessPieces(colour);
             }
         } catch(InvalidPositionException e) {
-            Logger.e(TAG, "InvalidPositionOnBoardException: "+e.getMessage());
+            Logger.e(TAG, "InvalidPositionException: "+e.getMessage());
         }
     }
 
     /**
-     * Place all the pieces on the board initially at start PositionOnBoards
+     * Place all the pieces on the board initially at start positions
      * @param colour for each color place the pieces
      * */
-    private void placeChessPieces(Colour colour) throws InvalidPositionException, InvalidPositionException {
+    private void placeChessPieces(Colour colour) throws InvalidPositionException {
         // place ROOK
-        PositionOnBoard[] rookStartPositionOnBoards = new PositionOnBoard[] {PositionOnBoard.get(colour,0,0), PositionOnBoard.get(colour,0,7)};
-        boardMap.put(rookStartPositionOnBoards[0], PieceFactory.createPiece("Rook", colour));
-        boardMap.put(rookStartPositionOnBoards[1], PieceFactory.createPiece("Rook", colour));
+        PositionOnBoard[] rookStartPositions = new PositionOnBoard[] {PositionOnBoard.get(colour,0,0), PositionOnBoard.get(colour,0,7)};
+        boardMap.put(rookStartPositions[0], PieceFactory.createPiece("Rook", colour));
+        boardMap.put(rookStartPositions[1], PieceFactory.createPiece("Rook", colour));
 
         // place KNIGHT
-        PositionOnBoard[] knightStartPositionOnBoards = new PositionOnBoard[] {PositionOnBoard.get(colour,0,1), PositionOnBoard.get(colour,0,6)};
-        boardMap.put(knightStartPositionOnBoards[0], PieceFactory.createPiece("Knight",colour));
-        boardMap.put(knightStartPositionOnBoards[1], PieceFactory.createPiece("Knight",colour));
+        PositionOnBoard[] knightStartPositions = new PositionOnBoard[] {PositionOnBoard.get(colour,0,1), PositionOnBoard.get(colour,0,6)};
+        boardMap.put(knightStartPositions[0], PieceFactory.createPiece("Knight",colour));
+        boardMap.put(knightStartPositions[1], PieceFactory.createPiece("Knight",colour));
 
         // place BISHOP
-        PositionOnBoard[] bishopStartPositionOnBoards = new PositionOnBoard[] {PositionOnBoard.get(colour,0,2), PositionOnBoard.get(colour,0,5)};
-        boardMap.put(bishopStartPositionOnBoards[0], PieceFactory.createPiece("Bishop",colour));
-        boardMap.put(bishopStartPositionOnBoards[1], PieceFactory.createPiece("Bishop",colour));
+        PositionOnBoard[] bishopStartPositions = new PositionOnBoard[] {PositionOnBoard.get(colour,0,2), PositionOnBoard.get(colour,0,5)};
+        boardMap.put(bishopStartPositions[0], PieceFactory.createPiece("Bishop",colour));
+        boardMap.put(bishopStartPositions[1], PieceFactory.createPiece("Bishop",colour));
 
         // place Queen
-        PositionOnBoard queenStartingPositionOnBoard = PositionOnBoard.get(colour,0,3);
-        boardMap.put(queenStartingPositionOnBoard, PieceFactory.createPiece("Queen",colour));
+        PositionOnBoard queenStartingPosition = PositionOnBoard.get(colour,0,3);
+        boardMap.put(queenStartingPosition, PieceFactory.createPiece("Queen",colour));
 
         // place KING
-        PositionOnBoard kingStartingPositionOnBoard = PositionOnBoard.get(colour,0,4);
-        boardMap.put(kingStartingPositionOnBoard, PieceFactory.createPiece("King",colour));
+        PositionOnBoard kingStartingPosition = PositionOnBoard.get(colour,0,4);
+        boardMap.put(kingStartingPosition, PieceFactory.createPiece("King",colour));
 
         // place PAWN
         for(int i = 1; i<7; i++){
-            PositionOnBoard ithPawnPositionOnBoard = PositionOnBoard.get(colour,1,i);
-            boardMap.put(ithPawnPositionOnBoard, PieceFactory.createPiece("Pawn",colour));
+            PositionOnBoard ithPawnPosition = PositionOnBoard.get(colour,1,i);
+            boardMap.put(ithPawnPosition, PieceFactory.createPiece("Pawn",colour));
         }
 
         // place HAWK
-        PositionOnBoard hawkStartPositionOnBoard = PositionOnBoard.get(colour,1,0);
-        boardMap.put(hawkStartPositionOnBoard, PieceFactory.createPiece("Hawk",colour));
+        PositionOnBoard hawkStartPosition = PositionOnBoard.get(colour,1,0);
+        boardMap.put(hawkStartPosition, PieceFactory.createPiece("Hawk",colour));
 
         // place VORTEX
-        PositionOnBoard vortexStartPositionOnBoard = PositionOnBoard.get(colour, 1, 7);  // Place in Wall's previous PositionOnBoard
-        boardMap.put(vortexStartPositionOnBoard, PieceFactory.createPiece("Vortex",colour));
+        PositionOnBoard vortexStartPosition = PositionOnBoard.get(colour, 1, 7);  // Place in Wall's previous position
+        boardMap.put(vortexStartPosition, PieceFactory.createPiece("Vortex",colour));
     }
 
     /**
@@ -114,9 +113,9 @@ public class BoardServiceImpl implements IBoardService {
     }
 
     /**
-     * Called to move a piece from one PositionOnBoard to another
-     * @param start The start PositionOnBoard
-     * @param end The end PositionOnBoard
+     * Called to move a piece from one position to another
+     * @param start The start position
+     * @param end The end position
      * */
     public void move(PositionOnBoard start, PositionOnBoard end) throws InvalidMoveException, InvalidPositionException {
         if(!isCurrentPlayersPiece(start)) {
@@ -183,15 +182,15 @@ public class BoardServiceImpl implements IBoardService {
     }
 
     /**
-     * Checks if the piece can move from start to end PositionOnBoards
-     * @param start The start PositionOnBoard
-     * @param end The end PositionOnBoard
+     * Checks if the piece can move from start to end positions
+     * @param start The start position
+     * @param end The end position
      * @return boolean
      * */
     public boolean isLegalMove(PositionOnBoard start, PositionOnBoard end) {
         ChessPiece mover = getPiece(start);
         if(mover == null) {
-            return false; // No piece present at start PositionOnBoard
+            return false; // No piece present at start position
         }
         Colour moverCol = mover.getColour();
 
@@ -222,17 +221,17 @@ public class BoardServiceImpl implements IBoardService {
     }
 
     /**
-     * Get the piece on the selected PositionOnBoard
-     * @param PositionOnBoard The current selected PositionOnBoard
+     * Get the piece on the selected position
+     * @param position The current selected position
      * @return ChessPiece
      * */
-    private ChessPiece getPiece(PositionOnBoard PositionOnBoard) {
-        return boardMap.get(PositionOnBoard);
+    private ChessPiece getPiece(PositionOnBoard position) {
+        return boardMap.get(position);
     }
 
     /**
      * For the web app to use, board map is converted to string and returned
-     * @return map of PositionOnBoard and piece converted to strings
+     * @return map of position and piece converted to strings
      * */
     public Map<String, String> getWebViewBoard() {
         return BoardAdapter.convertModelBoardToViewBoard(this.boardMap);
@@ -240,41 +239,41 @@ public class BoardServiceImpl implements IBoardService {
 
     /**
      * For the current selected piece, returns the possible moves
-     * @param PositionOnBoard The current selected piece PositionOnBoard
+     * @param position The current selected piece position
      * @return Set of possible movements
      * */
-    public Set<PositionOnBoard> getPossibleMoves(PositionOnBoard PositionOnBoard) {
-        ChessPiece mover = boardMap.get(PositionOnBoard);
+    public Set<PositionOnBoard> getPossibleMoves(PositionOnBoard position) {
+        ChessPiece mover = boardMap.get(position);
         if(mover == null) {
             return ImmutableSet.of();
         }
 
         // Always calculate fresh highlight polygons
-        highlightPolygons = mover.getMovablePositions(this.boardMap, PositionOnBoard);
+        highlightPolygons = mover.getMovablePositions(this.boardMap, position);
 
         Colour moverColour = mover.getColour();
-        Set<PositionOnBoard> nonCheckPositionOnBoards = new HashSet<>();
+        Set<PositionOnBoard> nonCheckPositions = new HashSet<>();
         for(PositionOnBoard endPos: highlightPolygons) {
-            if(!isCheckAfterLegalMove(moverColour, this.boardMap, PositionOnBoard, endPos)) {
-                nonCheckPositionOnBoards.add(endPos);
+            if(!isCheckAfterLegalMove(moverColour, this.boardMap, position, endPos)) {
+                nonCheckPositions.add(endPos);
             }
         }
 
-        return nonCheckPositionOnBoards;
+        return nonCheckPositions;
     }
 
     /**
      * Tells if the current player has selected his own piece
-     * @param PositionOnBoard The current PositionOnBoard of the piece
+     * @param position The current position of the piece
      * @return boolean
      * */
-    public boolean isCurrentPlayersPiece(PositionOnBoard PositionOnBoard) {
-        return getPiece(PositionOnBoard) != null && getPiece(PositionOnBoard).getColour()==turn;
+    public boolean isCurrentPlayersPiece(PositionOnBoard position) {
+        return getPiece(position) != null && getPiece(position).getColour()==turn;
     }
 
     /**
      * Gets the current board map.
-     * @return Map of PositionOnBoards to chess pieces
+     * @return Map of positions to chess pieces
      */
     public Map<PositionOnBoard, ChessPiece> getBoardMap() {
         return boardMap;
@@ -283,13 +282,13 @@ public class BoardServiceImpl implements IBoardService {
     /**     Check / Check-mate logic helper functions **/
 
     private boolean isCheck(Colour colour, Map<PositionOnBoard, ChessPiece> boardMap) {
-        PositionOnBoard kingPositionOnBoard = getKingPositionOnBoard(colour, boardMap);
+        PositionOnBoard kingPosition = getKingPosition(colour, boardMap);
 
-        for(PositionOnBoard PositionOnBoard: boardMap.keySet()) {
-            ChessPiece piece = boardMap.get(PositionOnBoard);
+        for(PositionOnBoard position: boardMap.keySet()) {
+            ChessPiece piece = boardMap.get(position);
             if(piece.getColour() != colour) {
-                Set<PositionOnBoard> possibleTargetPositionOnBoards = piece.getMovablePositions(boardMap, PositionOnBoard);
-                if(possibleTargetPositionOnBoards.contains(kingPositionOnBoard)) {
+                Set<PositionOnBoard> possibleTargetPositions = piece.getMovablePositions(boardMap, position);
+                if(possibleTargetPositions.contains(kingPosition)) {
                     Logger.d(TAG, "Piece "+piece+" is attacking King of colour "+colour);
                     return true;
                 }
@@ -303,13 +302,13 @@ public class BoardServiceImpl implements IBoardService {
             return false;
         }
 
-        for(PositionOnBoard PositionOnBoard: boardMap.keySet()) {
-            ChessPiece piece = boardMap.get(PositionOnBoard);
+        for(PositionOnBoard position: boardMap.keySet()) {
+            ChessPiece piece = boardMap.get(position);
             if(piece.getColour()==colour) {
-                Set<PositionOnBoard> possibleMoves = piece.getMovablePositions(boardMap, PositionOnBoard);
+                Set<PositionOnBoard> possibleMoves = piece.getMovablePositions(boardMap, position);
                 for(PositionOnBoard endPos: possibleMoves) {
-                    if(!isCheckAfterLegalMove(colour, boardMap, PositionOnBoard, endPos)) {
-                        Logger.d(TAG, "Piece "+piece+" can help colour "+colour+" to come out of check: st: "+PositionOnBoard+", end: "+endPos);
+                    if(!isCheckAfterLegalMove(colour, boardMap, position, endPos)) {
+                        Logger.d(TAG, "Piece "+piece+" can help colour "+colour+" to come out of check: st: "+position+", end: "+endPos);
                         return false;
                     }
                 }
@@ -332,11 +331,11 @@ public class BoardServiceImpl implements IBoardService {
         return true;
     }
 
-    private PositionOnBoard getKingPositionOnBoard(Colour colour, Map<PositionOnBoard, ChessPiece> boardMap) {
-        for(PositionOnBoard PositionOnBoard: boardMap.keySet()) {
-            ChessPiece piece = boardMap.get(PositionOnBoard);
+    private PositionOnBoard getKingPosition(Colour colour, Map<PositionOnBoard, ChessPiece> boardMap) {
+        for(PositionOnBoard position: boardMap.keySet()) {
+            ChessPiece piece = boardMap.get(position);
             if(piece instanceof King && piece.getColour()==colour) {
-                return PositionOnBoard;
+                return position;
             }
         }
         return null;
