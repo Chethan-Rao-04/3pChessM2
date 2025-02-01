@@ -1,6 +1,5 @@
 package com.ccd.chess.util;
 
-import com.ccd.chess.model.entity.enums.Colour;
 import com.ccd.chess.model.entity.enums.Direction;
 import com.ccd.chess.model.entity.enums.PositionOnBoard;
 import com.ccd.chess.exceptions.InvalidPositionException;
@@ -15,8 +14,6 @@ import com.ccd.chess.model.entity.pieces.Pawn;
  * To validate the step with each move in different directions
  **/
 public class MovementUtil {
-
-    private static final String TAG = "MovementUtil";
 
     /**
      * step method to get the next position based on the direction input

@@ -42,8 +42,6 @@ import java.util.HashMap;
  */
 public abstract class ChessPiece {
 
-    private static final String TAG = "ChessPiece";
-
     protected Colour colour; // Chess piece color
     protected Direction[][] directions; // List of possible directions
 

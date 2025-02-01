@@ -15,8 +15,6 @@ import static com.ccd.chess.util.MovementUtil.stepOrNull;
  * */
 public class Hawk extends Knight {
 
-    private static final String TAG = "HAWK";
-
     public Hawk(Colour colour) {
         super(colour);
     }
