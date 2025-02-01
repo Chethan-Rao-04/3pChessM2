@@ -38,19 +38,19 @@ jobs:
       run: ./gradlew checkstyleMain
 
     - name: Upload test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: build/reports/tests/test
 
     - name: Upload JaCoCo report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: jacoco-report
         path: build/reports/jacoco/test/html
 
     - name: Upload Checkstyle report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: checkstyle-report
         path: build/reports/checkstyle/main.html
