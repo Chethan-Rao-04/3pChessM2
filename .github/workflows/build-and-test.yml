@@ -32,14 +32,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Create test results directory
-        run: mkdir -p build/test-results
+      - name: Run tests with Gradle and generate JaCoCo report
+        run: ./gradlew test jacocoTestReport
 
-      - name: Run tests with Gradle
-        run: ./gradlew test
-
-      - name: Store test results
+      - name: Upload JaCoCo report
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
-          path: build/test-results
+          name: jacoco-report
+          path: build/reports/jacoco/test/html
