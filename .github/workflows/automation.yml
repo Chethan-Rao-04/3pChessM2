@@ -34,6 +34,9 @@ jobs:
     - name: Generate JaCoCo report
       run: ./gradlew jacocoTestReport
 
+    - name: Run Checkstyle
+      run: ./gradlew checkstyleMain
+
     - name: Upload test results
       uses: actions/upload-artifact@v3
       with:
@@ -45,3 +48,9 @@ jobs:
       with:
         name: jacoco-report
         path: build/reports/jacoco/test/html
+
+    - name: Upload Checkstyle report
+      uses: actions/upload-artifact@v3
+      with:
+        name: checkstyle-report
+        path: build/reports/checkstyle/main.html
