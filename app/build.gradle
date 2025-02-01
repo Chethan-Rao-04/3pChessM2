@@ -4,6 +4,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.18'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'jacoco'
+    id 'checkstyle'
 }
 
 group = 'com.ccd'
@@ -39,3 +40,13 @@ test {
 jacocoTestReport {
     dependsOn test
 }
+
+checkstyle {
+    toolVersion = '10.12.1'
+    configFile = file("${rootProject.projectDir}/config/checkstyle/checkstyle.xml")
+}
+
+checkstyleMain {
+    source = 'config/checkstyle/checkstyle.xml'
+}
+

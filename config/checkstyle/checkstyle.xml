@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE checkstyle PUBLIC "-//Puppy Crawl//DTD Check Style 1.3//EN" "http://checkstyle.sourceforge.net/dtds/configuration_1_3.dtd">
+<checkstyle>
+
+    <module name="Checker">
+        <module name="TreeWalker">
+            <!-- Naming Conventions -->
+            <module name="TypeName"/>
+            <module name="MethodName"/>
+            <module name="MemberName"/>
+            <module name="LocalVariableName"/>
+            <module name="ParameterName"/>
+
+            <!-- Whitespace and Formatting -->
+            <module name="WhitespaceAround"/>
+            <module name="Indentation"/>
+
+            <!-- Javadoc -->
+            <module name="JavadocMethod"/>
+            <module name="JavadocType"/>
+
+            <!-- Complexity -->
+            <module name="CyclomaticComplexity"/>
+            <module name="MethodLength"/>
+        </module>
+    </module>
+
+</checkstyle>
