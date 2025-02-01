@@ -32,6 +32,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Create test results directory
+        run: mkdir -p build/test-results
+
       - name: Run tests with Gradle
         run: ./gradlew test
 
