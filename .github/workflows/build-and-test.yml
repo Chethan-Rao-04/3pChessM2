@@ -32,15 +32,5 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Run tests with Gradle and generate JaCoCo report
-        run: ./gradlew test jacocoTestReport
-
-      - name: Upload JaCoCo report
-        uses: actions/upload-artifact@v4
-        with:
-          name: jacoco-report
-          path: build/reports/jacoco/test/html
-          if-no-files-found: warn
-          compression-level: 6
-          overwrite: false
-          include-hidden-files: false
+      - name: Run tests with Gradle and log results
+        run: ./gradlew test --info
