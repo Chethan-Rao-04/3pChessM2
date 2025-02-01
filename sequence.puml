@@ -1,0 +1,108 @@
+@startuml
+participant GameMain
+participant GameState
+participant BoardAdapter
+participant Board
+participant BasePiece
+participant MovementUtil
+participant Hawk
+participant Vortex
+
+-> GameMain: OnClick
+activate GameMain
+
+alt first click
+    GameMain -> BoardAdapter: calculatePolygonID
+    activate BoardAdapter
+    BoardAdapter --> GameMain: polygon position
+    deactivate BoardAdapter
+
+    GameMain -> Board: isCurrentPlayersPiece
+    activate Board
+    Board --> GameMain: return true/false
+    deactivate Board
+
+    GameMain -> Board: getPossibleMoves
+    activate Board
+    Board -> BasePiece: getHighlightPolygons
+    activate BasePiece
+
+    alt if piece is Hawk
+        BasePiece -> Hawk: calculateHawkMoves
+        activate Hawk
+        Hawk --> BasePiece: List<Position>
+        deactivate Hawk
+    else if piece is Vortex
+        BasePiece -> Vortex: calculateVortexMoves
+        activate Vortex
+        Vortex --> BasePiece: List<Position>
+        deactivate Vortex
+    else
+        BasePiece -> MovementUtil: stepOrNull
+        note right: checks for each direction
+        activate MovementUtil
+        MovementUtil --> BasePiece: Position
+        deactivate MovementUtil
+    end
+
+    Board <-- BasePiece: List<Position>
+    deactivate BasePiece
+    GameMain <-- Board: List<Position> highlight polygons
+    deactivate Board
+
+else second click
+    GameMain -> Board: move
+    activate Board
+
+    Board -> Board: isLegalMove
+    Board -> Board: isCheck
+    activate Board
+
+    Board -> BasePiece: getHighlightPolygons
+    activate BasePiece
+
+    alt if piece is Hawk
+        BasePiece -> Hawk: calculateHawkMoves
+        activate Hawk
+        Hawk --> BasePiece: List<Position>
+        deactivate Hawk
+    else if piece is Vortex
+        BasePiece -> Vortex: calculateVortexMoves
+        activate Vortex
+        Vortex --> BasePiece: List<Position>
+        deactivate Vortex
+    else
+        BasePiece -> MovementUtil: stepOrNull
+        note right: checks for each direction
+        activate MovementUtil
+        MovementUtil --> BasePiece: Position
+        deactivate MovementUtil
+    end
+
+    note left: checks if king is present in highlight polygons
+    Board <-- BasePiece: List<Position>
+    deactivate BasePiece
+
+    Board -> Board: isCheckAfterLegalMove
+    note right: internally uses isCheck\nreturns nothing
+    Board -> Board: isCheckMate
+    deactivate Board
+end
+
+GameMain -> BoardAdapter: convertHighlightPolygonsToViewBoard
+GameMain <-- BoardAdapter: List<String> highlight Polygons
+
+alt Game over
+    GameMain -> Board: isGameOver
+    activate Board
+    GameMain <-- Board: game status
+    deactivate Board
+    GameMain -> GameState: setGameOver
+    activate GameState
+    deactivate GameState
+else Not yet
+end
+
+<-- GameMain: click Response
+deactivate GameMain
+@enduml
