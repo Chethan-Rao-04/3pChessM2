@@ -10,11 +10,38 @@ import com.ccd.chess.model.entity.pieces.Pawn;
 import com.ccd.chess.model.entity.pieces.Hawk;
 import com.ccd.chess.model.entity.pieces.Vortex;
 
-
-
 /**
- * PieceFactory - helper class to create objects chess pieces
- **/
+ * PieceFactory - Factory class for creating chess pieces
+ * 
+ * SOLID Principles Implementation:
+ * 
+ * Single Responsibility Principle (SRP):
+ * ✅ Single responsibility:
+ * - Creates chess piece instances
+ * - Encapsulates piece creation logic
+ * 
+ * Open/Closed Principle (OCP):
+ * ✅ Open for extension:
+ * - New piece types can be added by extending switch case
+ * - Existing piece creation remains unchanged
+ * - Example: Hawk and Vortex pieces added easily
+ * 
+ * Liskov Substitution Principle (LSP):
+ * ✅ Returns ChessPiece abstraction:
+ * - All created pieces are valid ChessPiece subtypes
+ * - Can be used anywhere ChessPiece is expected
+ * 
+ * Interface Segregation Principle (ISP):
+ * ✅ Simple, focused interface:
+ * - Single factory method
+ * - Clear parameters and return type
+ * 
+ * Dependency Inversion Principle (DIP):
+ * ✅ Depends on and returns abstractions:
+ * - Works with ChessPiece interface
+ * - Uses Colour enum
+ * - Clients depend on abstractions, not concrete pieces
+ */
 public class PieceFactory {
 
     /**

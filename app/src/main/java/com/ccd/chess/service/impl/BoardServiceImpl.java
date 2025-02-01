@@ -22,6 +22,40 @@ import java.util.HashSet;
 import com.ccd.chess.service.interfaces.IBoardService;
 import org.springframework.stereotype.Service;
 
+/**
+ * BoardServiceImpl - Main service handling board state and game logic
+ * 
+ * SOLID Principles Analysis:
+ * 
+ * Single Responsibility Principle (SRP):
+ * ❌ This class currently handles multiple responsibilities:
+ * - Board state management
+ * - Move validation
+ * - Game state tracking
+ * - Turn management
+ * Could be split into separate services for each responsibility
+ * 
+ * Open/Closed Principle (OCP):
+ * ❌ Move validation and game rules are tightly coupled
+ * Could be improved by:
+ * - Extracting move validation to strategy pattern
+ * - Making game rules configurable/extensible
+ * 
+ * Liskov Substitution Principle (LSP):
+ * ✅ Uses chess piece abstractions consistently
+ * - All piece types work through ChessPiece interface
+ * 
+ * Interface Segregation Principle (ISP):
+ * ❌ Implements large IBoardService interface
+ * Could be split into:
+ * - IBoardState (board management)
+ * - IMoveValidator (move validation)
+ * - IGameState (game state/turn management)
+ * 
+ * Dependency Inversion Principle (DIP):
+ * ✅ Depends on interfaces rather than concrete implementations
+ * ✅ Uses PieceFactory for piece creation
+ */
 @Service
 public class BoardServiceImpl implements IBoardService {
 

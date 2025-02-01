@@ -13,6 +13,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
 
+/**
+ * GameController - REST API endpoints for game interactions
+ * 
+ * SOLID Principles Implementation:
+ * 
+ * Single Responsibility Principle (SRP):
+ * ✅ Controller has single responsibility:
+ * - Handles HTTP endpoints and request routing
+ * - Delegates game logic to service layer
+ * 
+ * Open/Closed Principle (OCP):
+ * ✅ New endpoints can be added without modifying existing ones
+ * ✅ Uses ResponseEntity for flexible response handling
+ * 
+ * Liskov Substitution Principle (LSP):
+ * ✅ Works with service interfaces:
+ * - IGameInterface
+ * - IBoardService
+ * Any implementation of these interfaces can be used
+ * 
+ * Interface Segregation Principle (ISP):
+ * ✅ Uses focused interfaces:
+ * - IGameInterface for game operations
+ * - IBoardService for board operations
+ * 
+ * Dependency Inversion Principle (DIP):
+ * ✅ Depends on abstractions:
+ * - Injects service interfaces, not implementations
+ * - Uses Spring DI for loose coupling
+ */
 @RestController
 @RequestMapping("/")
 @CrossOrigin(origins = "http://localhost:8090")
