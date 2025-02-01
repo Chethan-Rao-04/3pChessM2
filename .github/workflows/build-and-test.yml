@@ -1,4 +1,4 @@
-name: Build and Test
+name: CI
 
 on: [push, pull_request]
 
@@ -7,30 +7,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v2
-        with:
-          java-version: '17'
-          distribution: 'temurin'
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: '17'
 
-      - name: Build with Gradle
-        run: ./gradlew build
+    - name: Build with Gradle
+      run: ./gradlew build
 
-  test:
-    runs-on: ubuntu-latest
+    - name: Run tests and generate JaCoCo report
+      run: ./gradlew test jacocoTestReport
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Upload test results
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-results
+        path: app/build/test-results/test
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v2
-        with:
-          java-version: '17'
-          distribution: 'temurin'
+    - name: Upload test report
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-report
+        path: app/build/reports/tests/test
 
-      - name: Run tests with Gradle and log results
-        run: ./gradlew test --info
+    - name: Upload JaCoCo report
+      uses: actions/upload-artifact@v2
+      with:
+        name: jacoco-report
+        path: app/build/reports/jacoco/test
