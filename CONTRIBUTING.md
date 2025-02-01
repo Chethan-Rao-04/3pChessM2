@@ -171,8 +171,7 @@ feat(board): add diagonal movement for bishops
 - documentation/: Detailed docs
 
 ### Key Directories
-- backend/: Java backend code
-- webapp/: Frontend code
+- app/: Application code
 - documentation/: Project docs
 - .github/: GitHub configs
 

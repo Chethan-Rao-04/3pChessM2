@@ -1,4 +1,52 @@
-# Setup and Deployment Guide
+# Setup Guide
+
+## Prerequisites
+- Java 17 or higher
+- Gradle 7.x or higher
+- Git
+
+## Development Environment Setup
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/yourusername/3pChessM2.git
+cd 3pChessM2
+```
+
+### 2. Project Structure
+The project is organized as a single Spring Boot application with integrated frontend:
+```
+app/
+├── src/
+│   ├── main/
+│   │   ├── java/        # Backend source code
+│   │   └── resources/
+│   │       └── static/  # Frontend assets
+│   └── test/
+│       └── java/        # Test files
+└── build.gradle
+```
+
+### 3. Build and Run
+```bash
+# Build the project
+./gradlew clean build
+
+# Run the application
+./gradlew bootRun
+```
+
+The application will be available at `http://localhost:8080`
+
+### 4. Development Workflow
+1. Backend changes:
+   - Edit Java files in `app/src/main/java`
+   - Application will auto-reload on changes
+
+2. Frontend changes:
+   - Edit files in `app/src/main/resources/static`
+   - Refresh browser to see changes
+   - For hot-reload, use browser dev tools
 
 ## Local Development Environment
 
@@ -28,10 +76,10 @@ cd 3pChessM2
 git submodule update --init --recursive
 ```
 
-#### 2. Backend Setup
+#### 2. app Setup
 ```bash
-# Build the backend
-cd backend
+# Build the app
+cd app
 ./gradlew clean build
 
 # Run tests
@@ -41,14 +89,7 @@ cd backend
 ./gradlew bootRun
 ```
 
-#### 3. Frontend Setup
-```bash
-# Install dependencies
-cd webapp
-npm install
 
-# Start development server
-npm start
 ```
 
 ### IDE Configuration
@@ -69,7 +110,7 @@ npm start
    - Add Spring Boot configuration
    - Main class: `com.ccd.chess.SpringApplication`
    - Working directory: `$PROJECT_DIR$`
-   - Use classpath of module: `backend`
+   - Use classpath of module: `app`
 
 #### VS Code Setup
 1. Extensions
@@ -85,7 +126,7 @@ npm start
 
 ### Build Process
 
-#### 1. Backend Build
+#### 1. app Build
 ```bash
 # Create production build
 ./gradlew clean build -Pprod
@@ -94,12 +135,7 @@ npm start
 ./gradlew javadoc
 ```
 
-#### 2. Frontend Build
-```bash
-# Create production build
-cd webapp
-npm run build
-```
+
 
 ### Deployment Options
 

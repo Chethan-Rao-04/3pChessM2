@@ -20,7 +20,7 @@ This document details the frontend architecture and implementation of the Three 
 
 ### Component Structure
 ```
-webapp/
+app/
 ├── src/
 │   └── main/
 │       └── resources/
@@ -101,23 +101,23 @@ webapp/
 ### Game State
 ```javascript
 {
-    board: {
-        positions: Map<Position, Piece>,
-        currentTurn: PlayerColor,
-        moveHistory: Array<Move>,
-        validMoves: Array<Position>
-    },
-    ui: {
-        selectedPiece: Piece | null,
-        highlightedSquares: Array<Position>,
-        animation: AnimationState,
-        dialog: DialogState
-    },
-    network: {
-        connected: boolean,
-        lastSync: timestamp,
-        pendingMoves: Array<Move>
-    }
+   board: {
+      positions: Map<Position, Piece>,
+              currentTurn: PlayerColor,
+              moveHistory: Array<Move>,
+              validMoves: Array<Position>
+   },
+   ui: {
+      selectedPiece: Piece | null,
+              highlightedSquares: Array<Position>,
+              animation: AnimationState,
+              dialog: DialogState
+   },
+   network: {
+      connected: boolean,
+              lastSync: timestamp,
+              pendingMoves: Array<Move>
+   }
 }
 ```
 

@@ -4,8 +4,21 @@
 This document describes the REST API endpoints available in the Three Player Chess game. The API provides interfaces for game management, move submission, and state retrieval.
 
 ## Base URL
+All API endpoints are served from the main application:
 ```
 http://localhost:8080/api/v1
+```
+
+## Implementation Location
+The API implementations can be found in:
+```
+app/src/main/java/com/ccd/chess/controller/
+```
+
+## Frontend Integration
+The frontend components consuming these APIs are located in:
+```
+app/src/main/resources/static/js/
 ```
 
 ## Authentication
@@ -27,7 +40,7 @@ POST /game
 {
     "gameId": "string",
     "board": {
-        "positions": {},
+        "positionOnBoards": {},
         "currentTurn": "BLUE"
     },
     "status": "ACTIVE"
@@ -47,7 +60,7 @@ GET /game/{gameId}
 {
     "gameId": "string",
     "board": {
-        "positions": {},
+        "positionOnBoards": {},
         "currentTurn": "BLUE"
     },
     "status": "ACTIVE",
@@ -68,8 +81,8 @@ POST /game/{gameId}/move
 **Request Body**:
 ```json
 {
-    "startPosition": "string",
-    "endPosition": "string",
+    "startPositionOnBoard": "string",
+    "endPositionOnBoard": "string",
     "player": "BLUE"
 }
 ```
@@ -79,7 +92,7 @@ POST /game/{gameId}/move
 {
     "valid": true,
     "board": {
-        "positions": {},
+        "positionOnBoards": {},
         "currentTurn": "RED"
     },
     "message": "Move successful"
@@ -88,12 +101,12 @@ POST /game/{gameId}/move
 
 #### Get Valid Moves
 ```http
-GET /game/{gameId}/moves/{position}
+GET /game/{gameId}/moves/{positionOnBoard}
 ```
 
 **Parameters**:
 - `gameId`: Unique game identifier
-- `position`: Board position identifier
+- `positionOnBoard`: Board positionOnBoard identifier
 
 **Response**:
 ```json
@@ -126,7 +139,7 @@ GET /game/{gameId}/result
 ## Data Types
 
 ### Position Format
-Board positions are represented as strings in the format:
+Board positionOnBoards are represented as strings in the format:
 - First character: Section (B: Blue, R: Red, G: Green)
 - Second character: File (A-H)
 - Third character: Rank (1-8)
@@ -157,11 +170,11 @@ Possible values:
 ### Error Response Format
 ```json
 {
-    "error": {
-        "code": "string",
-        "message": "string",
-        "details": {}
-    }
+  "error": {
+    "code": "string",
+    "message": "string",
+    "details": {}
+  }
 }
 ```
 
@@ -175,27 +188,27 @@ Possible values:
 1. Invalid Move
 ```json
 {
-    "error": {
-        "code": "INVALID_MOVE",
-        "message": "The requested move is not valid",
-        "details": {
-            "reason": "PIECE_BLOCKED"
-        }
+  "error": {
+    "code": "INVALID_MOVE",
+    "message": "The requested move is not valid",
+    "details": {
+      "reason": "PIECE_BLOCKED"
     }
+  }
 }
 ```
 
 2. Wrong Turn
 ```json
 {
-    "error": {
-        "code": "WRONG_TURN",
-        "message": "Not the player's turn",
-        "details": {
-            "currentTurn": "RED",
-            "attemptedPlayer": "BLUE"
-        }
+  "error": {
+    "code": "WRONG_TURN",
+    "message": "Not the player's turn",
+    "details": {
+      "currentTurn": "RED",
+      "attemptedPlayer": "BLUE"
     }
+  }
 }
 ```
 
@@ -216,24 +229,24 @@ ws://localhost:8080/ws/game/{gameId}
 1. Move Made
 ```json
 {
-    "type": "MOVE",
-    "data": {
-        "from": "BE2",
-        "to": "BE4",
-        "piece": "BP",
-        "player": "BLUE"
-    }
+  "type": "MOVE",
+  "data": {
+    "from": "BE2",
+    "to": "BE4",
+    "piece": "BP",
+    "player": "BLUE"
+  }
 }
 ```
 
 2. Game State Changed
 ```json
 {
-    "type": "STATE_CHANGE",
-    "data": {
-        "status": "CHECK",
-        "player": "RED"
-    }
+  "type": "STATE_CHANGE",
+  "data": {
+    "status": "CHECK",
+    "player": "RED"
+  }
 }
 ```
 

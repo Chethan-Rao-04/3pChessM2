@@ -6,8 +6,8 @@ plugins {
     id 'jacoco'
 }
 
-group = 'org.example'
-version = 'unspecified'
+group = 'com.ccd'
+version = '0.0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()

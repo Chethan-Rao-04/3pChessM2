@@ -4,7 +4,7 @@
 
 ### Project Structure
 ```
-backend/
+app/
 ├── src/
 │   ├── main/
 │   │   ├── java/
@@ -17,18 +17,15 @@ backend/
 │   │   │       ├── controller/
 │   │   │       └── util/
 │   │   └── resources/
+│   │       └── static/
+│   │           ├── css/
+│   │           ├── js/
+│   │           └── index.html
 │   └── test/
 │       └── java/
 │           └── com/ccd/chess/
 │               └── test/
-webapp/
-├── src/
-│   └── main/
-│       ├── java/
-│       │   └── application/
-│       └── resources/
-│           └── static/
-└── build.gradle
+
 ```
 
 ### Package Organization

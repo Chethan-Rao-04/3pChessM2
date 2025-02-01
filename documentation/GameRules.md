@@ -169,7 +169,7 @@ This document details the rules and mechanics of Three Player Chess, including s
 ### Disputes
 1. Pause clock immediately
 2. Call tournament director
-3. Document position
+3. Document positionOnBoard
 4. Accept ruling
 
 ## Variations
@@ -177,7 +177,7 @@ This document details the rules and mechanics of Three Player Chess, including s
 ### Alternative Setups
 1. Random piece placement
 2. Modified piece sets
-3. Special starting positions
+3. Special starting positionOnBoards
 
 ### House Rules
 1. Optional rules modifications

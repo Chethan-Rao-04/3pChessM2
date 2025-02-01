@@ -24,12 +24,6 @@ public class GameService implements IGameInterface {
     private PositionOnBoard moveStartPos, moveEndPos;
     private Set<PositionOnBoard> highlightPolygons;
 
-    /**
-     * GameMain Constructor. Entry point to the backend logic
-     * */
-    public GameService() {
-        this(new BoardServiceImpl());
-    }
 
     /**
      * Constructor with dependency injection for testing

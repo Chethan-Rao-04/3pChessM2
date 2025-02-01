@@ -1,7 +1,7 @@
 # Three Player Chess - Architecture Documentation
 
 ## System Overview
-This document describes the architecture and design decisions for the Three Player Chess game. The system is built as a client-server application using Spring Boot for the backend and a web-based frontend.
+This document describes the architecture and design decisions for the Three Player Chess game. The system is built as a monolithic application using Spring Boot with an integrated frontend.
 
 ## Technology Stack
 
@@ -12,7 +12,7 @@ This document describes the architecture and design decisions for the Three Play
 - JaCoCo for test coverage
 - Gradle for build management
 
-### Frontend:
+### Frontend (Integrated in app/src/main/resources/static):
 - HTML/CSS/JavaScript
 - RESTful API integration
 - Browser-based game board rendering
@@ -20,34 +20,28 @@ This document describes the architecture and design decisions for the Three Play
 ## Core Components
 
 ### 1. Game Logic Layer
-- Located in `backend/src/main/java/com/ccd/chess/model`
+- Located in `app/src/main/java/com/ccd/chess/model`
 - Implements core chess rules and piece movement
 - Handles game state management
 - Validates moves and enforces rules
 
 ### 2. Service Layer
-- Located in `backend/src/main/java/com/ccd/chess/service`
+- Located in `app/src/main/java/com/ccd/chess/service`
 - Provides high-level game operations
 - Manages game sessions and state
 - Implements business logic interfaces
 
 ### 3. Controller Layer
+- Located in `app/src/main/java/com/ccd/chess/controller`
 - Handles HTTP requests
 - Manages API endpoints
 - Coordinates between frontend and backend
 
-### 4. Model Layer
-#### Pieces
-- Abstract `ChessPiece` base class
-- Individual piece implementations (King, Queen, Rook, etc.)
-- Each piece encapsulates its movement rules
-- Special piece implementations (Hawk, Vortex)
-
-#### Board
-- Manages game board state
-- Handles piece positions
-- Implements move validation
-- Tracks game progress
+### 4. Frontend Layer
+- Located in `app/src/main/resources/static`
+- Implements user interface
+- Handles client-side game rendering
+- Manages user interactions
 
 ## Testing Strategy
 
@@ -95,7 +89,7 @@ This document describes the architecture and design decisions for the Three Play
 
 ### Data Flow
 1. Frontend sends move request
-2. Backend validates move
+2. app validates move
 3. Game state updated
 4. New state returned to frontend
 
@@ -110,4 +104,3 @@ This document describes the architecture and design decisions for the Three Play
 - Game persistence
 - AI opponents
 - Move replay functionality
-

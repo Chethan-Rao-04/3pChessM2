@@ -1,5 +1,48 @@
 # Testing Documentation
 
+## Test Structure
+All tests are located in the `app/src/test` directory:
+```
+app/src/test/
+└── java/
+    └── com/ccd/chess/
+        ├── model/
+        │   ├── entity/
+        │   └── dto/
+        ├── service/
+        ├── controller/
+        └── util/
+```
+
+## Running Tests
+```bash
+# Run all tests
+./gradlew test
+
+# Run specific test class
+./gradlew test --tests "com.ccd.chess.model.entity.PieceTest"
+
+# Run with coverage report
+./gradlew test jacocoTestReport
+```
+
+## Test Categories
+
+### 1. Unit Tests
+- Located in respective package directories
+- Test individual components in isolation
+- Mock dependencies as needed
+
+### 2. Integration Tests
+- Located in `controller` package
+- Test API endpoints
+- Test frontend-backend integration
+
+### 3. Frontend Tests
+- Located in `app/src/test/resources/static/js`
+- Test UI components
+- Test API integration
+
 ## Overview
 This document outlines the testing strategy and implementation for the Three Player Chess game. The testing approach ensures comprehensive coverage of game logic, piece movements, and edge cases.
 
@@ -12,7 +55,7 @@ This document outlines the testing strategy and implementation for the Three Pla
 ## Test Organization
 
 ### 1. Piece Tests
-Located in `backend/src/test/java/com/ccd/chess/model/entity/pieces/`
+Located in `app/src/test/java/com/ccd/chess/model/entity/pieces/`
 
 #### Common Test Patterns
 Each piece has dedicated test classes following these patterns:
@@ -62,9 +105,9 @@ Each piece has dedicated test classes following these patterns:
 ## Test Data Management
 
 ### Data Providers
-Located in `backend/src/test/java/com/ccd/chess/test/DataProvider.java`
+Located in `app/src/test/java/com/ccd/chess/test/DataProvider.java`
 - Piece configurations
-- Board positions
+- Board positionOnBoards
 - Move sequences
 - Game states
 
@@ -104,7 +147,7 @@ Example: `isLegalMove_pawnMoveForwardToEmptySquare_True`
 ### 4. Parameterized Testing
 Used for:
 - Multiple piece colors
-- Various board positions
+- Various board positionOnBoards
 - Different game states
 - Move combinations
 
@@ -113,7 +156,7 @@ Used for:
 ### 1. Board Boundaries
 - Piece movement at edges
 - Cross-section movement
-- Invalid position handling
+- Invalid positionOnBoard handling
 
 ### 2. Special Moves
 - Castling requirements
