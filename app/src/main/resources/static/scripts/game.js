@@ -57,17 +57,7 @@ function formatTime(minutes, seconds) {
  * @param {string} color The color of the current player
  */
 function startPlayerTimer(color) {
-    if (!color || !timers[color]) {
-        console.warn(`Cannot start timer for invalid color: ${color}`);
-        return;
-    }
-
-    if (timers[color].isRunning) {
-        console.warn(`Timer already running for color: ${color}`);
-        return;
-    }
-
-    console.log(`Starting timer for color: ${color}`);
+    if (timers[color].isRunning) return; // Prevent starting the timer if it's already running for the player
     timers[color].isRunning = true;
 
     timers[color].timer = setInterval(() => {
@@ -76,7 +66,7 @@ function startPlayerTimer(color) {
             timers[color].seconds = 0;
             timers[color].minutes++;
         }
-        updateTimerDisplay(color);
+        document.getElementById(`timer-${color}`).textContent = formatTime(timers[color].minutes, timers[color].seconds);
     }, 1000);
 }
 
@@ -85,9 +75,10 @@ function startPlayerTimer(color) {
  * @param {string} color The color of the current player
  */
 function stopPlayerTimer(color) {
-    if (!color || !timers[color]) {
-        console.warn(`No timer found for color: ${color}`);
-        return;  // Skip if color is undefined or invalid
+    console.log("Stopping timer for color:", color);
+    if (!timers[color]) {
+        console.error(`Invalid color: ${color}`);  // Log an error for invalid color
+        return;  // Exit the function if the color is not valid
     }
 
     if (timers[color].timer) {
@@ -95,7 +86,6 @@ function stopPlayerTimer(color) {
         timers[color].isRunning = false;
     }
 }
-
 function updateTimerDisplay(color) {
     const timerElement = document.getElementById(`timer-${color}`);
 
@@ -115,17 +105,11 @@ function updateAllTimers() {
         updateTimerDisplay(color);
     }
 }
-
 /**
  * Updates the current player and handles timer transitions
  * @param {string} color The color of the current player
  */
 function updateCurrentPlayer(color) {
-    if (!color || !['R', 'G', 'B'].includes(color)) {
-        console.warn("Invalid color in updateCurrentPlayer:", color);
-        return;
-    }
-
     console.log("Updating current player to color:", color);
 
     // Update player name and color display
@@ -150,9 +134,7 @@ function updateCurrentPlayer(color) {
             otherTimer.classList.remove('timer-active'); // Remove the active class
             otherTimer.style.color = 'black'; // Reset text color to black
         }
-        if (timers[c] && timers[c].isRunning) {  // Only stop if timer exists and is running
-            stopPlayerTimer(c);
-        }
+        stopPlayerTimer(c); // Ensure other timers are stopped
     });
 
     // Start the current player's timer
@@ -208,13 +190,11 @@ function updateBoard(response) {
 
     let board = response['board'];
     let highlightedPolygons = response['highlightedPolygons'];
+    //let winner = response['winner'];
 
     if (response['gameOver']) {
-        if (response['winner'] && ['R', 'G', 'B'].includes(response['winner'])) {
-            console.log("Game over - stopping timer for winner:", response['winner']);
-            stopPlayerTimer(response['winner']); // Only stop if a valid color exists
-        }
-        alert(`Game Over!\nThe winner is ${response['winner'] || 'undefined'}`);
+        stopPlayerTimer(response['winner']); // Stop the timer when the game is over
+        alert(`Game Over!\nThe winner is ${response['winner']}`);
     }
 
     updatePieces(board);
@@ -305,50 +285,16 @@ function clearBoard() {
  * Called when the HTML document finishes loading
  */
 function bodyLoaded() {
-    console.log("Body loaded - Initializing game");
-    
-    // Initialize all timers to 0
-    ['R', 'G', 'B'].forEach(color => {
-        console.log(`Initializing timer for ${color}`);
-        timers[color] = { timer: null, minutes: 0, seconds: 0, isRunning: false };
-        updateTimerDisplay(color);
-    });
-    
-    // Get initial game state
+    console.log("Body loaded");
     requestUpdatedBoard();
-    
-    // Get and set up initial player
-    const playerRequest = new XMLHttpRequest();
-    playerRequest.open("GET", "/currentPlayer", false);
-    playerRequest.send(null);
-    
-    if (playerRequest.status === 200) {
-        const response = playerRequest.response;
-        console.log("Initial player response:", response);
-        
-        if (response) {
-            const initialPlayer = response.trim().charAt(0);
-            console.log("Starting timer for initial player:", initialPlayer);
-            
-            if (['R', 'G', 'B'].includes(initialPlayer)) {
-                startPlayerTimer(initialPlayer);
-            } else {
-                console.warn("Invalid initial player color:", initialPlayer);
-            }
-        } else {
-            console.warn("Empty response from /currentPlayer");
-        }
-    } else {
-        console.error("Failed to get initial player:", playerRequest.status);
-    }
+    requestCurrentPlayer();
 
-    // Set up polygon click handlers
     const polygons = document.querySelectorAll('polygon');
     polygons.forEach(function (polygon) {
         polygon.addEventListener('click', function () {
             const polygonId = polygon.id;
-            console.log("Polygon clicked:", polygonId);
             sendPolygonClicked(polygonId);
+            requestCurrentPlayer();
         });
     });
 }
@@ -358,23 +304,6 @@ function bodyLoaded() {
  * @param {string} polygonId ID of the clicked polygon, e.g. Ra1, Gb3, ...
  */
 function sendPolygonClicked(polygonId) {
-    // First get the current player before making the move
-    const playerRequest = new XMLHttpRequest();
-    playerRequest.open("GET", "/currentPlayer", false);
-    playerRequest.send(null);
-    
-    let currentPlayer = null;
-    if (playerRequest.status === 200) {
-        const response = playerRequest.response.trim();
-        if (response && ['R', 'G', 'B'].includes(response.charAt(0))) {
-            currentPlayer = response.charAt(0);
-            console.log("Current player before stopping timer:", currentPlayer);
-        } else {
-            console.warn("Invalid player color received:", response);
-        }
-    }
-
-    // Now make the move
     const request = new XMLHttpRequest();
     request.open("POST", "/onClick", false);
     request.send(polygonId);
@@ -382,29 +311,10 @@ function sendPolygonClicked(polygonId) {
     if (request.status === 200) {
         const data = JSON.parse(request.response);
         updateBoard(data);
-        
-        if (currentPlayer && timers[currentPlayer] && timers[currentPlayer].isRunning) {
-            console.log("Stopping timer for player:", currentPlayer);
-            stopPlayerTimer(currentPlayer);  // Stop current player's timer
-            // Get next player and start their timer
-            const nextPlayer = getNextPlayer(currentPlayer);
-            console.log("Starting timer for next player:", nextPlayer);
-            startPlayerTimer(nextPlayer);
-        } else {
-            console.warn("No valid current player found after move");
-        }
+        const currentPlayer = data['currentPlayer'];  // Assuming this comes in the response
+        stopPlayerTimer(currentPlayer);  // Stop the current player's timer after their move
+        // Optionally, you can start the next player's timer here
     }
-}
-
-/**
- * Helper function to get the next player in sequence
- * @param {string} currentPlayer Single character representing current player (R/G/B)
- * @returns {string} Single character representing next player
- */
-function getNextPlayer(currentPlayer) {
-    const sequence = ['R', 'G', 'B'];
-    const currentIndex = sequence.indexOf(currentPlayer);
-    return sequence[(currentIndex + 1) % 3];
 }
 
 /**
@@ -453,7 +363,6 @@ function requestCurrentPlayer() {
         console.error("Failed to get current player:", request.status);
     }
 }
-
 updateAllTimers(); // Call the function to update all timers
 
 document.addEventListener("DOMContentLoaded", function() {
