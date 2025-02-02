@@ -40,7 +40,7 @@ class PawnTest {
      */
     @Test
     void isLegalMove_pawnMoveForwardToEmptySquare_True() {
-        ChessPiece pawn = new Pawn(Colour.BLUE);
+        ChessPiece pawn = new Pawn(Colour.SILVER);
         boardMap.put(BE4, pawn);
         Set<PositionOnBoard> actualPawnMoves = pawn.getMovablePositions(boardMap, BE4);
         assertTrue(actualPawnMoves.contains(RD4));
@@ -71,7 +71,7 @@ class PawnTest {
     @ParameterizedTest
     @MethodSource("com.ccd.chess.test.DataProvider#pieceProvider")
     void isLegalMove_pawnMoveForwardToTakeOpponentPiece_False(ChessPiece piece) {
-        ChessPiece pawn = new Pawn(Colour.BLUE);
+        ChessPiece pawn = new Pawn(Colour.SILVER);
         PositionOnBoard startPositionOnBoard = BE4;
         PositionOnBoard endPositionOnBoard = RD4;
 
@@ -91,9 +91,9 @@ class PawnTest {
     @ParameterizedTest
     @MethodSource("com.ccd.chess.test.DataProvider#pieceProvider")
     void isLegalMove_pawnMoveDiagonalToTakeOpponentPiece_True(ChessPiece piece) {
-        if(piece.getColour() == Colour.BLUE) return;
+        if(piece.getColour() == Colour.SILVER) return;
 
-        ChessPiece pawn = new Pawn(Colour.BLUE);
+        ChessPiece pawn = new Pawn(Colour.SILVER);
         PositionOnBoard startPositionOnBoard = BE4;
         PositionOnBoard endPositionOnBoard = RC4;
 
@@ -113,9 +113,9 @@ class PawnTest {
     @ParameterizedTest
     @MethodSource("com.ccd.chess.test.DataProvider#pieceProvider")
     void isLegalMove_pawnTakesItsColourPiece_False(ChessPiece piece) {
-        if(piece.getColour() != Colour.BLUE) return;
+        if(piece.getColour() != Colour.SILVER) return;
 
-        ChessPiece pawn = new Pawn(Colour.BLUE);
+        ChessPiece pawn = new Pawn(Colour.SILVER);
         PositionOnBoard startPositionOnBoard = BE4;
         PositionOnBoard endPositionOnBoard = RC4;
 

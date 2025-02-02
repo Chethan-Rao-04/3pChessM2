@@ -38,7 +38,7 @@ class RookTest {
      */
     @Test
     void setupDirections_rookCanMoveInStraightDirections_True() {
-        ChessPiece rook = new Rook(Colour.GREEN);
+        ChessPiece rook = new Rook(Colour.BRONZE);
         PositionOnBoard startPos = BE2;
         boardMap.clear();
         boardMap.put(startPos, rook);
@@ -125,7 +125,7 @@ class RookTest {
     void getMovablePositions_rookMovesAcrossBoardSections_True() {
         boardMap.clear();
         PositionOnBoard startPositionOnBoard = BE4; // Edge of blue section
-        ChessPiece rook = new Rook(Colour.BLUE);
+        ChessPiece rook = new Rook(Colour.SILVER);
         boardMap.put(startPositionOnBoard, rook);
         Set<PositionOnBoard> moves = rook.getMovablePositions(boardMap, startPositionOnBoard);
         // Should be able to move to bronze section

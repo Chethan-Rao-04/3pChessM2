@@ -39,7 +39,7 @@ class VortexTest {
      */
     @Test
     void getMovablePositions_vortexMovesInValidPattern_True() {
-        ChessPiece vortex = new Vortex(Colour.GREEN);
+        ChessPiece vortex = new Vortex(Colour.BRONZE);
         PositionOnBoard startPos = BE2;
         boardMap.clear();
         boardMap.put(startPos, vortex);
@@ -60,9 +60,9 @@ class VortexTest {
     @ParameterizedTest
     @MethodSource("com.ccd.chess.test.DataProvider#pieceProvider")
     void getMovablePositions_vortexCapturesEnemyPiece_True(ChessPiece piece) {
-        if(piece.getColour() == Colour.GREEN) return;
+        if(piece.getColour() == Colour.BRONZE) return;
 
-        ChessPiece vortex = new Vortex(Colour.GREEN);
+        ChessPiece vortex = new Vortex(Colour.BRONZE);
         PositionOnBoard startPos = BE2;
         PositionOnBoard capturePos = BF1;  // Diagonal position
         boardMap.clear();
@@ -78,9 +78,9 @@ class VortexTest {
     @ParameterizedTest
     @MethodSource("com.ccd.chess.test.DataProvider#pieceProvider")
     void getMovablePositions_vortexBlockedByFriendlyPiece_False(ChessPiece piece) {
-        if(piece.getColour() != Colour.GREEN) return;
+        if(piece.getColour() != Colour.BRONZE) return;
 
-        ChessPiece vortex = new Vortex(Colour.GREEN);
+        ChessPiece vortex = new Vortex(Colour.BRONZE);
         PositionOnBoard startPos = BE2;
         PositionOnBoard blockingPos = BF1;  // Diagonal position
         PositionOnBoard leftPos = BE1;      // Left move from diagonal
@@ -98,9 +98,9 @@ class VortexTest {
     @ParameterizedTest
     @MethodSource("com.ccd.chess.test.DataProvider#pieceProvider")
     void getMovablePositions_vortexCapturesWithLeftMove_True(ChessPiece piece) {
-        if(piece.getColour() == Colour.GREEN) return;
+        if(piece.getColour() == Colour.BRONZE) return;
 
-        ChessPiece vortex = new Vortex(Colour.GREEN);
+        ChessPiece vortex = new Vortex(Colour.BRONZE);
         PositionOnBoard startPos = BE2;
         PositionOnBoard capturePos = BE1;  // Left move from diagonal
         boardMap.clear();
