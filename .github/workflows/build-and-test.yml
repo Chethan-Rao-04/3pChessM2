@@ -43,7 +43,7 @@ jobs:
     # Add Docker build step
     - name: Build Docker image
       run: |
-        docker build -t chethanrao/3pchess:${{ github.sha }} .
+        docker build -t chethancn/3pchess:${{ github.sha }} .
 
     # Log in to Docker Hub
     - name: Log in to Docker Hub
@@ -55,9 +55,9 @@ jobs:
     # Tag and push Docker image
     - name: Tag Docker image
       run: |
-        docker tag chethanrao/3pchess:${{ github.sha }} chethanrao/3pchess:latest
+        docker tag chethancn/3pchess:${{ github.sha }} chethancn/3pchess:latest
 
     - name: Push Docker image
       run: |
-        docker push chethanrao/3pchess:${{ github.sha }}
-        docker push chethanrao/3pchess:latest
+        docker push chethancn/3pchess:${{ github.sha }}
+        docker push chethancn/3pchess:latest
