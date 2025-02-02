@@ -21,7 +21,7 @@ public class BoardAdapter {
      * @param modelBoard a map of position and piece as input
      * @return Map of String and String
      **/
-    public static Map<String, String> convertModelBoardToViewBoard(Map<PositionOnBoard, ChessPiece> modelBoard) {
+    public static Map<String, String> ConvertBoardToStringRep(Map<PositionOnBoard, ChessPiece> modelBoard) {
         Map<String, String> viewBoard = new HashMap<>();
 
         for(PositionOnBoard position: modelBoard.keySet()) {
@@ -39,7 +39,7 @@ public class BoardAdapter {
      * @param possibleMoves a list of positions to highlight
      * @return list of strings
      **/
-    public static List<String> convertHighlightPolygonsToViewBoard(Set<PositionOnBoard> possibleMoves) {
+    public static List<String> convertPossibleMovesToStringRep(Set<PositionOnBoard> possibleMoves) {
         List<String> moves = new ArrayList<>();
         if(possibleMoves == null) {
             return Collections.emptyList();
@@ -57,7 +57,7 @@ public class BoardAdapter {
      * @param  polygon The unique label of the polygon which is clicked by player
      * @return unique ID
      * */
-    public static int calculatePolygonId(String polygon) throws InvalidPositionException {
+    public static int GeneratePolygonID(String polygon) throws InvalidPositionException {
 
         if(polygon==null || polygon.length() != 3 || !Character.isAlphabetic(polygon.charAt(0))
                 || !Character.isAlphabetic(polygon.charAt(1)) || !Character.isDigit(polygon.charAt(2))) {

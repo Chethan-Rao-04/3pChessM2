@@ -28,6 +28,7 @@ This directory contains comprehensive documentation for the Three Player Chess a
 - Testing strategy
 - Test organization
 - Coverage goals
+- Report generation
 - Test maintenance
 - Best practices
 
@@ -57,6 +58,7 @@ This directory contains comprehensive documentation for the Three Player Chess a
 - Development setup
 - Production deployment
 - Configuration
+- Deployment
 - Troubleshooting
 
 ## Getting Started

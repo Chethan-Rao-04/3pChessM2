@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chess3player-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chess3player
+  template:
+    metadata:
+      labels:
+        app: chess3player
+    spec:
+      containers:
+        - name: chess3player
+          image: chethancn/3pchess
+          ports:
+            - containerPort: 8080  # Adjust this if your app uses a different port
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chess3player-service
+spec:
+  selector:
+    app: chess3player
+  ports:
+    - protocol: TCP
+      port: 80        # The port the service will expose
+      targetPort: 8080 # The port the app inside the container listens on
+  type: ClusterIP    # Adjust this if you need LoadBalancer or NodePort

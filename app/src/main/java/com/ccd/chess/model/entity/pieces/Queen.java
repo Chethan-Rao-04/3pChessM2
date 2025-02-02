@@ -4,13 +4,15 @@ import com.ccd.chess.model.entity.enums.Colour;
 import com.ccd.chess.model.entity.enums.Direction;
 import com.ccd.chess.model.entity.enums.PositionOnBoard;
 import com.ccd.chess.util.Logger;
-import static com.ccd.chess.util.MovementUtil.stepOrNull;
+import com.ccd.chess.util.MovementUtil;
+
+import static com.ccd.chess.util.MovementUtil.calculateNextPositionOrNull;
 
 import java.util.*;
 
 /**
  * Queen class extends ChessPiece. Move directions for the Queen, the polygons
- * to be highlighted, and its legal moves are checked here. Queen can move like
+ * to be highlighted, and its legal moves are checked here. Queen can executeMove like
  * both a Rook and Bishop combined.
  **/
 public class Queen extends ChessPiece {
@@ -27,7 +29,7 @@ public class Queen extends ChessPiece {
 
     /**
      * Method to initialize directions for a chess piece
-     * Queen can move in any direction (like Rook + Bishop combined)
+     * Queen can executeMove in any direction (like Rook + Bishop combined)
      **/
     @Override
     public void setupDirections() {
@@ -39,26 +41,25 @@ public class Queen extends ChessPiece {
     }
 
     /**
-     * Fetch all the possible positions where a piece can move on board
+     * Fetch all the possible positions where a piece can executeMove on board
      * @param boardMap: Board Map instance representing current game board
      * @param start: position of piece on board
-     * @return Set of possible positions a piece is allowed to move
+     * @return Set of possible positions a piece is allowed to executeMove
      * */
     @Override
     public Set<PositionOnBoard> getMovablePositions(Map<PositionOnBoard, ChessPiece> boardMap, PositionOnBoard start) {
-        Collection<PositionOnBoard> wallPiecePositions = getWallPieceMapping(boardMap).values();
         Set<PositionOnBoard> positionSet = new HashSet<>();
         ChessPiece mover = this;
         Direction[][] steps = this.directions;
 
         for (Direction[] step : steps) {
-            PositionOnBoard tmp = stepOrNull(mover, step, start);
-            while(tmp != null && !wallPiecePositions.contains(tmp) && !positionSet.contains(tmp)) {
+            PositionOnBoard tmp = MovementUtil.calculateNextPositionOrNull(mover, step, start);
+            while(tmp != null && !positionSet.contains(tmp)) {
                 ChessPiece target = boardMap.get(tmp);
                 if(target == null) {
                     Logger.d(TAG, "Empty position: " + tmp);
                     positionSet.add(tmp);
-                    tmp = stepOrNull(mover, step, tmp, tmp.getColour()!=start.getColour());
+                    tmp = calculateNextPositionOrNull(mover, step, tmp, tmp.getColour()!=start.getColour());
                 } else if(target.getColour() != mover.getColour()) {
                     Logger.d(TAG, "Can capture: " + tmp);
                     positionSet.add(tmp);

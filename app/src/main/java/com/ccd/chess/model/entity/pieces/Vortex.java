@@ -3,16 +3,17 @@ import com.ccd.chess.model.entity.enums.Colour;
 import com.ccd.chess.model.entity.enums.Direction;
 import com.ccd.chess.model.entity.enums.PositionOnBoard;
 import com.ccd.chess.util.Logger;
+import com.ccd.chess.util.MovementUtil;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static com.ccd.chess.util.MovementUtil.stepOrNull;
+import static com.ccd.chess.util.MovementUtil.calculateNextPositionOrNull;
 
 /**
  * Vortex class extends ChessPiece. Moves one square diagonally in any direction,
- * and then can move one square left from those diagonal positions.
+ * and then can executeMove one square left from those diagonal positions.
  * Can capture enemy pieces but cannot land on friendly pieces.
  */
 public class Vortex extends ChessPiece {
@@ -42,11 +43,11 @@ public class Vortex extends ChessPiece {
     }
 
     /**
-     * Fetch all possible positions where Vortex can move on board
-     * First moves one square diagonally, then can move one square left from those positions
+     * Fetch all possible positions where Vortex can executeMove on board
+     * First moves one square diagonally, then can executeMove one square left from those positions
      * @param boardMap: Board Map instance representing current game board
      * @param start: position of piece on board
-     * @return Set of possible PositionOnBoardds piece is allowed to move
+     * @return Set of possible PositionOnBoardds piece is allowed to executeMove
      */
     @Override
     public Set<PositionOnBoard> getMovablePositions(Map<PositionOnBoard, ChessPiece> boardMap, PositionOnBoard start) {
@@ -54,20 +55,20 @@ public class Vortex extends ChessPiece {
 
         // First get all diagonal positions (one square)
         for (Direction[] step : this.directions) {
-            PositionOnBoard diagonalPos = stepOrNull(this, step, start);
+            PositionOnBoard diagonalPos = MovementUtil.calculateNextPositionOrNull(this, step, start);
             if (diagonalPos != null) {
                 ChessPiece targetPiece = boardMap.get(diagonalPos);
-                // Can move to or capture at diagonal position
+                // Can executeMove to or capture at diagonal position
                 if (targetPiece == null || targetPiece.getColour() != this.getColour()) {
-                    Logger.d(TAG, "Adding diagonal move position: " + diagonalPos);
+                    Logger.d(TAG, "Adding diagonal executeMove position: " + diagonalPos);
                     positionSet.add(diagonalPos);
                     
-                    // From diagonal position, try to move one square left
-                    PositionOnBoard leftPos = stepOrNull(this, new Direction[]{Direction.LEFT}, diagonalPos);
+                    // From diagonal position, try to executeMove one square left
+                    PositionOnBoard leftPos = MovementUtil.calculateNextPositionOrNull(this, new Direction[]{Direction.LEFT}, diagonalPos);
                     if (leftPos != null) {
                         ChessPiece leftPiece = boardMap.get(leftPos);
                         if (leftPiece == null || leftPiece.getColour() != this.getColour()) {
-                            Logger.d(TAG, "Adding left move position from diagonal: " + leftPos);
+                            Logger.d(TAG, "Adding left executeMove position from diagonal: " + leftPos);
                             positionSet.add(leftPos);
                         }
                     }

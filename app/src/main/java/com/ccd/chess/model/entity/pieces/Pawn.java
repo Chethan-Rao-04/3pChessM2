@@ -4,12 +4,12 @@ import com.ccd.chess.model.entity.enums.Colour;
 import com.ccd.chess.model.entity.enums.Direction;
 import com.ccd.chess.model.entity.enums.PositionOnBoard;
 import com.ccd.chess.exceptions.InvalidPositionException;
-import static com.ccd.chess.util.MovementUtil.stepOrNull;
+import static com.ccd.chess.util.MovementUtil.calculateNextPositionOrNull;
 import com.ccd.chess.util.Logger;
+import com.ccd.chess.util.MovementUtil;
 
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -43,15 +43,14 @@ public class Pawn extends ChessPiece {
     }
 
     /**
-     * Fetch all the possible positions where a piece can move on board
+     * Fetch all the possible positions where a piece can executeMove on board
      *
      * @param boardMap: Board Map instance representing current game board
      * @param start:    position of piece on board
-     * @return Set of possible positions a piece is allowed to move
+     * @return Set of possible positions a piece is allowed to executeMove
      */
     @Override
     public Set<PositionOnBoard> getMovablePositions(Map<PositionOnBoard, ChessPiece> boardMap, PositionOnBoard start) {
-        Collection<PositionOnBoard> wallPiecePositions = getWallPieceMapping(boardMap).values();
         Set<PositionOnBoard> positionSet = new HashSet<>();
         ChessPiece mover = this;
         Colour moverCol = mover.getColour();
@@ -59,17 +58,13 @@ public class Pawn extends ChessPiece {
 
         for (int i = 0; i < steps.length; i++) {
             Direction[] step = steps[i];
-            PositionOnBoard end = stepOrNull(mover, step, start);
-
-            if (wallPiecePositions.contains(end)) {
-                continue;
-            }
+            PositionOnBoard end = MovementUtil.calculateNextPositionOrNull(mover, step, start);
 
             if (end != null && !positionSet.contains(end)) {
                 ChessPiece target = boardMap.get(end);
-                Logger.d(TAG, "end: " + end + ", step: " + Arrays.toString(step));
+                Logger.d(TAG, "end: " + end + ", calculateNextPosition: " + Arrays.toString(step));
                 try {
-                    boolean isOneStepForwardAndNotTakingPieceCase = (target == null && i == 0); // 1 step forward, not taking
+                    boolean isOneStepForwardAndNotTakingPieceCase = (target == null && i == 0); // 1 calculateNextPosition forward, not taking
                     boolean isTwoStepForwardAndNotTakingPieceCase = (target == null && i == 1 // 2 steps forward,
                             && start.getColour() == moverCol && start.getRow() == 1 //must be in initial position
                             && boardMap.get(PositionOnBoard.get(moverCol, 2, start.getColumn())) == null); //and can't jump a piece;

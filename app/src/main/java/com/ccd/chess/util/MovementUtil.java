@@ -11,18 +11,18 @@ import com.ccd.chess.model.entity.pieces.Pawn;
 
 /**
  * MovementUtil - helper class for the movement of chess pieces
- * To validate the step with each move in different directions
+ * To validate the calculateNextPosition with each executeMove in different directions
  **/
 public class MovementUtil {
 
     /**
-     * step method to get the next position based on the direction input
+     * calculateNextPosition method to get the next position based on the direction input
      * @param piece piece to be moved
-     * @param step directions to move
+     * @param step directions to executeMove
      * @param current current position of the piece
-     * @return Position of the piece after the step
+     * @return Position of the piece after the calculateNextPosition
      **/
-    public static PositionOnBoard step(ChessPiece piece, Direction[] step,PositionOnBoard current) throws InvalidPositionException {
+    public static PositionOnBoard calculateNextPosition(ChessPiece piece, Direction[] step, PositionOnBoard current) throws InvalidPositionException {
         boolean reverse = false;
         for(Direction d: step){
             if((piece.getColour()!=current.getColour() && piece instanceof Pawn) || reverse){//reverse directions for knights
@@ -43,14 +43,14 @@ public class MovementUtil {
     }
 
     /**
-     * step method to get the next position based on the direction input
+     * calculateNextPosition method to get the next position based on the direction input
      * @param piece piece to be moved
-     * @param step directions to move
+     * @param step directions to executeMove
      * @param current current position of the piece
      * @param reverse if movement is in reverse direction
-     * @return Position of the piece after the step
+     * @return Position of the piece after the calculateNextPosition
      **/
-    public static PositionOnBoard step(ChessPiece piece, Direction[] step,PositionOnBoard current, boolean reverse) throws InvalidPositionException {
+    public static PositionOnBoard calculateNextPosition(ChessPiece piece, Direction[] step, PositionOnBoard current, boolean reverse) throws InvalidPositionException {
         for(Direction d: step){
             if((piece.getColour()!=current.getColour() && piece instanceof Pawn) || reverse){//reverse directions for knights
                 switch(d){
@@ -71,15 +71,15 @@ public class MovementUtil {
 
 
     /**
-     * step method to get the next position based on the direction input, return null if not valid
+     * calculateNextPosition method to get the next position based on the direction input, return null if not valid
      * @param piece piece to be moved
-     * @param step directions to move
+     * @param step directions to executeMove
      * @param current current position of the piece
-     * @return Position of the piece after the step
+     * @return Position of the piece after the calculateNextPosition
      **/
-    public static PositionOnBoard stepOrNull(ChessPiece piece, Direction[] step,PositionOnBoard current) {
+    public static PositionOnBoard calculateNextPositionOrNull(ChessPiece piece, Direction[] step, PositionOnBoard current) {
         try {
-            return step(piece, step, current);
+            return calculateNextPosition(piece, step, current);
         } catch (InvalidPositionException e) {
 //            Logger.e(TAG, "Exception: "+e.getMessage());
             return null;
@@ -87,16 +87,16 @@ public class MovementUtil {
     }
 
     /**
-     * step method to get the next position based on the direction input, return null if not valid
+     * calculateNextPosition method to get the next position based on the direction input, return null if not valid
      * @param piece piece to be moved
-     * @param step directions to move
+     * @param step directions to executeMove
      * @param current current position of the piece
      * @param reverse if movement is in reverse direction
-     * @return Position of the piece after the step
+     * @return Position of the piece after the calculateNextPosition
      **/
-    public static PositionOnBoard stepOrNull(ChessPiece piece, Direction[] step,PositionOnBoard current, boolean reverse) {
+    public static PositionOnBoard calculateNextPositionOrNull(ChessPiece piece, Direction[] step, PositionOnBoard current, boolean reverse) {
         try {
-            return step(piece, step, current, reverse);
+            return calculateNextPosition(piece, step, current, reverse);
         } catch (InvalidPositionException e) {
 //            Logger.e(TAG, "Exception: "+e.getMessage());
             return null;

@@ -45,12 +45,12 @@ import com.ccd.chess.model.entity.pieces.Vortex;
 public class PieceFactory {
 
     /**
-     * createPiece - based on the type and colour, creates a chess piece
+     * GeneratePiece - based on the type and colour, creates a chess piece
      * @param colour colour
      * @param type - piece name e.g. king
      * @return CheChessPiece
      **/
-    public static ChessPiece createPiece(String type, Colour colour) {
+    public static ChessPiece GeneratePiece(String type, Colour colour) {
             switch (type.toLowerCase()) {
                 case "bishop":
                     return new Bishop(colour);

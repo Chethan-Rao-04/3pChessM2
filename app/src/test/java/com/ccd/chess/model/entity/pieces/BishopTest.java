@@ -32,7 +32,7 @@ class BishopTest {
     }
 
     /**
-     * Test that bishop can move to an empty square.
+     * Test that bishop can executeMove to an empty square.
      *
      * @param colour Colour of the bishop
      */
@@ -82,7 +82,7 @@ class BishopTest {
 //    }
 //
 //    /**
-//     * Test that bishop can move across board sections properly.
+//     * Test that bishop can executeMove across board sections properly.
 //     */
 //    @Test
 //    void testBishopMovementAcrossBoardSections() {

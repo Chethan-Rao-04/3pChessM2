@@ -35,7 +35,7 @@ class VortexTest {
     }
 
     /**
-     * Tests if the vortex can move diagonally and then left from those positions.
+     * Tests if the vortex can executeMove diagonally and then left from those positions.
      */
     @Test
     void getMovablePositions_vortexMovesInValidPattern_True() {
@@ -73,7 +73,7 @@ class VortexTest {
     }
 
     /**
-     * Tests if the vortex cannot move through friendly pieces.
+     * Tests if the vortex cannot executeMove through friendly pieces.
      */
     @ParameterizedTest
     @MethodSource("com.ccd.chess.test.DataProvider#pieceProvider")
@@ -83,13 +83,13 @@ class VortexTest {
         ChessPiece vortex = new Vortex(Colour.BRONZE);
         PositionOnBoard startPos = BE2;
         PositionOnBoard blockingPos = BF1;  // Diagonal position
-        PositionOnBoard leftPos = BE1;      // Left move from diagonal
+        PositionOnBoard leftPos = BE1;      // Left executeMove from diagonal
         boardMap.clear();
         boardMap.put(startPos, vortex);
         boardMap.put(blockingPos, piece);
         Set<PositionOnBoard> moves = vortex.getMovablePositions(boardMap, startPos);
         assertFalse(moves.contains(blockingPos));
-        assertFalse(moves.contains(leftPos));  // Should not be able to move left from blocked diagonal
+        assertFalse(moves.contains(leftPos));  // Should not be able to executeMove left from blocked diagonal
     }
 
     /**
@@ -102,7 +102,7 @@ class VortexTest {
 
         ChessPiece vortex = new Vortex(Colour.BRONZE);
         PositionOnBoard startPos = BE2;
-        PositionOnBoard capturePos = BE1;  // Left move from diagonal
+        PositionOnBoard capturePos = BE1;  // Left executeMove from diagonal
         boardMap.clear();
         boardMap.put(startPos, vortex);
         boardMap.put(capturePos, piece);

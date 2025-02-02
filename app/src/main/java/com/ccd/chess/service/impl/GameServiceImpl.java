@@ -4,8 +4,8 @@ import com.ccd.chess.exceptions.InvalidPositionException;
 import com.ccd.chess.model.dto.GameState;
 import com.ccd.chess.model.entity.enums.Colour;
 import com.ccd.chess.model.entity.enums.PositionOnBoard;
-import com.ccd.chess.service.interfaces.IGameService;
-import com.ccd.chess.service.interfaces.IBoardService;
+import com.ccd.chess.service.interfaces.GameService;
+import com.ccd.chess.service.interfaces.BoardService;
 import com.ccd.chess.util.BoardAdapter;
 import com.google.common.collect.ImmutableSet;
 import com.ccd.chess.exceptions.InvalidMoveException;
@@ -15,12 +15,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.ccd.chess.util.BoardAdapter.calculatePolygonId;
+import static com.ccd.chess.util.BoardAdapter.GeneratePolygonID;
 
-public class GameServiceImpl implements IGameService {
+public class GameServiceImpl implements GameService {
 
     private static final String TAG = GameServiceImpl.class.getSimpleName();
-    private final IBoardService board;
+    private final BoardService board;
     private PositionOnBoard moveStartPos, moveEndPos;
     private Set<PositionOnBoard> highlightPolygons;
 
@@ -29,7 +29,7 @@ public class GameServiceImpl implements IGameService {
      * Constructor with dependency injection for testing
      * @param boardService The board service implementation to use
      * */
-    public GameServiceImpl(IBoardService boardService) {
+    public GameServiceImpl(BoardService boardService) {
         Logger.d(TAG, "initGame GameMain()");
         this.board = boardService;
         moveStartPos = null;
@@ -42,9 +42,11 @@ public class GameServiceImpl implements IGameService {
      * @return Board map
      * */
     @Override
-    public Map<String, String> getBoard() {
-        return board.getWebViewBoard();
+    public Map<String, String> retrieveBoardState() {
+        return board.convertBoardToWebView();
     }
+
+
 
     /**
      * Responsible for sending mouse click events to backend and apply game logic over it to display
@@ -53,42 +55,42 @@ public class GameServiceImpl implements IGameService {
      * @return GameState which contains current game board layout and list of polygons to highlight
      **/
     @Override
-    public GameState onClick(String polygonLabel) {
+    public GameState processClickEvent(String polygonLabel) {
         try {
             // polygonPos must be in range [0, 95]
-            Logger.d(TAG, ">>> onClick called: polygonLabel: "+polygonLabel);
-            int polygonPos = calculatePolygonId(polygonLabel);
-            Logger.d(TAG, ">>> onClick called: polygonPos:  "+polygonPos);
+            Logger.d(TAG, ">>> processClickEvent called: polygonLabel: "+polygonLabel);
+            int polygonPos = GeneratePolygonID(polygonLabel);
+            Logger.d(TAG, ">>> processClickEvent called: polygonPos:  "+polygonPos);
 
             PositionOnBoard position = PositionOnBoard.get(polygonPos);
-            if (board.isCurrentPlayersPiece(position)) { // player selects his own piece - first move
+            if (board.isPieceOwnedByCurrentPlayer(position)) { // player selects his own piece - first executeMove
                 moveStartPos = position;
                 Logger.d(TAG, ">>> moveStartPos: " + moveStartPos);
-                highlightPolygons = board.getPossibleMoves(moveStartPos);
-                if(highlightPolygons.isEmpty()) { // Selected piece has no polygon to move, reset selection
+                highlightPolygons = board.calculatePossibleMoves(moveStartPos);
+                if(highlightPolygons.isEmpty()) { // Selected piece has no polygon to executeMove, reset selection
                     moveStartPos = null;
                 }
             } else if(moveStartPos != null){
                 moveEndPos = PositionOnBoard.get(polygonPos);
-                board.move(moveStartPos, moveEndPos);
+                board.executeMove(moveStartPos, moveEndPos);
                 Logger.d(TAG, ">>> moveStartPos: " + moveStartPos + ", moveEndPos: " + moveEndPos);
 
                 moveStartPos = moveEndPos = null;
                 highlightPolygons = null;
             }
         } catch (InvalidMoveException e) {
-            Logger.e(TAG, "InvalidMoveException onClick: "+e.getMessage());
+            Logger.e(TAG, "InvalidMoveException processClickEvent: "+e.getMessage());
             moveStartPos = moveEndPos = null;
             highlightPolygons = null;
         } catch (InvalidPositionException e) {
-            Logger.e(TAG, "InvalidPositionException onClick: "+e.getMessage());
+            Logger.e(TAG, "InvalidPositionException processClickEvent: "+e.getMessage());
             moveStartPos = moveEndPos = null;
             highlightPolygons = null;
         }
-        List<String> highlightPolygonsList = BoardAdapter.convertHighlightPolygonsToViewBoard(highlightPolygons);
-        GameState clickResponse = new GameState(getBoard(), highlightPolygonsList);
-        if(board.isGameOver()) {
-            String winner = board.getWinner();
+        List<String> highlightPolygonsList = BoardAdapter.convertPossibleMovesToStringRep(highlightPolygons);
+        GameState clickResponse = new GameState(retrieveBoardState(), highlightPolygonsList);
+        if(board.checkIfGameOver()) {
+            String winner = board.retrieveWinner();
             if (winner.equals("B")) {
                 winner = "SILVER";
             } else if (winner.equals("G")) {
@@ -107,9 +109,9 @@ public class GameServiceImpl implements IGameService {
      * @return returns which colour turn it is currently
      * */
     @Override
-    public Colour getTurn() {
-        Logger.d(TAG, "Current turn: " + board.getTurn());
-        return board.getTurn();
+    public Colour currentTurn() {
+        Logger.d(TAG, "Current turn: " + board.getCurrentTurn());
+        return board.getCurrentTurn();
 
     }
 

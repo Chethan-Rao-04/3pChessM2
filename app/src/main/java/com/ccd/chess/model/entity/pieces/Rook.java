@@ -4,7 +4,9 @@ import com.ccd.chess.model.entity.enums.Colour;
 import com.ccd.chess.model.entity.enums.Direction;
 import com.ccd.chess.model.entity.enums.PositionOnBoard;
 import com.ccd.chess.util.Logger;
-import static com.ccd.chess.util.MovementUtil.stepOrNull;
+import com.ccd.chess.util.MovementUtil;
+
+import static com.ccd.chess.util.MovementUtil.calculateNextPositionOrNull;
 
 import java.util.*;
 
@@ -34,24 +36,23 @@ public class Rook extends ChessPiece {
     }
 
     /**
-     * Fetch all the possible positions where a piece can move on board
+     * Fetch all the possible positions where a piece can executeMove on board
      * @param boardMap: Board Map instance representing current game board
      * @param start: position of piece on board
-     * @return Set of possible positions a piece is allowed to move
+     * @return Set of possible positions a piece is allowed to executeMove
      * */
     @Override
     public Set<PositionOnBoard> getMovablePositions(Map<PositionOnBoard, ChessPiece> boardMap, PositionOnBoard start) {
-        Collection<PositionOnBoard> wallPiecePositions = getWallPieceMapping(boardMap).values();
         Set<PositionOnBoard> positionSet = new HashSet<>();
         ChessPiece mover = this;
         Direction[][] steps = this.directions;
 
         for (Direction[] step : steps) {
-            PositionOnBoard tmp = stepOrNull(mover, step, start);
+            PositionOnBoard tmp = MovementUtil.calculateNextPositionOrNull(mover, step, start);
             while(tmp != null && !positionSet.contains(tmp) && boardMap.get(tmp)==null) {
                 Logger.d(TAG, "tmp: "+tmp);
                 positionSet.add(tmp);
-                tmp = stepOrNull(mover, step, tmp, tmp.getColour()!=start.getColour());
+                tmp = calculateNextPositionOrNull(mover, step, tmp, tmp.getColour()!=start.getColour());
             }
 
             // found a piece in direction
@@ -62,13 +63,6 @@ public class Rook extends ChessPiece {
                 } else {
                     Logger.d(TAG, "Mine tmp: " + tmp);
                 }
-            }
-        }
-
-        for(PositionOnBoard position: wallPiecePositions) {
-            if(positionSet.contains(position)) {
-                Logger.d(TAG, "Removed a wallPiecePos: "+position);
-                positionSet.remove(position);
             }
         }
 

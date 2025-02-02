@@ -41,7 +41,7 @@ POST /game
     "gameId": "string",
     "board": {
         "positionOnBoards": {},
-        "currentTurn": "silver"
+        "currentTurn": "SILVER"
     },
     "status": "ACTIVE"
 }
@@ -61,7 +61,7 @@ GET /game/{gameId}
     "gameId": "string",
     "board": {
         "positionOnBoards": {},
-        "currentTurn": "silver"
+        "currentTurn": "SILVER"
     },
     "status": "ACTIVE",
     "highlightPolygons": []
@@ -83,7 +83,7 @@ POST /game/{gameId}/move
 {
     "startPositionOnBoard": "string",
     "endPositionOnBoard": "string",
-    "player": "silver"
+    "player": "SILVER"
 }
 ```
 
@@ -93,7 +93,7 @@ POST /game/{gameId}/move
     "valid": true,
     "board": {
         "positionOnBoards": {},
-        "currentTurn": "Gold"
+        "currentTurn": "SILVER"
     },
     "message": "Move successful"
 }
@@ -131,7 +131,7 @@ GET /game/{gameId}/result
 ```json
 {
     "status": "COMPLETED",
-    "winner": "silver",
+    "winner": "GOLD",
     "reason": "CHECKMATE"
 }
 ```
@@ -140,18 +140,18 @@ GET /game/{gameId}/result
 
 ### Position Format
 Board positionOnBoards are represented as strings in the format:
-- First character: Section (B: silver, R: gold, G: bronze)
+- First character: Section (B: Blue, R: Red, G: Green)
 - Second character: File (A-H)
 - Third character: Rank (1-8)
 
-Example: "BE4" represents silver section, E file, rank 4
+Example: "BE4" represents Blue section, E file, rank 4
 
 ### Piece Representation
 Pieces are represented as two-character strings:
-- First character: Color (B: silver, R: gold, G: bronze)
+- First character: Color (B: Blue, R: Red, G: Green)
 - Second character: Piece type (K: King, Q: Queen, R: Rook, B: Bishop, N: Knight, P: Pawn, H: Hawk, V: Vortex)
 
-Example: "BK" represents silver King
+Example: "BK" represents Blue King
 
 ### Game Status
 Possible values:
@@ -161,9 +161,9 @@ Possible values:
 - ABANDONED
 
 ### Player Colors
-- silver
-- gold
-- bronze
+- GOLD
+- SILVER
+- BRONZE
 
 ## Error Handling
 
@@ -205,8 +205,8 @@ Possible values:
     "code": "WRONG_TURN",
     "message": "Not the player's turn",
     "details": {
-      "currentTurn": "gold",
-      "attemptedPlayer": "silver"
+      "currentTurn": "GOLD",
+      "attemptedPlayer": "Silver"
     }
   }
 }
@@ -234,7 +234,7 @@ ws://localhost:8080/ws/game/{gameId}
     "from": "BE2",
     "to": "BE4",
     "piece": "BP",
-    "player": "silver"
+    "player": "GOLD"
   }
 }
 ```
@@ -245,7 +245,7 @@ ws://localhost:8080/ws/game/{gameId}
   "type": "STATE_CHANGE",
   "data": {
     "status": "CHECK",
-    "player": "gold"
+    "player": "SILVER"
   }
 }
 ```

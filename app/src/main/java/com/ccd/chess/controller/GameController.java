@@ -3,8 +3,8 @@ package com.ccd.chess.controller;
 import com.ccd.chess.model.dto.GameState;
 import com.ccd.chess.exceptions.InvalidPositionException;
 import com.ccd.chess.service.impl.GameServiceImpl;
-import com.ccd.chess.service.interfaces.IGameService;
-import com.ccd.chess.service.interfaces.IBoardService;
+import com.ccd.chess.service.interfaces.BoardService;
+import com.ccd.chess.service.interfaces.GameService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
@@ -28,14 +28,14 @@ import java.util.Map;
  * 
  * Liskov Substitution Principle (LSP):
  * ✅ Works with service interfaces:
- * - IGameService
- * - IBoardService
+ * - GameService
+ * - BoardService
  * Any implementation of these interfaces can be used
  * 
  * Interface Segregation Principle (ISP):
  * ✅ Uses focused interfaces:
- * - IGameService for game operations
- * - IBoardService for board operations
+ * - GameService for game operations
+ * - BoardService for board operations
  * 
  * Dependency Inversion Principle (DIP):
  * ✅ Depends on abstractions:
@@ -46,45 +46,48 @@ import java.util.Map;
 @RequestMapping("/")
 @CrossOrigin(origins = "http://localhost:8090")
 public class GameController {
-    private IGameService game;
-    private final IBoardService boardService;
+    private GameService game;
+    private final BoardService boardService;
 
     @Autowired
-    public GameController(IBoardService boardService) {
+    public GameController(BoardService boardService) {
         this.boardService = boardService;
         this.game = new GameServiceImpl(boardService);
     }
 
     @GetMapping("/newGame")
-    public ResponseEntity<Void> handleNewGame() {
+    public ResponseEntity<Void> getNewGame() {
         System.out.println("New Game");
         this.game = new GameServiceImpl(boardService);
         return ResponseEntity.ok().build();
     }
 
+    /** this method is called when a player clicks on a polygon
+     * it
+     * */
     @PostMapping("/onClick")
-    public ResponseEntity<GameState> handleMove(@RequestBody String polygonText) throws InvalidPositionException {
+    public ResponseEntity<GameState> HandlePolygonCLick(@RequestBody String polygonText) throws InvalidPositionException {
         if (game == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
         System.out.println("Polygon: " + polygonText);
-        return ResponseEntity.ok(game.onClick(polygonText));
+        return ResponseEntity.ok(game.processClickEvent(polygonText));
     }
 
     @GetMapping("/currentPlayer")
-    public ResponseEntity<String> handlePlayerTurn() {
+    public ResponseEntity<String> getPlayerTurn() {
         if (game == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
         System.out.println("Requesting current player");
-        return ResponseEntity.ok(game.getTurn().toString());
+        return ResponseEntity.ok(game.currentTurn().toString());
     }
 
     @GetMapping("/board")
-    public ResponseEntity<Map<String, String>> handleBoardRequest() {
+    public ResponseEntity<Map<String, String>> getBoard() {
         if (game == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.ok(game.getBoard());
+        return ResponseEntity.ok(game.retrieveBoardState());
     }
 }

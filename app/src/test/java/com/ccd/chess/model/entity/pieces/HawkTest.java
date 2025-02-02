@@ -34,7 +34,7 @@ class HawkTest {
     }
 
     /**
-     * Tests if the hawk can move in its special pattern by checking if it has valid moves from a position.
+     * Tests if the hawk can executeMove in its special pattern by checking if it has valid moves from a position.
      */
     @Test
     void setupDirections_hawkCanMoveInSpecialPattern_True() {
@@ -60,7 +60,7 @@ class HawkTest {
         ChessPiece hawk = new Hawk(colour);
         boardMap.put(hawkPositionOnBoard, hawk);
         Set<PositionOnBoard> actualHawkMoves = hawk.getMovablePositions(boardMap, hawkPositionOnBoard);
-        // Test two-stepDirection move
+        // Test two-stepDirection executeMove
         assertTrue(actualHawkMoves.contains(BE4));
     }
 
@@ -97,7 +97,7 @@ class HawkTest {
     }
 
     /**
-     * Tests that hawk cannot move if the intermediate square is blocked
+     * Tests that hawk cannot executeMove if the intermediate square is blocked
      */
     @Test
     void isLegalMove_hawkBlockedByIntermediateSquare_False() {
@@ -108,7 +108,7 @@ class HawkTest {
         boardMap.put(startPositionOnBoard, hawk);
         boardMap.put(BE3, blocker); // Place blocking piece
         Set<PositionOnBoard> moves = hawk.getMovablePositions(boardMap, startPositionOnBoard);
-        // Should not be able to move to BE4 since BE3 is blocked
+        // Should not be able to executeMove to BE4 since BE3 is blocked
         assertFalse(moves.contains(BE4));
     }
 
@@ -125,7 +125,7 @@ class HawkTest {
         PositionOnBoard startPositionOnBoard = BE2;
         ChessPiece hawk = new Hawk(colour);
         boardMap.put(startPositionOnBoard, hawk);
-        // Hawk should be able to move two steps in each direction from BE2
+        // Hawk should be able to executeMove two steps in each direction from BE2
         Set<PositionOnBoard> expectedHawkMoves = ImmutableSet.of(
                 BE4,       // Forward two steps
                 BG2, BC2   // Horizontal two steps
@@ -135,7 +135,7 @@ class HawkTest {
     }
 
     /**
-     * Tests that hawk can move across board sections properly
+     * Tests that hawk can executeMove across board sections properly
      */
     @Test
     void getMovablePositions_hawkMovesAcrossBoardSections_True() {
@@ -148,11 +148,11 @@ class HawkTest {
         // Test that some moves exist
         assertFalse(moves.isEmpty(), "Hawk should have valid moves at section edge");
 
-        // Test that at least one two-stepDirection move works
+        // Test that at least one two-stepDirection executeMove works
         boolean hasValidMove = moves.contains(BE2) || // Two steps backward
                 moves.contains(BG4) || // Two steps right
                 moves.contains(BC4);   // Two steps left
-        assertTrue(hasValidMove, "Hawk should be able to move two steps in at least one direction");
+        assertTrue(hasValidMove, "Hawk should be able to executeMove two steps in at least one direction");
     }
 
     /**

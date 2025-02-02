@@ -131,7 +131,7 @@ class KingTest {
     }
 
     /**
-     * Test for short castle legal move, expecting true.
+     * Test for short castle legal executeMove, expecting true.
      */
     @Test
     void isLegalMove_shortCastle_True() {
@@ -147,7 +147,7 @@ class KingTest {
     }
 
     /**
-     * Test for short castle legal move when the square is occupied, expecting false.
+     * Test for short castle legal executeMove when the square is occupied, expecting false.
      */
     @Test
     void isLegalMove_shortCastleOccupiedSquare_False() {
@@ -166,7 +166,7 @@ class KingTest {
     }
 
     /**
-     * Test for long castle legal move, expecting true.
+     * Test for long castle legal executeMove, expecting true.
      */
     @Test
     void isLegalMove_longCastle_True() {
@@ -182,7 +182,7 @@ class KingTest {
     }
 
     /**
-     * Test for long castle legal move when the square is occupied, expecting false.
+     * Test for long castle legal executeMove when the square is occupied, expecting false.
      */
     @Test
     void isLegalMove_longCastleOccupiedSquare_False() {
