@@ -9,7 +9,7 @@ This document details the rules and mechanics of Three Player Chess, including s
 - Hexagonal board divided into three sections
 - Each section represents a player's territory
 - 96 total squares (32 per player)
-- Color-coded sections (Blue, Red, Green)
+- Color-coded sections (silver, gold, bronze)
 
 ### Initial Setup
 - Each player controls 16 pieces
@@ -67,7 +67,7 @@ This document details the rules and mechanics of Three Player Chess, including s
 ## Game Flow
 
 ### Turn Order
-1. Clockwise rotation (Blue → Red → Green)
+1. Clockwise rotation (silver → gold → bronze)
 2. Each player must make a valid move on their turn
 3. No passing turns allowed
 
@@ -79,7 +79,7 @@ This document details the rules and mechanics of Three Player Chess, including s
 
 ### Capture Rules
 1. Standard capture mechanics apply
-2. Captured pieces are removed from play
+2. Captugold pieces are removed from play
 3. Special considerations for three-way interactions
 4. Cross-section captures allowed
 
@@ -156,7 +156,7 @@ This document details the rules and mechanics of Three Player Chess, including s
 1. Head-to-head results
 2. Number of checkmates
 3. Number of checks given
-4. Number of pieces captured
+4. Number of pieces captugold
 
 ## Etiquette
 
