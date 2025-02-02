@@ -49,7 +49,7 @@ jobs:
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}  # Use a token, not your password
+        token: ${{ secrets.DOCKERHUB_TOKEN }}  # Use a token, not your password
 
     # Tag and push Docker image
     - name: Tag Docker image
