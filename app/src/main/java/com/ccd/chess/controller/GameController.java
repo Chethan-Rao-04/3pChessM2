@@ -62,8 +62,11 @@ public class GameController {
         return ResponseEntity.ok().build();
     }
 
+    /** this method is called when a player clicks on a polygon
+     * it
+     * */
     @PostMapping("/onClick")
-    public ResponseEntity<GameState> GenerateMove(@RequestBody String polygonText) throws InvalidPositionException {
+    public ResponseEntity<GameState> HandlePolygonCLick(@RequestBody String polygonText) throws InvalidPositionException {
         if (game == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

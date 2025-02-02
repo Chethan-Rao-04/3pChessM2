@@ -17,10 +17,10 @@ package "com.ccd.chess" {
             - game: IGameService
             - boardService: IBoardService
             + GameController(boardService: IBoardService)
-            + handleNewGame(): ResponseEntity<Void>
-            + handleMove(polygonText: String): ResponseEntity<GameState>
-            + handlePlayerTurn(): ResponseEntity<String>
-            + handleBoardRequest(): ResponseEntity<Map<String, String>>
+            + getNewGame(): ResponseEntity<Void>
+            + HandlePolygonCLick(polygonText: String): ResponseEntity<GameState>
+            + getPlayerTurn(): ResponseEntity<String>
+            + getBoard(): ResponseEntity<Map<String, String>>
         }
     }
 
@@ -138,27 +138,27 @@ package "com.ccd.chess" {
                 - highlightPolygons: Set<Position>
                 - hasHawkMoved: boolean
                 + BoardServiceImpl()
-                - placeChessPieces(colour: Colour): void
-                + getWebViewBoard(): Map<String, String>
-                + move(start: Position, end: Position): void
-                + isLegalMove(start: Position, end: Position): boolean
-                + isCurrentPlayersPiece(position: Position): boolean
+                - InitializePiecesOnBoard(colour: Colour): void
+                + convertBoardToWebView(): Map<String, String>
+                + executeMove(start: Position, end: Position): void
+                + validateMove(start: Position, end: Position): boolean
+                + isPieceOwnedByCurrentPlayer(position: Position): boolean
                 + getPossibleMoves(position: Position): Set<Position>
-                + isGameOver(): boolean
-                + getWinner(): String
-                + getTurn(): Colour
-                - isCheck(colour: Colour, boardMap: Map<Position, ChessPiece>): boolean
-                - isCheckMate(colour: Colour, boardMap: Map<Position, ChessPiece>): boolean
-                - isCheckAfterLegalMove(colour: Colour, boardMap: Map<Position, ChessPiece>, start: Position, end: Position): boolean
-                - getKingPosition(colour: Colour, boardMap: Map<Position, ChessPiece>): Position
+                + checkIfGameOver(): boolean
+                + retrieveWinner(): String
+                + getCurrentTurn(): Colour
+                - isKinginCheck(colour: Colour, boardMap: Map<Position, ChessPiece>): boolean
+                - isKingInCheckMate(colour: Colour, boardMap: Map<Position, ChessPiece>): boolean
+                - isKingInCheckAfterMove(colour: Colour, boardMap: Map<Position, ChessPiece>, start: Position, end: Position): boolean
+                - findKingPosition(colour: Colour, boardMap: Map<PositionOnBoard, ChessPiece>): PositionOnBoard
             }
 
             class GameServiceImpl implements IGameService {
                 - {static} TAG: String
                 - board: IBoardService
-                - moveStartPos: Position
-                - moveEndPos: Position
-                - highlightPolygons: Set<Position>
+                - moveStartPos: PositionOnBoard
+                - moveEndPos: PositionOnBoard
+                - highlightPolygons: Set<PositionOnBoard>
                 + GameServiceImpl(boardService: IBoardService)
                 + getBoard(): Map<String, String>
                 + onClick(polygonLabel: String): GameState
@@ -169,13 +169,13 @@ package "com.ccd.chess" {
         package "interfaces" {
             interface IBoardService {
                 + getWebViewBoard(): Map<String, String>
-                + move(start: Position, end: Position): void
-                + isLegalMove(start: Position, end: Position): boolean
-                + isCurrentPlayersPiece(position: Position): boolean
-                + getPossibleMoves(position: Position): Set<Position>
-                + isGameOver(): boolean
-                + getWinner(): String
-                + getTurn(): Colour
+                + move(start: PositionOnBoard, end: PositionOnBoard): void
+                + isLegalMove(start: PositionOnBoard, end: PositionOnBoard): boolean
+                + isCurrentPlayersPiece(position: PositionOnBoard): boolean
+                + getPossibleMoves(position: PositionOnBoard): Set<PositionOnBoard>
+                + checkIfGameOver(): boolean
+                + FetchWinner(): String
+                + getCurrentTurn(): Colour
             }
 
             interface IGameService {
@@ -189,9 +189,9 @@ package "com.ccd.chess" {
     ' Util package
     package "util" {
         class BoardAdapter {
-            + {static} convertModelBoardToViewBoard(board: Map<Position, ChessPiece>): Map<String, String>
-            + {static} convertHighlightPolygonsToViewBoard(positions: List<Position>): List<String>
-            + {static} calculatePolygonId(polygonLabel: String): int
+            + {static} ConvertBoardToStringRep(board: Map<PositionOnBoard, ChessPiece>): Map<String, String>
+            + {static} convertPossibleMovesToStringRep(positions: List<PositionOnBoard>): List<String>
+            + {static} GeneratePolygonID(polygonLabel: String): int
         }
 
         class Logger {
@@ -201,8 +201,8 @@ package "com.ccd.chess" {
         }
 
         class MovementUtil {
-            + {static} step(piece: ChessPiece, directions: Direction[], position: Position): Position
-            + {static} stepOrNull(piece: ChessPiece, directions: Direction[], from: Position, to: Position): Position
+            + {static} calculateNextPosition(piece: ChessPiece, directions: Direction[], position: PositionOnBoard): PositionOnBoard
+            + {static} calculateNextPositionOrNull(piece: ChessPiece, directions: Direction[], from: PositionOnBoard, to: PositionOnBoard): PositionOnBoard
         }
 
         class PieceFactory {
