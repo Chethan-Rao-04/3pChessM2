@@ -34,7 +34,7 @@ class QueenTest {
     }
 
     /**
-     * Tests if the queen can move in all directions by checking if it has valid moves from a position.
+     * Tests if the queen can executeMove in all directions by checking if it has valid moves from a position.
      */
     @Test
     void setupDirections_queenCanMoveInAllDirections_True() {
@@ -67,7 +67,7 @@ class QueenTest {
         Set<PositionOnBoard> moves = queen.getMovablePositions(boardMap, startPos);
 
         // Test that queen has valid moves
-        assertFalse(moves.isEmpty(), "Queen should have at least one valid move");
+        assertFalse(moves.isEmpty(), "Queen should have at least one valid executeMove");
 
         // Test specific moves based on color
         PositionOnBoard expectedDiagonal;
@@ -89,9 +89,9 @@ class QueenTest {
                 throw new IllegalStateException("Unknown colour: " + colour);
         }
 
-        // Test at least one type of move works
+        // Test at least one type of executeMove works
         assertTrue(moves.contains(expectedDiagonal) || moves.contains(expectedStraight),
-                "Queen should be able to move either diagonally or straight from starting position");
+                "Queen should be able to executeMove either diagonally or straight from starting position");
     }
 
     /**
@@ -144,17 +144,17 @@ class QueenTest {
         Set<PositionOnBoard> moves = queen.getMovablePositions(boardMap, startPos);
 
         // Test that queen has valid moves
-        assertFalse(moves.isEmpty(), "Queen should have at least one valid move");
+        assertFalse(moves.isEmpty(), "Queen should have at least one valid executeMove");
 
-        // Test at least one type of move works
+        // Test at least one type of executeMove works
         boolean hasValidMove = moves.contains(BB3) || // Straight forward
                 moves.contains(BC2) || // Straight right
                 moves.contains(BC3);   // Diagonal forward-right
-        assertTrue(hasValidMove, "Queen should be able to move in at least one direction");
+        assertTrue(hasValidMove, "Queen should be able to executeMove in at least one direction");
     }
 
     /**
-     * Tests that queen can move across board sections properly
+     * Tests that queen can executeMove across board sections properly
      */
     @Test
     void getMovablePositions_queenMovesAcrossBoardSections_True() {

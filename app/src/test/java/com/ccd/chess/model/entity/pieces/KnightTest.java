@@ -34,7 +34,7 @@ class KnightTest {
     }
 
     /**
-     * Tests if the knight can move in all directions by checking if it has valid moves from a position.
+     * Tests if the knight can executeMove in all directions by checking if it has valid moves from a position.
      */
     @Test
     void setupDirections_knightCanMoveInAllDirections_True() {

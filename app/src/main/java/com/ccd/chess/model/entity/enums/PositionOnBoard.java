@@ -99,7 +99,7 @@ public enum PositionOnBoard{
     }
 
     /**
-     * Get the position of next neighbour after a step
+     * Get the position of next neighbour after a calculateNextPosition
      * @param direction direction input to get its neighbour
      * @return Position the position of the specified polygon Index
      * @throws InvalidPositionException if outside the bounds of the board.

@@ -3,12 +3,13 @@ package com.ccd.chess.model.entity.pieces;
 import com.ccd.chess.model.entity.enums.Colour;
 import com.ccd.chess.model.entity.enums.Direction;
 import com.ccd.chess.model.entity.enums.PositionOnBoard;
+import com.ccd.chess.util.MovementUtil;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static com.ccd.chess.util.MovementUtil.stepOrNull;
+import static com.ccd.chess.util.MovementUtil.calculateNextPositionOrNull;
 
 /**
  * Hawk class
@@ -36,20 +37,20 @@ public Set<PositionOnBoard> getMovablePositions(Map<PositionOnBoard, ChessPiece>
     Set<PositionOnBoard> positionSet = new HashSet<>();
 
     for (Direction[] step : this.directions) {
-        // Check the adjacent square first (one step)
-        PositionOnBoard adjacent = stepOrNull(this, new Direction[]{step[0]}, start);
+        // Check the adjacent square first (one calculateNextPosition)
+        PositionOnBoard adjacent = MovementUtil.calculateNextPositionOrNull(this, new Direction[]{step[0]}, start);
 
         if (adjacent != null) {
-            // If adjacent square is blocked, can't move in this direction
+            // If adjacent square is blocked, can't executeMove in this direction
             if (boardMap.get(adjacent) != null) {
                 continue;
             }
 
             // Check the final destination (two steps)
-            PositionOnBoard destination = stepOrNull(this, step, start);
+            PositionOnBoard destination = MovementUtil.calculateNextPositionOrNull(this, step, start);
             if (destination != null) {
                 ChessPiece targetPiece = boardMap.get(destination);
-                // Can move if square is empty or contains enemy piece
+                // Can executeMove if square is empty or contains enemy piece
                 if (targetPiece == null || targetPiece.getColour() != this.getColour()) {
                     positionSet.add(destination);
                 }
@@ -70,34 +71,3 @@ public Set<PositionOnBoard> getMovablePositions(Map<PositionOnBoard, ChessPiece>
         }
     }
 
-
-
-
-//    }@Override
-//    public Set<Position> getMovablePositions(Map<Position, ChessPiece> boardMap, Position start) {
-//        Set<Position> positionSet = new HashSet<>();
-//
-//        for (Direction[] step : this.directions) {
-//            // Check the adjacent square first (one step)
-//            Position adjacent = stepOrNull(this, new Direction[]{step[0]}, start);
-//
-//            if (adjacent != null) {
-//                // If adjacent square is blocked, can't move in this direction
-//                if (boardMap.get(adjacent) != null) {
-//                    continue;
-//                }
-//
-//                // Check the final destination (two steps)
-//                Position destination = stepOrNull(this, step, start);
-//                if (destination != null) {
-//                    ChessPiece targetPiece = boardMap.get(destination);
-//                    // Can move if square is empty or contains enemy piece
-//                    if (targetPiece == null || targetPiece.getColour() != this.getColour()) {
-//                        positionSet.add(destination);
-//                    }
-//                }
-//            }
-//        }
-//
-//        return positionSet;
-//    }

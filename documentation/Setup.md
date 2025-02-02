@@ -4,6 +4,8 @@
 - Java 17 or higher
 - Gradle 7.x or higher
 - Git
+- Docker (optional)
+- Kubernetes (optional)
 
 ## Development Environment Setup
 

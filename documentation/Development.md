@@ -179,6 +179,7 @@ app/
 - Logging framework
 - Performance profiler
 - Memory analyzer
+- Jacoco for test coverage
 
 ### 3. Common Issues
 - Configuration problems
@@ -186,7 +187,11 @@ app/
 - Performance bottlenecks
 - Memory leaks
 
-## Deployment
+
+
+
+
+
 
 ### 1. Build Process
 - Gradle tasks
@@ -200,11 +205,22 @@ app/
 - Resource allocation
 - Security settings
 
-### 3. Monitoring
-- Application metrics
-- Error tracking
-- Performance monitoring
-- Resource usage
+## 3. Deployment
+- Docker Image build
+- Kubernetes deployment
+
+### 3. Testing
+- Unit tests
+- Integration tests
+- Mocking
+- Test coverage using Jacoco
+- Test reports using JUnit and Jacoco
+
+### 4. Continuous Integration
+- GitHub Actions
+- Gradle build pipeline
+- Automated testing
+- Test coverage reports
 
 ## Future Development
 

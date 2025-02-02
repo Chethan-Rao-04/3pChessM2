@@ -2,7 +2,6 @@ package com.ccd.chess.model.entity.pieces;
 
 
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -12,8 +11,9 @@ import com.ccd.chess.model.entity.enums.Direction;
 import com.ccd.chess.model.entity.enums.PositionOnBoard;
 
 import com.ccd.chess.util.Logger;
+import com.ccd.chess.util.MovementUtil;
 
-import static com.ccd.chess.util.MovementUtil.stepOrNull;
+import static com.ccd.chess.util.MovementUtil.calculateNextPositionOrNull;
 
 
 /**
@@ -49,22 +49,21 @@ public class Knight extends ChessPiece {
     }
 
     /**
-     * Fetch all the possible positions where a piece can move on board
+     * Fetch all the possible positions where a piece can executeMove on board
      * @param boardMap: Board class instance representing current game board
      * @param start: position of piece on board
-     * @return Set of possible positions a piece is allowed to move
+     * @return Set of possible positions a piece is allowed to executeMove
      * */
     @Override
     public Set<PositionOnBoard> getMovablePositions(Map<PositionOnBoard, ChessPiece> boardMap, PositionOnBoard start) {
-        Collection<PositionOnBoard> wallPiecePositions = getWallPieceMapping(boardMap).values();
         Set<PositionOnBoard> positionSet = new HashSet<>();
         ChessPiece mover = this;
         Direction[][] steps = this.directions;
 
         for(Direction[] step: steps) {
-            PositionOnBoard end = stepOrNull(mover, step, start);
+            PositionOnBoard end = MovementUtil.calculateNextPositionOrNull(mover, step, start);
 
-            if(positionSet.contains(end) || wallPiecePositions.contains(end)) {
+            if(positionSet.contains(end)) {
                 continue;
             }
 

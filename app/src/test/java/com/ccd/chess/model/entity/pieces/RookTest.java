@@ -34,7 +34,7 @@ class RookTest {
     }
 
     /**
-     * Tests if the rook can move in straight directions by checking if it has valid moves from a position.
+     * Tests if the rook can executeMove in straight directions by checking if it has valid moves from a position.
      */
     @Test
     void setupDirections_rookCanMoveInStraightDirections_True() {
@@ -60,7 +60,7 @@ class RookTest {
         ChessPiece rook = new Rook(colour);
         boardMap.put(rookPositionOnBoard, rook);
         Set<PositionOnBoard> actualRookMoves = rook.getMovablePositions(boardMap, rookPositionOnBoard);
-        // Test straight move
+        // Test straight executeMove
         assertTrue(actualRookMoves.contains(BE4));
     }
 
@@ -109,7 +109,7 @@ class RookTest {
         PositionOnBoard startPositionOnBoard = BE2;
         ChessPiece rook = new Rook(colour);
         boardMap.put(startPositionOnBoard, rook);
-        // Rook should be able to move to all these straight positions from BE2
+        // Rook should be able to executeMove to all these straight positions from BE2
         Set<PositionOnBoard> expectedRookMoves = ImmutableSet.of(
                 BE3, BE4, BE1, RD4, RD3, RD2 ,RD1, // Vertical moves
                 BF2, BG2,BH2 , BD2, BC2 ,BB2, BA2 // Horizontal moves
@@ -119,7 +119,7 @@ class RookTest {
     }
 
     /**
-     * Tests that rook can move across board sections properly
+     * Tests that rook can executeMove across board sections properly
      */
     @Test
     void getMovablePositions_rookMovesAcrossBoardSections_True() {
@@ -128,7 +128,7 @@ class RookTest {
         ChessPiece rook = new Rook(Colour.BLUE);
         boardMap.put(startPositionOnBoard, rook);
         Set<PositionOnBoard> moves = rook.getMovablePositions(boardMap, startPositionOnBoard);
-        // Should be able to move to bronze section
+        // Should be able to executeMove to bronze section
         assertTrue(moves.contains(RD1));
     }
 

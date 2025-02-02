@@ -143,7 +143,10 @@ All notable changes to the documentation will be documented in this file.
   - Getting started guides
 
 ### Changed
-- None (initial release)
+- Colors of the pieces on the board
+- Changed from Red, Blue, Green to Gold, Silver, Bronze
+
+
 
 ### Deprecated
 - None

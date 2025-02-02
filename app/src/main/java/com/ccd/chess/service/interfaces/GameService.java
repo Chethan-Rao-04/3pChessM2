@@ -4,12 +4,12 @@ import com.ccd.chess.model.entity.enums.Colour;
 import com.ccd.chess.model.dto.GameState;
 import java.util.Map;
 
-public interface IGameService {
+public interface GameService {
     /**
      * Get the current board map being used by backend for current game session
      * @return Board map
      * */
-    Map<String, String> getBoard();
+    Map<String, String> retrieveBoardState();
 
     /**
      * Responsible for sending mouse click events to backend and apply game logic over it to display
@@ -17,10 +17,10 @@ public interface IGameService {
      * @param  polygonLabel The unique label of the polygon which is clicked by player
      * @return GameState which contains current game board layout and list of polygons to highlight
      **/
-    GameState onClick(String polygonLabel);
+    GameState processClickEvent(String polygonLabel);
 
     /**
      * @return returns which colour turn it is currently
      * */
-    Colour getTurn();
+    Colour currentTurn();
 }

@@ -50,7 +50,7 @@ public class GameState {
 
     /**
      * method to check if the game is over.
-     * @return boolean isGameOver
+     * @return boolean checkIfGameOver
      **/
     public boolean isGameOver() {
         return this.isGameOver;

@@ -41,7 +41,7 @@ POST /game
     "gameId": "string",
     "board": {
         "positionOnBoards": {},
-        "currentTurn": "BLUE"
+        "currentTurn": "SILVER"
     },
     "status": "ACTIVE"
 }
@@ -61,7 +61,7 @@ GET /game/{gameId}
     "gameId": "string",
     "board": {
         "positionOnBoards": {},
-        "currentTurn": "BLUE"
+        "currentTurn": "SILVER"
     },
     "status": "ACTIVE",
     "highlightPolygons": []
@@ -83,7 +83,7 @@ POST /game/{gameId}/move
 {
     "startPositionOnBoard": "string",
     "endPositionOnBoard": "string",
-    "player": "BLUE"
+    "player": "SILVER"
 }
 ```
 
@@ -93,7 +93,7 @@ POST /game/{gameId}/move
     "valid": true,
     "board": {
         "positionOnBoards": {},
-        "currentTurn": "RED"
+        "currentTurn": "SILVER"
     },
     "message": "Move successful"
 }
@@ -131,7 +131,7 @@ GET /game/{gameId}/result
 ```json
 {
     "status": "COMPLETED",
-    "winner": "BLUE",
+    "winner": "GOLD",
     "reason": "CHECKMATE"
 }
 ```
@@ -161,9 +161,9 @@ Possible values:
 - ABANDONED
 
 ### Player Colors
-- BLUE
-- RED
-- GREEN
+- GOLD
+- SILVER
+- BRONZE
 
 ## Error Handling
 
@@ -205,8 +205,8 @@ Possible values:
     "code": "WRONG_TURN",
     "message": "Not the player's turn",
     "details": {
-      "currentTurn": "RED",
-      "attemptedPlayer": "BLUE"
+      "currentTurn": "GOLD",
+      "attemptedPlayer": "Silver"
     }
   }
 }
@@ -234,7 +234,7 @@ ws://localhost:8080/ws/game/{gameId}
     "from": "BE2",
     "to": "BE4",
     "piece": "BP",
-    "player": "BLUE"
+    "player": "GOLD"
   }
 }
 ```
@@ -245,7 +245,7 @@ ws://localhost:8080/ws/game/{gameId}
   "type": "STATE_CHANGE",
   "data": {
     "status": "CHECK",
-    "player": "RED"
+    "player": "SILVER"
   }
 }
 ```
