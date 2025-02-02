@@ -1,62 +1,53 @@
 name: CI
-
 on: [push, pull_request]
-
 jobs:
   build:
     runs-on: ubuntu-latest
     environment: Dev
-
     steps:
+    # Existing steps for Java build and testing
     - name: Checkout code
       uses: actions/checkout@v2
-
     - name: Set up JDK
       uses: actions/setup-java@v1
       with:
         java-version: '17'
-
     - name: Build with Gradle
       run: ./gradlew build
-
     - name: Run tests and generate JaCoCo report
       run: ./gradlew test jacocoTestReport
-
     - name: Upload test results
       uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: app/build/test-results/test
-
     - name: Upload test report
       uses: actions/upload-artifact@v4
       with:
         name: test-report
         path: app/build/reports/tests/test
-
     - name: Upload JaCoCo report
       uses: actions/upload-artifact@v4
       with:
         name: jacoco-report
         path: app/build/reports/jacoco/test
 
-    # Add Docker build step
-    - name: Build Docker image
-      run: |
-        docker build -t myapp:${{ github.sha }} .
-
+    # New Docker-related steps
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+      
     - name: Login to Docker Hub
-      uses: docker/login-action@v3.3.0
+      uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_PASSWORD }}  # Use a password, not a token
-
-    # Tag and push Docker image
-    - name: Tag Docker image
-      run: |
-        docker tag myapp:${{ github.sha }} myapp:latest
-
-    - name: Push Docker image
-      run: |
-        docker push myapp:${{ github.sha }}
-        docker push myapp:latest
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        push: true
+        # Using environment name as part of the tag for better organization
+        tags: |
+          ${{ secrets.DOCKERHUB_USERNAME }}/chess-app:${{ github.sha }}
+          ${{ secrets.DOCKERHUB_USERNAME }}/chess-app:latest
