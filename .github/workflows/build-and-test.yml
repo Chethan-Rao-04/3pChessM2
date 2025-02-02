@@ -22,6 +22,15 @@ jobs:
     - name: Run tests and generate JaCoCo report
       run: ./gradlew test jacocoTestReport
 
+    - name: Run PMD
+      run: ./gradlew pmdMain
+
+    - name: Upload PMD report
+      uses: actions/upload-artifact@v4
+      with:
+        name: pmd-report
+        path: build/reports/pmd
+
     - name: Upload test results
       uses: actions/upload-artifact@v3
       with:
