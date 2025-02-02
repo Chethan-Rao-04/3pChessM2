@@ -4,7 +4,7 @@ import com.ccd.chess.model.entity.enums.Colour;
 import com.ccd.chess.model.dto.GameState;
 import java.util.Map;
 
-public interface IGameInterface {
+public interface IGameService {
     /**
      * Get the current board map being used by backend for current game session
      * @return Board map

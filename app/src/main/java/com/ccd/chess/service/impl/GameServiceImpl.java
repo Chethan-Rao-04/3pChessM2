@@ -4,7 +4,7 @@ import com.ccd.chess.exceptions.InvalidPositionException;
 import com.ccd.chess.model.dto.GameState;
 import com.ccd.chess.model.entity.enums.Colour;
 import com.ccd.chess.model.entity.enums.PositionOnBoard;
-import com.ccd.chess.service.interfaces.IGameInterface;
+import com.ccd.chess.service.interfaces.IGameService;
 import com.ccd.chess.service.interfaces.IBoardService;
 import com.ccd.chess.util.BoardAdapter;
 import com.google.common.collect.ImmutableSet;
@@ -17,9 +17,9 @@ import java.util.Set;
 
 import static com.ccd.chess.util.BoardAdapter.calculatePolygonId;
 
-public class GameService implements IGameInterface {
+public class GameServiceImpl implements IGameService {
 
-    private static final String TAG = GameService.class.getSimpleName();
+    private static final String TAG = GameServiceImpl.class.getSimpleName();
     private final IBoardService board;
     private PositionOnBoard moveStartPos, moveEndPos;
     private Set<PositionOnBoard> highlightPolygons;
@@ -29,7 +29,7 @@ public class GameService implements IGameInterface {
      * Constructor with dependency injection for testing
      * @param boardService The board service implementation to use
      * */
-    public GameService(IBoardService boardService) {
+    public GameServiceImpl(IBoardService boardService) {
         Logger.d(TAG, "initGame GameMain()");
         this.board = boardService;
         moveStartPos = null;

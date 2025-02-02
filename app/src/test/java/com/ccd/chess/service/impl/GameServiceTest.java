@@ -27,11 +27,11 @@
 //    @Mock
 //    private BoardServiceImpl boardService;
 //
-//    private GameService GameService;
+//    private GameServiceImpl GameServiceImpl;
 //
 //    @BeforeEach
 //    void setUp() {
-//        GameService = new GameService(boardService);
+//        GameServiceImpl = new GameServiceImpl(boardService);
 //    }
 //
 //    @Test
@@ -47,7 +47,7 @@
 //        when(boardService.getWebViewBoard()).thenReturn(mockBoard);
 //
 //        // Act
-//        GameState result = GameService.onClick("be1");
+//        GameState result = GameServiceImpl.onClick("be1");
 //
 //        // Assert
 //        assertNotNull(result);
@@ -65,7 +65,7 @@
 //        lenient().when(boardService.getWebViewBoard()).thenReturn(new HashMap<>());
 //
 //        // Act
-//        GameState result = GameService.onClick("be1");
+//        GameState result = GameServiceImpl.onClick("be1");
 //
 //        // Assert
 //        assertNotNull(result);
@@ -85,10 +85,10 @@
 //        lenient().doThrow(new InvalidMoveException("Invalid move")).when(boardService).move(startPos, endPos);
 //
 //        // First click
-//        GameService.onClick("be1");
+//        GameServiceImpl.onClick("be1");
 //
 //        // Act - Second click
-//        GameState result = GameService.onClick("be2");
+//        GameState result = GameServiceImpl.onClick("be2");
 //
 //        // Assert
 //        assertNotNull(result);
@@ -101,7 +101,7 @@
 //        when(boardService.getTurn()).thenReturn(Colour.BLUE);
 //
 //        // Act
-//        Colour result = GameService.getTurn();
+//        Colour result = GameServiceImpl.getTurn();
 //
 //        // Assert
 //        assertEquals(Colour.BLUE, result);
@@ -115,7 +115,7 @@
 //        lenient().when(boardService.getWebViewBoard()).thenReturn(new HashMap<>());
 //
 //        // Act
-//        GameState result = GameService.onClick("be1");
+//        GameState result = GameServiceImpl.onClick("be1");
 //
 //        // Assert
 //        assertTrue(result.getHighlightedPolygons().isEmpty());
@@ -124,9 +124,9 @@
 //    // Integration tests with real BoardServiceImpl
 //    @Test
 //    void integrationTest_FullGameFlow() {
-//        // Create a real GameService with real dependencies
+//        // Create a real GameServiceImpl with real dependencies
 //        BoardServiceImpl realBoardService = new BoardServiceImpl();
-//        GameService realGameService = new GameService(realBoardService);
+//        GameServiceImpl realGameService = new GameServiceImpl(realBoardService);
 //
 //        // Initial state checks
 //        Map<String, String> initialBoard = realGameService.getBoard();
@@ -168,9 +168,9 @@
 //
 //    @Test
 //    void integrationTest_CompleteGame() {
-//        // Create a real GameService with real dependencies
+//        // Create a real GameServiceImpl with real dependencies
 //        BoardServiceImpl realBoardService = new BoardServiceImpl();
-//        GameService realGameService = new GameService(realBoardService);
+//        GameServiceImpl realGameService = new GameServiceImpl(realBoardService);
 //
 //        // Play a sequence of valid moves
 //        // Blue's turn

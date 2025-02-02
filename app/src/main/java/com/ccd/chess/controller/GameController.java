@@ -2,8 +2,8 @@ package com.ccd.chess.controller;
 
 import com.ccd.chess.model.dto.GameState;
 import com.ccd.chess.exceptions.InvalidPositionException;
-import com.ccd.chess.service.impl.GameService;
-import com.ccd.chess.service.interfaces.IGameInterface;
+import com.ccd.chess.service.impl.GameServiceImpl;
+import com.ccd.chess.service.interfaces.IGameService;
 import com.ccd.chess.service.interfaces.IBoardService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
@@ -28,13 +28,13 @@ import java.util.Map;
  * 
  * Liskov Substitution Principle (LSP):
  * ✅ Works with service interfaces:
- * - IGameInterface
+ * - IGameService
  * - IBoardService
  * Any implementation of these interfaces can be used
  * 
  * Interface Segregation Principle (ISP):
  * ✅ Uses focused interfaces:
- * - IGameInterface for game operations
+ * - IGameService for game operations
  * - IBoardService for board operations
  * 
  * Dependency Inversion Principle (DIP):
@@ -46,19 +46,19 @@ import java.util.Map;
 @RequestMapping("/")
 @CrossOrigin(origins = "http://localhost:8090")
 public class GameController {
-    private IGameInterface game;
+    private IGameService game;
     private final IBoardService boardService;
 
     @Autowired
     public GameController(IBoardService boardService) {
         this.boardService = boardService;
-        this.game = new GameService(boardService);
+        this.game = new GameServiceImpl(boardService);
     }
 
     @GetMapping("/newGame")
     public ResponseEntity<Void> handleNewGame() {
         System.out.println("New Game");
-        this.game = new GameService(boardService);
+        this.game = new GameServiceImpl(boardService);
         return ResponseEntity.ok().build();
     }
 
