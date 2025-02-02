@@ -1,171 +1,228 @@
 ```plantuml
-@startuml Chess Project Class Diagram
+@startuml
+' Set theme and styling
+skinparam backgroundColor transparent
+skinparam classAttributeIconSize 0
+skinparam monochrome true
+skinparam linetype ortho
 
-' Enums
-enum Colour {
-    WHITE
-    BLACK
-}
+' Set direction for better layout
+left to right direction
 
-enum Direction {
-    FORWARD
-    BACKWARD
-    LEFT
-    RIGHT
-}
+' Package com.ccd.chess
+package "com.ccd.chess" {
+    ' Controller package
+    package "controller" {
+        class GameController {
+            - game: IGameService
+            - boardService: IBoardService
+            + GameController(boardService: IBoardService)
+            + handleNewGame(): ResponseEntity<Void>
+            + handleMove(polygonText: String): ResponseEntity<GameState>
+            + handlePlayerTurn(): ResponseEntity<String>
+            + handleBoardRequest(): ResponseEntity<Map<String, String>>
+        }
+    }
 
-enum PositionOnBoard {
-    + get(colour: Colour, row: int, column: int): PositionOnBoard
-    + getColour(): Colour
-    + getRow(): int
-    + getColumn(): int
-}
+    ' Exceptions package
+    package "exceptions" {
+        class InvalidMoveException {
+            + InvalidMoveException(message: String)
+        }
+        class InvalidPositionException {
+            + InvalidPositionException(message: String)
+        }
+    }
 
-' Abstract base class
-abstract class ChessPiece {
-    # colour: Colour
-    # directions: Direction[][]
-    + ChessPiece(colour: Colour)
-    # {abstract} setupDirections(): void
-    # getWallPieceMapping(boardMap: Map<PositionOnBoard, ChessPiece>): Map<ChessPiece, PositionOnBoard>
-    + {abstract} getMovablePositions(boardMap: Map<PositionOnBoard, ChessPiece>, start: PositionOnBoard): Set<PositionOnBoard>
-    + getColour(): Colour
-    + toString(): String
-}
+    ' Model package
+    package "model" {
+        package "dto" {
+            class GameState {
+                - board: Map<String, String>
+                - turn: Colour
+                - gameOver: boolean
+                - winner: String
+                - highlightedPolygons: List<String>
+                + GameState(board: Map<String, String>, highlightPolygons: List<String>)
+                + setGameOver(winner: String): void
+            }
+        }
 
-' Concrete chess pieces
-class King extends ChessPiece {
-    + castlingPositionMapping: Map<Colour, List<PositionOnBoard>>
-    + King(colour: Colour)
-    # setupDirections()
-    + getMovablePositions()
-}
+        package "entity" {
+            package "pieces" {
+                abstract class ChessPiece {
+                    # colour: Colour
+                    # directions: Direction[][]
+                    + ChessPiece(colour: Colour)
+                    # {abstract} setupDirections(): void
+                    + getMovablePositions(board: Map<Position, ChessPiece>, position: Position): Set<Position>
+                    + getColour(): Colour
+                    + toString(): String
+                }
 
-class Queen extends ChessPiece {
-    + Queen(colour: Colour)
-    # setupDirections()
-    + getMovablePositions()
-}
+                class Bishop extends ChessPiece {
+                    + Bishop(colour: Colour)
+                    # setupDirections(): void
+                }
+                class Queen extends ChessPiece {
+                    + Queen(colour: Colour)
+                    # setupDirections(): void
+                }
+                class King extends ChessPiece {
+                    + castlingPositionMapping: Map<Colour, List<Position>>
+                    + King(colour: Colour)
+                    # setupDirections(): void
+                }
+                class Knight extends ChessPiece {
+                    + Knight(colour: Colour)
+                    # setupDirections(): void
+                }
+                class Rook extends ChessPiece {
+                    + Rook(colour: Colour)
+                    # setupDirections(): void
+                }
+                class Pawn extends ChessPiece {
+                    + Pawn(colour: Colour)
+                    # setupDirections(): void
+                }
+                class Hawk extends Knight {
+                    + Hawk(colour: Colour)
+                    # setupDirections(): void
+                }
+                class Vortex extends ChessPiece {
+                    + Vortex(colour: Colour)
+                    # setupDirections(): void
+                }
+            }
 
-class Bishop extends ChessPiece {
-    + Bishop(colour: Colour)
-    # setupDirections()
-    + getMovablePositions()
-}
+            package "enums" {
+                enum Colour {
+                    BLUE
+                    GREEN
+                    RED
+                    + next(): Colour
+                    + toString(): String
+                }
+                enum Direction {
+                    FORWARD
+                    BACKWARD
+                    LEFT
+                    RIGHT
+                    + toString(): String
+                }
+                enum PositionOnBoard {
+                    - colour: Colour
+                    - row: int
+                    - column: int
+                    + getColour(): Colour
+                    + getRow(): int
+                    + getColumn(): int
+                    + toString(): String
+                    + {static} get(colour: Colour, row: int, column: int): PositionOnBoard
+                    + {static} get(polygonIndex: int): PositionOnBoard
+                    + neighbour(direction: Direction): PositionOnBoard
+                }
+            }
+        }
+    }
 
-class Knight extends ChessPiece {
-    + Knight(colour: Colour)
-    # setupDirections()
-    + getMovablePositions()
-}
+    ' Service package
+    package "service" {
+        package "impl" {
+            class BoardServiceImpl implements IBoardService {
+                - {static} TAG: String
+                # boardMap: Map<Position, ChessPiece>
+                - turn: Colour
+                - gameOver: boolean
+                - winner: String
+                - highlightPolygons: Set<Position>
+                - hasHawkMoved: boolean
+                + BoardServiceImpl()
+                - placeChessPieces(colour: Colour): void
+                + getWebViewBoard(): Map<String, String>
+                + move(start: Position, end: Position): void
+                + isLegalMove(start: Position, end: Position): boolean
+                + isCurrentPlayersPiece(position: Position): boolean
+                + getPossibleMoves(position: Position): Set<Position>
+                + isGameOver(): boolean
+                + getWinner(): String
+                + getTurn(): Colour
+                - isCheck(colour: Colour, boardMap: Map<Position, ChessPiece>): boolean
+                - isCheckMate(colour: Colour, boardMap: Map<Position, ChessPiece>): boolean
+                - isCheckAfterLegalMove(colour: Colour, boardMap: Map<Position, ChessPiece>, start: Position, end: Position): boolean
+                - getKingPosition(colour: Colour, boardMap: Map<Position, ChessPiece>): Position
+            }
 
-class Rook extends ChessPiece {
-    + Rook(colour: Colour)
-    # setupDirections()
-    + getMovablePositions()
-}
+            class GameServiceImpl implements IGameService {
+                - {static} TAG: String
+                - board: IBoardService
+                - moveStartPos: Position
+                - moveEndPos: Position
+                - highlightPolygons: Set<Position>
+                + GameServiceImpl(boardService: IBoardService)
+                + getBoard(): Map<String, String>
+                + onClick(polygonLabel: String): GameState
+                + getTurn(): Colour
+            }
+        }
 
-class Pawn extends ChessPiece {
-    + Pawn(colour: Colour)
-    # setupDirections()
-    + getMovablePositions()
-}
+        package "interfaces" {
+            interface IBoardService {
+                + getWebViewBoard(): Map<String, String>
+                + move(start: Position, end: Position): void
+                + isLegalMove(start: Position, end: Position): boolean
+                + isCurrentPlayersPiece(position: Position): boolean
+                + getPossibleMoves(position: Position): Set<Position>
+                + isGameOver(): boolean
+                + getWinner(): String
+                + getTurn(): Colour
+            }
 
-class Hawk extends Knight {
-    + Hawk(colour: Colour)
-    # setupDirections()
-}
+            interface IGameService {
+                + getBoard(): Map<String, String>
+                + onClick(polygonLabel: String): GameState
+                + getTurn(): Colour
+            }
+        }
+    }
 
-class Vortex extends ChessPiece {
-    + Vortex(colour: Colour)
-    # setupDirections()
-    + getMovablePositions()
-}
+    ' Util package
+    package "util" {
+        class BoardAdapter {
+            + {static} convertModelBoardToViewBoard(board: Map<Position, ChessPiece>): Map<String, String>
+            + {static} convertHighlightPolygonsToViewBoard(positions: List<Position>): List<String>
+            + {static} calculatePolygonId(polygonLabel: String): int
+        }
 
-' Factory
-class PieceFactory {
-    + {static} createPiece(type: String, colour: Colour): ChessPiece
-}
+        class Logger {
+            + {static} TAG: String
+            + {static} d(tag: String, message: String): void
+            + {static} e(tag: String, error: String): void
+        }
 
-' Services
-interface IGameInterface {
-    + getBoard(): Map<String, String>
-    + onClick(polygonLabel: String): GameState
-    + getTurn(): Colour
-}
+        class MovementUtil {
+            + {static} step(piece: ChessPiece, directions: Direction[], position: Position): Position
+            + {static} stepOrNull(piece: ChessPiece, directions: Direction[], from: Position, to: Position): Position
+        }
 
-class GameService implements IGameInterface {
-    - board: IBoardService
-    - moveStartPos: PositionOnBoard
-    - moveEndPos: PositionOnBoard
-    - highlightPolygons: Set<PositionOnBoard>
-    + GameService(boardService: IBoardService)
-    + getBoard(): Map<String, String>
-    + onClick(polygonLabel: String): GameState
-    + getTurn(): Colour
-}
-
-interface IBoardService {
-    + isGameOver(): boolean
-    + getWinner(): String
-    + move(start: PositionOnBoard, end: PositionOnBoard): void
-    + isLegalMove(start: PositionOnBoard, end: PositionOnBoard): boolean
-    + getTurn(): Colour
-    + getWebViewBoard(): Map<String, String>
-    + getPossibleMoves(position: PositionOnBoard): Set<PositionOnBoard>
-    + isCurrentPlayersPiece(position: PositionOnBoard): boolean
-}
-
-class BoardServiceImpl implements IBoardService {
-    - boardMap: Map<PositionOnBoard, ChessPiece>
-    - turn: Colour
-    - gameOver: boolean
-    - winner: String
-    - highlightPolygons: Set<PositionOnBoard>
-    - hasHawkMoved: boolean
-    + BoardServiceImpl()
-    - placeChessPieces(colour: Colour): void
-    + isGameOver(): boolean
-    + getWinner(): String
-    + move(start: PositionOnBoard, end: PositionOnBoard): void
-    + isLegalMove(start: PositionOnBoard, end: PositionOnBoard): boolean
-    + getTurn(): Colour
-    + getWebViewBoard(): Map<String, String>
-    + getPossibleMoves(position: PositionOnBoard): Set<PositionOnBoard>
-    + isCurrentPlayersPiece(position: PositionOnBoard): boolean
-}
-
-' Data Transfer Objects
-class GameState {
-    - board: Map<String, String>
-    - highlightPolygons: List<String>
-    - gameOver: boolean
-    - winner: String
-}
-
-' Utilities
-class MovementUtil {
-    + {static} step(piece: ChessPiece, directions: Direction[], start: PositionOnBoard): PositionOnBoard
-    + {static} stepOrNull(piece: ChessPiece, directions: Direction[], start: PositionOnBoard): PositionOnBoard
-}
-
-class BoardAdapter {
-    + {static} calculatePolygonId(polygonLabel: String): int
-    + {static} convertModelBoardToViewBoard(boardMap: Map<PositionOnBoard, ChessPiece>): Map<String, String>
-    + {static} convertHighlightPolygonsToViewBoard(highlightPolygons: Set<PositionOnBoard>): List<String>
+        class PieceFactory {
+            + {static} createPiece(type: String, colour: Colour): ChessPiece
+        }
+    }
 }
 
 ' Relationships
-ChessPiece --> "1" Colour
-ChessPiece --> "*" Direction
-PieceFactory ..> ChessPiece : creates
-BoardServiceImpl ..> PieceFactory : uses
-ChessPiece ..> MovementUtil : uses
-BoardServiceImpl --> "1" Map<PositionOnBoard, ChessPiece>
-GameService --> "1" IBoardService
-GameService ..> GameState : creates
-BoardServiceImpl ..> BoardAdapter : uses
-GameService ..> BoardAdapter : uses
-
+GameController --> IGameService: uses
+GameController --> IBoardService: uses
+GameServiceImpl --> IBoardService: uses
+GameServiceImpl --> GameState: creates
+BoardServiceImpl --> ChessPiece: manages
+BoardAdapter --> ChessPiece: converts
+PieceFactory --> ChessPiece: creates
+MovementUtil --> ChessPiece: assists
+ChessPiece --> Colour: has
+ChessPiece --> Direction: uses
+BoardServiceImpl --> PositionOnBoard: uses
+GameServiceImpl --> PositionOnBoard: uses
 @enduml
 ``` 
