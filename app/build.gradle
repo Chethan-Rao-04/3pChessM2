@@ -4,6 +4,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.18'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'jacoco'
+    id 'pmd'
 }
 
 group = 'com.ccd'
@@ -38,6 +39,19 @@ test {
 
 jacocoTestReport {
     dependsOn test
+}
+
+pmd {
+    toolVersion = '6.36.0'
+    ignoreFailures = true
+    ruleSets = ['category/java/bestpractices.xml']
+}
+
+tasks.withType(Pmd) {
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
 }
 
 //checkstyle {
