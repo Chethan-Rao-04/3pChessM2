@@ -1,5 +1,6 @@
-```plantuml
 @startuml
+
+
 ' Set theme and styling
 skinparam backgroundColor transparent
 skinparam classAttributeIconSize 0
@@ -11,18 +12,18 @@ left to right direction
 
 ' Package com.ccd.chess
 package "com.ccd.chess" {
-    ' Controller package
-    package "controller" {
-        class GameController {
-            - game: IGameService
-            - boardService: IBoardService
-            + GameController(boardService: IBoardService)
-            + getNewGame(): ResponseEntity<Void>
-            + HandlePolygonCLick(polygonText: String): ResponseEntity<GameState>
-            + getPlayerTurn(): ResponseEntity<String>
-            + getBoard(): ResponseEntity<Map<String, String>>
-        }
-    }
+' Controller package
+package "controller" {
+class GameController {
+- game: IGameService
+- boardService: IBoardService
++ GameController(boardService: IBoardService)
++ getNewGame(): ResponseEntity<Void>
++ HandlePolygonCLick(polygonText: String): ResponseEntity<GameState>
++ getPlayerTurn(): ResponseEntity<String>
++ getBoard(): ResponseEntity<Map<String, String>>
+}
+}
 
     ' Exceptions package
     package "exceptions" {
@@ -212,8 +213,7 @@ package "com.ccd.chess" {
 }
 
 ' Relationships
-GameController --> IGameService: uses
-GameController --> IBoardService: uses
+GameController --> interfaces: uses
 GameServiceImpl --> IBoardService: uses
 GameServiceImpl --> GameState: creates
 BoardServiceImpl --> ChessPiece: manages
@@ -224,5 +224,6 @@ ChessPiece --> Colour: has
 ChessPiece --> Direction: uses
 BoardServiceImpl --> PositionOnBoard: uses
 GameServiceImpl --> PositionOnBoard: uses
+
+
 @enduml
-``` 
