@@ -23,19 +23,19 @@ jobs:
       run: ./gradlew test jacocoTestReport
 
     - name: Upload test results
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: test-results
         path: app/build/test-results/test
 
     - name: Upload test report
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: test-report
         path: app/build/reports/tests/test
 
     - name: Upload JaCoCo report
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: jacoco-report
         path: app/build/reports/jacoco/test
