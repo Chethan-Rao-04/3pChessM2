@@ -43,7 +43,7 @@ jobs:
     # Add Docker build step
     - name: Build Docker image
       run: |
-        docker build -t myapp:${{ github.sha }} .
+        docker build -t chessapp:${{ github.sha }} .
 
     # Log in to Docker Hub
     - name: Log in to Docker Hub
@@ -55,9 +55,9 @@ jobs:
     # Tag and push Docker image
     - name: Tag Docker image
       run: |
-        docker tag myapp:${{ github.sha }} myapp:latest
+        docker tag chessapp:${{ github.sha }} myapp:latest
 
     - name: Push Docker image
       run: |
-        docker push myapp:${{ github.sha }}
-        docker push myapp:latest
+        docker push chessapp:${{ github.sha }}
+        docker push chessapp:latest
