@@ -97,9 +97,9 @@ package "com.ccd.chess" {
 
             package "enums" {
                 enum Colour {
-                    BLUE
-                    GREEN
-                    RED
+                    GOLD
+                    SILVER
+                    BRONZE
                     + next(): Colour
                     + toString(): String
                 }
