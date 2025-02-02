@@ -23,27 +23,27 @@ public class DataProvider {
      */
     public static Stream<ChessPiece> pieceProvider() {
         return Stream.of(
-            // Blue pieces
-            new Pawn(Colour.BLUE),
-            new Rook(Colour.BLUE),
-            new Knight(Colour.BLUE),
-            new Bishop(Colour.BLUE),
-            new Queen(Colour.BLUE),
-            new King(Colour.BLUE),
-            // Green pieces
-            new Pawn(Colour.GREEN),
-            new Rook(Colour.GREEN),
-            new Knight(Colour.GREEN),
-            new Bishop(Colour.GREEN),
-            new Queen(Colour.GREEN),
-            new King(Colour.GREEN),
-            // Red pieces
-            new Pawn(Colour.RED),
-            new Rook(Colour.RED),
-            new Knight(Colour.RED),
-            new Bishop(Colour.RED),
-            new Queen(Colour.RED),
-            new King(Colour.RED)
+            // Silver pieces
+            new Pawn(Colour.SILVER),
+            new Rook(Colour.SILVER),
+            new Knight(Colour.SILVER),
+            new Bishop(Colour.SILVER),
+            new Queen(Colour.SILVER),
+            new King(Colour.SILVER),
+            // Bronze pieces
+            new Pawn(Colour.BRONZE),
+            new Rook(Colour.BRONZE),
+            new Knight(Colour.BRONZE),
+            new Bishop(Colour.BRONZE),
+            new Queen(Colour.BRONZE),
+            new King(Colour.BRONZE),
+            // Gold pieces
+            new Pawn(Colour.GOLD),
+            new Rook(Colour.GOLD),
+            new Knight(Colour.GOLD),
+            new Bishop(Colour.GOLD),
+            new Queen(Colour.GOLD),
+            new King(Colour.GOLD)
         );
     }
 } 

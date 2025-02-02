@@ -62,7 +62,7 @@ This document describes the architecture and design decisions for the Three Play
 
 ### 1. Three-Player Support
 - Custom board layout for three players
-- Color-based player identification (Blue, Red, Green)
+- Color-based player identification (Silver, bronze, gold)
 - Turn management for three players
 - Special rules adaptation
 

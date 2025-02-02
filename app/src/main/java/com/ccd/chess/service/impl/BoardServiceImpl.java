@@ -74,7 +74,7 @@ public class BoardServiceImpl implements IBoardService {
      * */
     public BoardServiceImpl(){
         boardMap = new HashMap<PositionOnBoard,ChessPiece>();
-        turn = Colour.BLUE;
+        turn = Colour.SILVER;
         gameOver = false;
         winner = null;
         try{
