@@ -38,7 +38,7 @@ class QueenTest {
      */
     @Test
     void setupDirections_queenCanMoveInAllDirections_True() {
-        ChessPiece queen = new Queen(Colour.BLUE);
+        ChessPiece queen = new Queen(Colour.SILVER);
         PositionOnBoard startPos = BB2; // Use a position that allows all types of moves
         boardMap.put(startPos, queen);
         Set<PositionOnBoard> moves = queen.getMovablePositions(boardMap, startPos);
@@ -57,9 +57,9 @@ class QueenTest {
         boardMap.clear();
         PositionOnBoard startPos;
         switch (colour) {
-            case BLUE: startPos = BB2; break;
-            case GREEN: startPos = GB2; break;
-            case RED: startPos = RB2; break;
+            case SILVER: startPos = BB2; break;
+            case BRONZE: startPos = GB2; break;
+            case GOLD: startPos = RB2; break;
             default: throw new IllegalStateException("Unknown colour: " + colour);
         }
         ChessPiece queen = new Queen(colour);
@@ -73,15 +73,15 @@ class QueenTest {
         PositionOnBoard expectedDiagonal;
         PositionOnBoard expectedStraight;
         switch (colour) {
-            case BLUE:
+            case SILVER:
                 expectedDiagonal = BC3;
                 expectedStraight = BB3;
                 break;
-            case GREEN:
+            case BRONZE:
                 expectedDiagonal = GC3;
                 expectedStraight = GB3;
                 break;
-            case RED:
+            case GOLD:
                 expectedDiagonal = RC3;
                 expectedStraight = RB3;
                 break;
@@ -121,8 +121,8 @@ class QueenTest {
     @ParameterizedTest
     @MethodSource("com.ccd.chess.test.DataProvider#pieceProvider")
     void isLegalMove_queenTakesDifferentColourPiece_True(ChessPiece piece) {
-        if (piece.getColour() == Colour.BLUE) return; // Skip if same color
-        ChessPiece queen = new Queen(Colour.BLUE);
+        if (piece.getColour() == Colour.SILVER) return; // Skip if same color
+        ChessPiece queen = new Queen(Colour.SILVER);
         PositionOnBoard startPos = BB2;
         PositionOnBoard targetPos = BC3;
         boardMap.put(startPos, queen);
@@ -139,7 +139,7 @@ class QueenTest {
     void getMovablePositions_validPolygons_presentInPolygonList() {
         boardMap.clear();
         PositionOnBoard startPos = BB2;
-        ChessPiece queen = new Queen(Colour.BLUE);
+        ChessPiece queen = new Queen(Colour.SILVER);
         boardMap.put(startPos, queen);
         Set<PositionOnBoard> moves = queen.getMovablePositions(boardMap, startPos);
 
@@ -160,7 +160,7 @@ class QueenTest {
     void getMovablePositions_queenMovesAcrossBoardSections_True() {
         boardMap.clear();
         PositionOnBoard startPos = BE4; // Edge of blue section
-        ChessPiece queen = new Queen(Colour.BLUE);
+        ChessPiece queen = new Queen(Colour.SILVER);
         boardMap.put(startPos, queen);
         Set<PositionOnBoard> moves = queen.getMovablePositions(boardMap, startPos);
 

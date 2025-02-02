@@ -38,7 +38,7 @@ class HawkTest {
      */
     @Test
     void setupDirections_hawkCanMoveInSpecialPattern_True() {
-        ChessPiece hawk = new Hawk(Colour.GREEN);
+        ChessPiece hawk = new Hawk(Colour.BRONZE);
         PositionOnBoard startPos = BE2;
         boardMap.clear();
         boardMap.put(startPos, hawk);
@@ -103,8 +103,8 @@ class HawkTest {
     void isLegalMove_hawkBlockedByIntermediateSquare_False() {
         boardMap.clear();
         PositionOnBoard startPositionOnBoard = BE2;
-        ChessPiece hawk = new Hawk(Colour.BLUE);
-        ChessPiece blocker = new Pawn(Colour.GREEN);
+        ChessPiece hawk = new Hawk(Colour.SILVER);
+        ChessPiece blocker = new Pawn(Colour.BRONZE);
         boardMap.put(startPositionOnBoard, hawk);
         boardMap.put(BE3, blocker); // Place blocking piece
         Set<PositionOnBoard> moves = hawk.getMovablePositions(boardMap, startPositionOnBoard);
@@ -141,7 +141,7 @@ class HawkTest {
     void getMovablePositions_hawkMovesAcrossBoardSections_True() {
         boardMap.clear();
         PositionOnBoard startPos = BE4; // Edge of blue section
-        ChessPiece hawk = new Hawk(Colour.BLUE);
+        ChessPiece hawk = new Hawk(Colour.SILVER);
         boardMap.put(startPos, hawk);
         Set<PositionOnBoard> moves = hawk.getMovablePositions(boardMap, startPos);
 

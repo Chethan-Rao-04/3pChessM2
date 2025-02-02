@@ -38,7 +38,7 @@ class KnightTest {
      */
     @Test
     void setupDirections_knightCanMoveInAllDirections_True() {
-        ChessPiece knight = new Knight(Colour.GREEN);
+        ChessPiece knight = new Knight(Colour.BRONZE);
         PositionOnBoard startPos = BE2;
         boardMap.clear();
         boardMap.put(startPos, knight);
