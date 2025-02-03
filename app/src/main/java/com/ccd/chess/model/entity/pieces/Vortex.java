@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static com.ccd.chess.util.MovementUtil.calculateNextPositionOrNull;
 
 /**
  * Vortex class extends ChessPiece. Moves one square diagonally in any direction,

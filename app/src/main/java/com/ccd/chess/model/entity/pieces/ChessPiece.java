@@ -6,7 +6,7 @@ import com.ccd.chess.model.entity.enums.PositionOnBoard;
 
 import java.util.Map;
 import java.util.Set;
-import java.util.HashMap;
+
 
 /**
  * ChessPiece - Abstract base class for all chess pieces

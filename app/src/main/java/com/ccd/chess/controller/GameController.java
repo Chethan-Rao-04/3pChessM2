@@ -9,34 +9,36 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
 /**
  * GameController - REST API endpoints for game interactions
- * 
+ *
  * SOLID Principles Implementation:
- * 
+ *
  * Single Responsibility Principle (SRP):
  * ✅ Controller has single responsibility:
  * - Handles HTTP endpoints and request routing
  * - Delegates game logic to service layer
- * 
+ *
  * Open/Closed Principle (OCP):
  * ✅ New endpoints can be added without modifying existing ones
  * ✅ Uses ResponseEntity for flexible response handling
- * 
+ *
  * Liskov Substitution Principle (LSP):
  * ✅ Works with service interfaces:
  * - GameService
  * - BoardService
  * Any implementation of these interfaces can be used
- * 
+ *
  * Interface Segregation Principle (ISP):
  * ✅ Uses focused interfaces:
  * - GameService for game operations
  * - BoardService for board operations
- * 
+ *
  * Dependency Inversion Principle (DIP):
  * ✅ Depends on abstractions:
  * - Injects service interfaces, not implementations
@@ -46,6 +48,7 @@ import java.util.Map;
 @RequestMapping("/")
 @CrossOrigin(origins = "http://localhost:8090")
 public class GameController {
+    private static final Logger logger = LoggerFactory.getLogger(GameController.class);
     private GameService game;
     private final BoardService boardService;
 
@@ -57,7 +60,7 @@ public class GameController {
 
     @GetMapping("/newGame")
     public ResponseEntity<Void> getNewGame() {
-        System.out.println("New Game");
+        logger.info("New Game");
         this.game = new GameServiceImpl(boardService);
         return ResponseEntity.ok().build();
     }
@@ -70,7 +73,7 @@ public class GameController {
         if (game == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        System.out.println("Polygon: " + polygonText);
+        logger.info("Polygon: " + polygonText);
         return ResponseEntity.ok(game.processClickEvent(polygonText));
     }
 
@@ -79,7 +82,7 @@ public class GameController {
         if (game == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        System.out.println("Requesting current player");
+        logger.info("Requesting current player");
         return ResponseEntity.ok(game.currentTurn().toString());
     }
 

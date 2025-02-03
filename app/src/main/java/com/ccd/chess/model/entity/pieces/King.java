@@ -15,7 +15,6 @@ import java.util.Set;
 import com.ccd.chess.util.Logger;
 import com.ccd.chess.util.MovementUtil;
 
-import static com.ccd.chess.util.MovementUtil.calculateNextPositionOrNull;
 
 /**
  * King class extends ChessPiece. Move directions for the King, the polygons

@@ -72,6 +72,8 @@ app/
 - Proper error propagation
 - Meaningful error messages
 - Logging at appropriate levels
+- PMD static analysis and error checking
+- PMD report generation
 
 ### 4. Code Style
 - Maximum line length: 120 characters
@@ -98,6 +100,27 @@ app/
 - Dependency management
 - Resource handling
 - Output artifacts
+
+### 4. Testing
+- Unit tests using JUnit
+- Mocking with Mockito
+- Integration tests
+- Test coverage reports using JACOCO
+
+### 5. Continuous Integration
+- GitHub Actions
+- Automated builds
+- Automated testing
+- Generation of test reports
+- Code quality checks using PMD
+- Generation of PMD reports
+- Docker image build
+- DOcker image push to Docker Hub
+
+### 6. Deployment
+- Docker containerization
+- Kubernetes deployment
+- GROK tunneling for external access
 
 ## Best Practices
 

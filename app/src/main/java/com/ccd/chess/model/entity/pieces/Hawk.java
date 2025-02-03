@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static com.ccd.chess.util.MovementUtil.calculateNextPositionOrNull;
 
 /**
  * Hawk class

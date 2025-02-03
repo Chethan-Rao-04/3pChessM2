@@ -134,6 +134,7 @@ public class BoardServiceImpl implements BoardService {
      * To check if the game is over
      * @return boolean
      * */
+    @Override
     public boolean checkIfGameOver() {
         return gameOver;
     }
@@ -142,6 +143,7 @@ public class BoardServiceImpl implements BoardService {
      * To fetch the winner
      * @return String of Winner name
      * */
+    @Override
     public String retrieveWinner() {
         return winner;
     }

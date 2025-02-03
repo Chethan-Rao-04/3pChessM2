@@ -3,11 +3,8 @@ package com.ccd.chess.util;
 import com.ccd.chess.model.entity.enums.Direction;
 import com.ccd.chess.model.entity.enums.PositionOnBoard;
 import com.ccd.chess.exceptions.InvalidPositionException;
-
 import com.ccd.chess.model.entity.pieces.ChessPiece;
 import com.ccd.chess.model.entity.pieces.Pawn;
-
-
 
 /**
  * MovementUtil - helper class for the movement of chess pieces
@@ -24,22 +21,24 @@ public class MovementUtil {
      **/
     public static PositionOnBoard calculateNextPosition(ChessPiece piece, Direction[] step, PositionOnBoard current) throws InvalidPositionException {
         boolean reverse = false;
-        for(Direction d: step){
-            if((piece.getColour()!=current.getColour() && piece instanceof Pawn) || reverse){//reverse directions for knights
-                switch(d){
-                    case FORWARD: d = Direction.BACKWARD; break;
-                    case BACKWARD: d = Direction.FORWARD; break;
-                    case LEFT: d = Direction.RIGHT; break;
-                    case RIGHT: d = Direction.LEFT; break;
+        PositionOnBoard newPosition = current;
+        for (Direction direction : step) {
+            Direction newDirection = direction;
+            if ((piece.getColour() != newPosition.getColour() && piece instanceof Pawn) || reverse) { // reverse directions for knights
+                switch (newDirection) {
+                    case FORWARD: newDirection = Direction.BACKWARD; break;
+                    case BACKWARD: newDirection = Direction.FORWARD; break;
+                    case LEFT: newDirection = Direction.RIGHT; break;
+                    case RIGHT: newDirection = Direction.LEFT; break;
                 }
             }
-           PositionOnBoard next = current.neighbour(d);
-            if(next.getColour()!= current.getColour()){//need to reverse directions when switching between sections of the board
-                reverse=true;
+            PositionOnBoard next = newPosition.neighbour(newDirection);
+            if (next.getColour() != newPosition.getColour()) { // need to reverse directions when switching between sections of the board
+                reverse = true;
             }
-            current = next;
+            newPosition = next;
         }
-        return current;
+        return newPosition;
     }
 
     /**
@@ -51,24 +50,25 @@ public class MovementUtil {
      * @return Position of the piece after the calculateNextPosition
      **/
     public static PositionOnBoard calculateNextPosition(ChessPiece piece, Direction[] step, PositionOnBoard current, boolean reverse) throws InvalidPositionException {
-        for(Direction d: step){
-            if((piece.getColour()!=current.getColour() && piece instanceof Pawn) || reverse){//reverse directions for knights
-                switch(d){
-                    case FORWARD: d = Direction.BACKWARD; break;
-                    case BACKWARD: d = Direction.FORWARD; break;
-                    case LEFT: d = Direction.RIGHT; break;
-                    case RIGHT: d = Direction.LEFT; break;
+        PositionOnBoard newPosition = current;
+        for (Direction direction : step) {
+            Direction newDirection = direction;
+            if ((piece.getColour() != newPosition.getColour() && piece instanceof Pawn) || reverse) { // reverse directions for knights
+                switch (newDirection) {
+                    case FORWARD: newDirection = Direction.BACKWARD; break;
+                    case BACKWARD: newDirection = Direction.FORWARD; break;
+                    case LEFT: newDirection = Direction.RIGHT; break;
+                    case RIGHT: newDirection = Direction.LEFT; break;
                 }
             }
-           PositionOnBoard next = current.neighbour(d);
-            if(next.getColour()!= current.getColour()){//need to reverse directions when switching between sections of the board
-                reverse=true;
+            PositionOnBoard next = newPosition.neighbour(newDirection);
+            if (next.getColour() != newPosition.getColour()) { // need to reverse directions when switching between sections of the board
+                reverse = true;
             }
-            current = next;
+            newPosition = next;
         }
-        return current;
+        return newPosition;
     }
-
 
     /**
      * calculateNextPosition method to get the next position based on the direction input, return null if not valid
@@ -81,7 +81,6 @@ public class MovementUtil {
         try {
             return calculateNextPosition(piece, step, current);
         } catch (InvalidPositionException e) {
-//            Logger.e(TAG, "Exception: "+e.getMessage());
             return null;
         }
     }
@@ -98,7 +97,6 @@ public class MovementUtil {
         try {
             return calculateNextPosition(piece, step, current, reverse);
         } catch (InvalidPositionException e) {
-//            Logger.e(TAG, "Exception: "+e.getMessage());
             return null;
         }
     }

@@ -13,7 +13,7 @@ import com.ccd.chess.model.entity.enums.PositionOnBoard;
 import com.ccd.chess.util.Logger;
 import com.ccd.chess.util.MovementUtil;
 
-import static com.ccd.chess.util.MovementUtil.calculateNextPositionOrNull;
+
 
 
 /**
