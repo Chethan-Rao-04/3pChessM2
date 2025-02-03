@@ -208,6 +208,7 @@ app/
 ## 3. Deployment
 - Docker Image build
 - Kubernetes deployment
+- Ngrok tunneling
 
 ### 3. Testing
 - Unit tests

@@ -29,5 +29,6 @@ spec:
   ports:
     - protocol: TCP
       port: 80        # The port the service will expose
-      targetPort: 8080 # The port the app inside the container listens on
-  type: ClusterIP    # Adjust this if you need LoadBalancer or NodePort
+      targetPort: 8090
+      nodePort: 30080  # The NodePort to access the service# The port the app inside the container listens on
+  type: NodePort    # Adjust this if you need LoadBalancer or NodePort

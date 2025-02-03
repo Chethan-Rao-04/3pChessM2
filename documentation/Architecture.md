@@ -58,6 +58,13 @@ This document describes the architecture and design decisions for the Three Play
 - Game flow tests
 - Edge case coverage
 
+### Deployment Strategy
+- Single deployment artifact
+- Docker containerization
+- Kubernetes deployment
+- Continuous integration pipeline
+- Automated testing
+
 ## Key Design Decisions
 
 ### 1. Three-Player Support

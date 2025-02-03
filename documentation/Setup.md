@@ -158,6 +158,9 @@ scp build/libs/3pchess.jar user@server:/app/
 # Run application
 java -jar 3pchess.jar --spring.profiles.active=prod
 ```
+### Kubernetes Deployment
+```bash
+  kubeclt apply -f Kubernetes/3pchess.deployment.yaml
 
 ### Server Requirements
 
