@@ -59,6 +59,10 @@ jobs:
           docker push chethancn/3pchess:${{ github.sha }}
           docker push chethancn/3pchess:latest
 
+      # Decode base64 KUBECONFIG
+      - name: Decode KUBECONFIG
+        run: echo ${{ secrets.KUBECONFIG }} | base64 --decode > $HOME/.kube/config
+
       # Set up kubectl
       - name: Set up kubectl
         uses: azure/setup-kubectl@v1
@@ -70,4 +74,4 @@ jobs:
         run: |
           kubectl apply -f Kubernetes/3pchess.deployment.yaml
         env:
-          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+          KUBECONFIG: $HOME/.kube/config
