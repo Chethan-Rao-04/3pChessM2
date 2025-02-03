@@ -6,7 +6,7 @@ This document describes the REST API endpoints available in the Three Player Che
 ## Base URL
 All API endpoints are served from the main application:
 ```
-http://localhost:8080/api/v1
+http://localhost:8090/
 ```
 
 ## Implementation Location
@@ -158,7 +158,6 @@ Possible values:
 - ACTIVE
 - COMPLETED
 - DRAW
-- ABANDONED
 
 ### Player Colors
 - GOLD

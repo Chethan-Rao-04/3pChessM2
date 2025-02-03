@@ -3,6 +3,9 @@ package com.ccd.chess;
 import com.ccd.chess.util.Logger;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * Spring application class
+ */
 @SpringBootApplication
 public class SpringApplication {
     private static final String TAG = SpringApplication.class.getSimpleName();

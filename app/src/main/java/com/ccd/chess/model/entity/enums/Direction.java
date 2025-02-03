@@ -1,5 +1,9 @@
 package com.ccd.chess.model.entity.enums;
 public enum Direction{
+
+    /**
+     * Enum to represent the directions of the pieces
+     */
     FORWARD,BACKWARD,LEFT,RIGHT;
 
     @Override

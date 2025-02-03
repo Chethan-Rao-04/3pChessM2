@@ -17,6 +17,12 @@ import java.util.Set;
 
 import static com.ccd.chess.util.BoardAdapter.GeneratePolygonID;
 
+/**
+ * GameServiceImpl - Implementation of GameService interface
+ * This class is responsible for handling game logic and board state
+ * It interacts with the BoardService to execute moves and retrieve board state
+ */
+
 public class GameServiceImpl implements GameService {
 
     private static final String TAG = GameServiceImpl.class.getSimpleName();

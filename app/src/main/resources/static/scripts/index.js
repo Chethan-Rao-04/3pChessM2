@@ -1,3 +1,4 @@
+//  Purpose: Handle the index.html page
 function checkInputs() {
     const goldPlayer = document.getElementById('gold-name').value.trim();
     const silverPlayer = document.getElementById('silver-name').value.trim();
@@ -17,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("silver-name").addEventListener("input", checkInputs);
     document.getElementById("bronze-name").addEventListener("input", checkInputs);
 });
-
+// Event listener for the new game button
 async function newGame() {
     try {
         const goldPlayer = document.getElementById('gold-name').value.trim();

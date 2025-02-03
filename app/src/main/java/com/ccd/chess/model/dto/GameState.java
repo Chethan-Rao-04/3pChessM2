@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class GameState to communicate with the webapp.
- * All the info regarding highlighted polygons, winner is
- * accessed with this method
+ * GameState class to store the state of the game
  */
 public class GameState {
 
@@ -50,19 +48,11 @@ public class GameState {
 
     /**
      * method to check if the game is over.
-     * @return boolean checkIfGameOver
      **/
     public boolean isGameOver() {
         return this.isGameOver;
     }
 
-    /**
-     * method to get the winner.
-     * @return String winner
-     **/
-    public String getWinner() {
-        return this.winner;
-    }
 
     /**
      * method to get the highlighted polygons and the board.

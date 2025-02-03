@@ -2,6 +2,10 @@ package com.ccd.chess.model.entity.enums;
 
 import com.ccd.chess.exceptions.InvalidPositionException;
 
+/**
+ * Enum to represent the positions on the board
+ */
+
 public enum PositionOnBoard{
 
     BA1(Colour.SILVER,0,0), BA2(Colour.SILVER,1,0), BA3(Colour.SILVER,2,0), BA4(Colour.SILVER,3,0),

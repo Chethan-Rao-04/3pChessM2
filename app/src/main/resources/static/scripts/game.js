@@ -12,8 +12,8 @@ const pieceMap = {
     'Q': '♛',
     'K': '♚',
     'P': '♟',
-    'H': '⎈',
-    'V': '◈'  // Diamond shape for Vortex
+    'H': '✦',
+    'V': '⚒'
 };
 
 /**
@@ -27,9 +27,9 @@ const colorMap = {
 };
 
 const pieceColors = {
-    'R': '#B8860B',  // Goldenrod
-    'G': '#CD7F32',  // Gray
-    'B': '#C0C0C0'   // SaddleBrown
+    'R': '#B8860B',  // Gold
+    'G': '#CD7F32',  // Silver
+    'B': '#C0C0C0'   // Bronze
 };
 
 const pieceStrokeColors = {

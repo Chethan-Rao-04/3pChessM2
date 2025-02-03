@@ -16,6 +16,11 @@ public enum Colour {
             default: return SILVER;
         }
     }
+
+    /**
+     * Method to return the colour as a string
+     * @return String
+     */
     @Override
     public String toString() {
         switch (this) {

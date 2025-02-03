@@ -8,6 +8,10 @@ import com.ccd.chess.exceptions.InvalidPositionException;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Interface for the BoardService
+ * This interface is responsible for handling the game logic and board state
+ */
 public interface BoardService {
     boolean checkIfGameOver();
     

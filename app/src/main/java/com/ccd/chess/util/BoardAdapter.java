@@ -13,6 +13,7 @@ import java.util.Set;
 
 /**
  *  Class BoardAdapter to convert information for web app representable form
+ *  This class is responsible for converting board data to Map of Strings for webapp
  **/
 public class BoardAdapter {
 
