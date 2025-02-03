@@ -29,19 +29,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: pmd-report
-          path: build/reports/pmd
-
-      - name: Upload test results
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: app/build/test-results/test
-
-      - name: Upload test report
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-report
-          path: app/build/reports/tests/test
+          path: app/build/reports/pmd
 
       - name: Upload JaCoCo report
         uses: actions/upload-artifact@v4
