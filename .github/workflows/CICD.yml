@@ -376,5 +376,3 @@ jobs:
         run: |
           minikube delete --all
           docker system prune -af
-
-          
