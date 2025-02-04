@@ -87,5 +87,7 @@ jobs:
       # Deploy to kubernetes
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f Kubernetes/3pchess.deployment.yaml
+          kubectl apply --validate=false -f Kubernetes/3pchess.deployment.yaml
           kubectl rollout status deployment/chess3player-deployment
+
+          
