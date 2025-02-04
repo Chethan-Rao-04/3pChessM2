@@ -53,6 +53,13 @@ public class GameState {
         return this.isGameOver;
     }
 
+    /**
+     * Method to get the winner of the game.
+     * @return String representing the winner
+     */
+    public String getWinner() {
+        return this.winner;
+    }
 
     /**
      * method to get the highlighted polygons and the board.
